@@ -1,0 +1,220 @@
+@label("Cadastros") //xxxx
+domain cadastros
+
+@label("Banco")
+service banco {
+	
+	config {
+		groupId: "br.com.kerubin.api"
+		version: "1.0.0"
+		cloudConfigUri: "http://localhost:9091"
+		servicePort: 0
+		
+		messagingCore {version:"1.0.0"}
+		databaseCore {version:"1.0.0"}
+	}
+	
+	@publishEvents// (events=[created, updated, deleted]) 
+	@auditing
+	@label("Banco")
+	entity Banco {
+		
+		numero: string[20] 
+		label: "Número"
+		autoComplete
+		publishedInEvents
+		web(styleClass: "ui-md-4")
+		
+		nome: string
+		label: "Nome"
+		autoComplete
+		publishedInEvents
+		listFilter(many: "Nome do(s) banco(s)")
+		web(styleClass: "ui-md-8")
+	}
+	
+	@publishEvents
+	@auditing
+	@label("Agência bancária")
+	entity AgenciaBancaria {
+		
+		banco: refers Banco manyToOne
+		publishedInEvents
+		web(styleClass: "ui-md-6")
+		
+		numeroAgencia: string[50] 
+		autoComplete
+		label: "Número da agência"
+		publishedInEvents
+		web(styleClass: "ui-md-5")
+		
+		digitoAgencia: string[10] 
+		autoComplete(result)
+		label: "Dígito"
+		publishedInEvents
+		web(styleClass: "ui-md-1")
+		
+		endereco: string? 
+		autoComplete
+		label: "Endereço/localização da agência"
+		web(styleClass: "ui-md-6")
+		
+		nomeGerente: string?
+		label: "Nome do gerente"
+		web(styleClass: "ui-md-4")
+		
+		fone: string[50]?
+		label: "Telefone da agência"
+		web(styleClass: "ui-md-2")
+		
+	}
+	
+	@auditing
+	@publishEvents
+	@label("Bandeira de cartão")
+	entity BandeiraCartao {
+		
+		nomeBandeira: string
+		autoComplete
+		publishedInEvents
+		label: "Bandeira do cartão"
+		listFilter(many: "Bandeira(s)")
+		web(styleClass: "ui-md-12")
+	}
+	
+	@auditing
+	@publishEvents
+	@label("Conta bancária")
+	entity ContaBancaria {
+		//--
+		nomeTitular: string
+		label: "Nome do títular da conta"
+		publishedInEvents
+		autoComplete
+		web(styleClass: "ui-md-6")
+		
+		agencia: refers AgenciaBancaria manyToOne
+		publishedInEvents
+		web(styleClass: "ui-md-4")
+		
+		tipoContaBancaria: TipoContaBancaria
+		label: "Tipo da conta"
+		publishedInEvents
+		web(styleClass: "ui-md-2")
+		//--
+		
+		numeroConta: string[30] 
+		autoComplete(result)
+		label: "Número da conta"
+		publishedInEvents
+		listFilter(many: "Número da(s) conta(s)")
+		web(styleClass: "ui-md-6")
+		
+		digito: string[10]? 
+		autoComplete(result)
+		label: "Dígito"
+		publishedInEvents
+		web(styleClass: "ui-md-2")
+		
+		saldo: money?
+		label: "Saldo"
+		web(styleClass: "ui-md-4")
+		//--
+		
+		numeroCartao: string[50]?
+		label: "Número do cartão"
+		web(styleClass: "ui-md-8")
+		
+		codigoSeguranca: string[10]?
+		label: "Código de segurança"
+		web(styleClass: "ui-md-2")
+		
+		dataValidade: date?
+		mask:"MM/yyyy"
+		publishedInEvents
+		label: "Validade"
+		web(styleClass: "ui-md-2")
+		//--
+		
+		bandeiraCartao: refers BandeiraCartao manyToOne
+		label: "Bandeira do cartão"
+		publishedInEvents
+		web(styleClass: "ui-md-8")
+		
+		ativo: boolean
+		label: "Conta ativa"
+		publishedInEvents
+		web(styleClass: "ui-md-4")
+		//--
+		
+	}
+	
+	@publishEvents
+	@auditing
+	@label("Cartão de crédito")
+	entity CartaoCredito {
+		
+		//--
+		banco: refers Banco manyToOne
+		publishedInEvents
+		web(styleClass: "ui-md-6")
+		
+		nomeTitular: string
+		autoComplete
+		label: "Nome do títular do cartão"
+		publishedInEvents
+		web(styleClass: "ui-md-6")
+		
+		//--
+		numeroCartao: string[50] 
+		autoComplete
+		label: "Número do cartão"
+		publishedInEvents
+		web(styleClass: "ui-md-6")
+		
+		validade: date?
+		label: "Validade"
+		mask:"mm/yy"
+		publishedInEvents
+		web(styleClass: "ui-md-2")
+		
+		codigoSeguranca: string[10]?
+		label: "Código de segurança"
+		web(styleClass: "ui-md-2")
+		
+		valorLimite: money?
+		label: "Limite de crédito"
+		publishedInEvents
+		web(styleClass: "ui-md-2")
+		
+		//--
+		bandeiraCartao: refers BandeiraCartao manyToOne
+		label: "Bandeira do cartão"
+		publishedInEvents
+		web(styleClass: "ui-md-6")
+		
+		ativo: boolean
+		label: "Cartão ativo"
+		publishedInEvents
+		web(styleClass: "ui-md-2")
+		
+	}
+	
+	
+	@label("Tipo da conta bancária")
+	enum TipoContaBancaria { 
+		CONTA_CORRENTE
+		label: "Conta corrente"
+		default
+		
+		CONTA_POUPANCA
+		label: "Conta poupança"
+		
+		CONTA_SALARIO
+		label: "Conta salário"
+		
+		CONTA_INVESTIMENTO
+		label: "Conta investimento"
+	}
+	
+}
