@@ -7,7 +7,6 @@ import static br.com.kerubin.api.messaging.constants.MessagingConstants.HEADER_U
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -21,7 +20,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import br.com.kerubin.api.cadastros.banco.SituacaoConciliacao;
@@ -32,7 +30,6 @@ import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBancariaD
 import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoContext;
 import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoTransacaoDTO;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaobancaria.ConciliacaoBancariaEntity;
-import br.com.kerubin.api.cadastros.banco.entity.conciliacaobancaria.ConciliacaoBancariaRepository;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacao.ConciliacaoTransacaoEntity;
 import br.com.kerubin.api.database.core.ServiceContext;
 import br.com.kerubin.api.database.core.ServiceContextData;
@@ -46,9 +43,6 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 	public static final String FINANCEIRO_CONTASPAGAR_SERVICE = "financeiro-contaspagar/financeiro/contas_pagar/conciliacaoBancaria";
 	public static final String FINANCEIRO_CONTASRECEBER_SERVICE = "financeiro-contasreceber/financeiro/contas_receber/conciliacaoBancaria";
 	public static final String FINANCEIRO_FLUXOCAIXA_SERVICE = "financeiro-fluxocaixa/financeiro/fluxo_caixa/conciliacaoBancaria";
-	
-	@Inject
-	private ConciliacaoBancariaRepository conciliacaoBancariaRepository;
 	
 	@Inject
 	private ConciliacaoServiceHelper conciliacaoTransacaoService;
@@ -70,16 +64,18 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 
 	private void createConciliacaoTransacaoAsync(ConciliacaoBancariaEntity conciliacaoBancariaEntity, ConciliacaoOFXReader reader) {
 		
-		ServiceContextData serviceContextData = ServiceContext.getServiceContextData();
-		ConciliacaoContext contexto = ConciliacaoContext.builder().serviceContextData(serviceContextData).build();
+		ConciliacaoContext contextoInicial = ConciliacaoContext.builder()
+				.conciliacaoBancariaEntity(conciliacaoBancariaEntity)
+				.serviceContextData(ServiceContext.getServiceContextData())
+				.build();
 		
 		CompletableFuture
-			.supplyAsync(() -> criarTransacoes(contexto, reader))
+			.supplyAsync(() -> criarTransacoes(contextoInicial, reader))
 			.thenApply(contexto -> inicializarAnaliseDasTransacoes(contexto)) //
-			.thenApply(transacoes -> verificarModulosDeContas(conciliacaoBancariaEntity, transacoes, serviceContextData)) //
-			.thenApply(transacoes -> verificarModuloCaixa(conciliacaoBancariaEntity, transacoes, serviceContextData)) //
-			.thenAccept(transacoes -> finalizarProcessamentoDasTransacoes(conciliacaoBancariaEntity, transacoes, serviceContextData)) //
-			.thenRun(() -> finalizarProcessamentoConciliacao(conciliacaoBancariaEntity, serviceContextData)); //
+			.thenApply(contexto -> verificarModulosDeContas(contexto)) //
+			.thenApply(contexto -> verificarModuloCaixa(contexto)) //
+			.thenApply(contexto -> finalizarProcessamentoDasTransacoes(contexto)) //
+			.thenAccept(contexto -> finalizarProcessamentoConciliacao(contexto)); //
 		
 	}
 
@@ -88,11 +84,14 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 	 * */
 	private ConciliacaoContext criarTransacoes(ConciliacaoContext contexto, ConciliacaoOFXReader reader) {
 		
-		log.info("Passou em criarTransacoes.");
+		log.info("INICIO criarTransacoes...");
 		
 		ServiceContext.applyServiceContextData(contexto.getServiceContextData());
 		
-		contexto = conciliacaoTransacaoService.criarTransacoes(contexto, reader);
+		List<ConciliacaoTransacaoEntity> transacoes = conciliacaoTransacaoService.criarTransacoes(contexto.getConciliacaoBancariaEntity(), reader);
+		contexto.setTransacoes(transacoes);
+		
+		log.info("FIM criarTransacoes.");
 		return contexto;
 	}
 	
@@ -101,11 +100,18 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 	 * Inicializa status para análise das transações. 
 	 * */
 	private ConciliacaoContext inicializarAnaliseDasTransacoes(ConciliacaoContext contexto) {
+		log.info("INICIO inicializarAnaliseDasTransacoes...");
+		
 		ServiceContext.applyServiceContextData(contexto.getServiceContextData());
 		
-		contexto.getConciliacaoBancariaEntity().setSituacaoConciliacao(SituacaoConciliacao.ANALISANDO_TRANSACOES);
+		ConciliacaoBancariaEntity conciliacaoBancariaEntity = contexto.getConciliacaoBancariaEntity();
+		conciliacaoBancariaEntity.setSituacaoConciliacao(SituacaoConciliacao.ANALISANDO_TRANSACOES);
 		
-		contexto = conciliacaoTransacaoService.salvarConciliacao(contexto);
+		conciliacaoBancariaEntity = conciliacaoTransacaoService.salvarConciliacao(conciliacaoBancariaEntity);
+		
+		contexto.setConciliacaoBancariaEntity(conciliacaoBancariaEntity);
+		
+		log.info("FIM inicializarAnaliseDasTransacoes.");
 		
 		return contexto;
 	}
@@ -113,10 +119,11 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 	/**
 	 * Verifica os serviços do Contas a Pagar e Contas a Receber se encontra essa transações lançadas para dar baixa depois. 
 	 * */
-	private List<ConciliacaoTransacaoEntity> verificarModulosDeContas(ConciliacaoBancariaEntity conciliacaoBancariaEntity, List<ConciliacaoTransacaoEntity> transacoes,
-			ServiceContextData serviceContextData) {
+	private ConciliacaoContext verificarModulosDeContas(ConciliacaoContext contexto) {
 		
-		log.info("Passou em verificarModulosDeContas.");
+		log.info("INICIO verificarModulosDeContas...");
+		
+		List<ConciliacaoTransacaoEntity> transacoes = contexto.getTransacoes();
 		
 		List<ConciliacaoTransacaoEntity> transacoesCredito = transacoes.stream()
 				.filter(it -> TipoTransacao.CREDITO.equals(it.getTrnTipo()))
@@ -127,10 +134,9 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 				.collect(Collectors.toList());
 		
 		
-		CompletableFuture<List<ConciliacaoTransacaoEntity>> transacoesVerificadasNoContasPagarFutures = CompletableFuture
-				.supplyAsync(() -> verificarTransacoesNoContasPagar(conciliacaoBancariaEntity, transacoesDedito, serviceContextData));
+		CompletableFuture<List<ConciliacaoTransacaoEntity>> transacoesVerificadasNoContasPagarFutures = CompletableFuture.supplyAsync(() -> verificarTransacoesNoContasPagar(contexto, transacoesDedito));
 		
-		CompletableFuture<List<ConciliacaoTransacaoEntity>> transacoesVerificadasNoContasReceberFutures = verificarTransacoesNoContasReceber(conciliacaoBancariaEntity, transacoesCredito, serviceContextData);
+		CompletableFuture<List<ConciliacaoTransacaoEntity>> transacoesVerificadasNoContasReceberFutures = verificarTransacoesNoContasReceber(contexto, transacoesCredito);
 		
 		List<CompletableFuture<List<ConciliacaoTransacaoEntity>>> futures = Arrays.asList(transacoesVerificadasNoContasPagarFutures, transacoesVerificadasNoContasReceberFutures);
 		
@@ -144,6 +150,7 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 		
 		List<List<ConciliacaoTransacaoEntity>> transacoesVerificadasNosServicos;
 		try {
+			// Aguarda até processar tudo nos serviços de Contas a Pagar e Contas a Receber.
 			transacoesVerificadasNosServicos = transacoesVerificadasNosServicosFuture.get();
 			
 			List<ConciliacaoTransacaoEntity> processadosA = transacoesVerificadasNosServicos.get(0);
@@ -154,122 +161,65 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 			result.addAll(processadosA);
 			result.addAll(processadosB);
 			
-			return result;
+			contexto.setTransacoes(result);
+			
+			log.info("FIM1 verificarModulosDeContas.");
+			
+			return contexto;
 			
 		} catch (InterruptedException | ExecutionException e) {
 			log.error("Erro ao buscar verificar transações nos serviços.", e);
 		}
 		
-		return transacoes;
+		log.info("FIM2 verificarModulosDeContas.");
+		return contexto;
 	}
 	
 	/**
 	 * Finaliza as transações.
 	 * */
-	private void finalizarProcessamentoDasTransacoes(ConciliacaoBancariaEntity conciliacaoBancariaEntity, List<ConciliacaoTransacaoEntity> transacoes,
-			ServiceContextData serviceContextData) {
+	private ConciliacaoContext finalizarProcessamentoDasTransacoes(ConciliacaoContext contexto) {
+		log.info("INICIO finalizarProcessamentoDasTransacoes...");
 		
-		log.info("Passou em finalizarProcessamentoDasTransacoes.");
+		log.info("FIM finalizarProcessamentoDasTransacoes.");
+		
+		return contexto;
 		
 	}
 	
 	/**
 	 * Finaliza o processamento da conciliação.
 	 * */
-	private void finalizarProcessamentoConciliacao(ConciliacaoBancariaEntity conciliacaoBancariaEntity, ServiceContextData serviceContextData) {
-
-		log.info("Passou em finalizarProcessamentoConciliacao.");
+	private void finalizarProcessamentoConciliacao(ConciliacaoContext contexto) {
+		
+		log.info("INICIO finalizarProcessamentoConciliacao...");
+		
+		ServiceContext.applyServiceContextData(contexto.getServiceContextData());
+		
+		ConciliacaoBancariaEntity conciliacaoBancariaEntity = contexto.getConciliacaoBancariaEntity();
+		conciliacaoBancariaEntity.setSituacaoConciliacao(SituacaoConciliacao.TRANSACOES_ANALISADAS);
+		
+		conciliacaoBancariaEntity = conciliacaoTransacaoService.salvarConciliacao(conciliacaoBancariaEntity);
+		
+		contexto.setConciliacaoBancariaEntity(conciliacaoBancariaEntity);
+		
+		log.info("FIM finalizarProcessamentoConciliacao...");
 		
 	}
 	
 	
 	
-	
-
-	private Object processarTransacoesConciliacao(UUID conciliacaoId, List<ConciliacaoTransacaoEntity> transacoes, ServiceContextData contexto) {
-		
-		return null;
-		
-	}
-
 	private ConciliacaoBancariaEntity createConciliacaoBancaria(ConciliacaoOFXReader reader) {
 		return conciliacaoTransacaoService.createConciliacaoBancaria(reader);
 	}
 	
-	private List<ConciliacaoTransacaoEntity> createConciliacaoTransacaoAsync(ConciliacaoBancariaEntity conciliacaoBancariaEntity, 
-			ConciliacaoOFXReader reader, ServiceContextData serviceContextData) {
+	private List<ConciliacaoTransacaoEntity> verificarTransacoesNoContasPagar(ConciliacaoContext contexto, List<ConciliacaoTransacaoEntity> transacoesDedito) {
+		
+		ServiceContextData serviceContextData = contexto.getServiceContextData();
 		
 		ServiceContext.applyServiceContextData(serviceContextData);
-		List<ConciliacaoTransacaoEntity> transacoes = conciliacaoTransacaoService.criarTransacoes(conciliacaoBancariaEntity, reader, serviceContextData);
 		
-		List<ConciliacaoTransacaoEntity> transacoesCredito = transacoes.stream()
-				.filter(it -> TipoTransacao.CREDITO.equals(it.getTrnTipo()))
-				.collect(Collectors.toList());
-		
-		List<ConciliacaoTransacaoEntity> transacoesDedito = transacoes.stream()
-				.filter(it -> TipoTransacao.DEBITO.equals(it.getTrnTipo()))
-				.collect(Collectors.toList());
-		
-		
-		CompletableFuture<List<ConciliacaoTransacaoEntity>> transacoesCreditoFutures = verificarTransacoesNoContasReceber(conciliacaoBancariaEntity, transacoesCredito, serviceContextData);
-		CompletableFuture<List<ConciliacaoTransacaoEntity>> transacoesDebitoFutures = CompletableFuture
-				.supplyAsync(() -> verificarTransacoesNoContasPagar(conciliacaoBancariaEntity, transacoesDedito, serviceContextData));
-		
-		List<CompletableFuture<List<ConciliacaoTransacaoEntity>>> futures = Arrays.asList(transacoesDebitoFutures, transacoesCreditoFutures);
-		
-		CompletableFuture<Void> allOfFutures = CompletableFuture.allOf(futures.toArray(new CompletableFuture[futures.size()]));
-		
-		CompletableFuture<List<List<ConciliacaoTransacaoEntity>>> transacoesVerificadasNosServicosCF = allOfFutures.thenApply(v -> {
-			
-			List<List<ConciliacaoTransacaoEntity>> resultadosDosServicos = futures.stream().map(future -> future.join()).collect(Collectors.toList());
-			return resultadosDosServicos;
-		});
-		
-		List<List<ConciliacaoTransacaoEntity>> transacoesVerificadasNosServicos;
-		try {
-			transacoesVerificadasNosServicos = transacoesVerificadasNosServicosCF.get();
-			
-			List<ConciliacaoTransacaoEntity> processadosA = transacoesVerificadasNosServicos.get(0);
-			List<ConciliacaoTransacaoEntity> processadosB = transacoesVerificadasNosServicos.get(1);
-			
-			List<ConciliacaoTransacaoEntity> naoProcessados = new ArrayList<>();
-			processadosA.forEach(it -> {
-				if (it.getTituloConciliadoId() == null) {
-					naoProcessados.add(it);
-				}
-			});
-			
-			processadosB.forEach(it -> {
-				if (it.getTituloConciliadoId() == null) {
-					naoProcessados.add(it);
-				}
-			});
-			
-			if (!naoProcessados.isEmpty()) {
-				CompletableFuture<List<ConciliacaoTransacaoEntity>> transacoesFluxoCaixaFutures = CompletableFuture
-						.supplyAsync(() -> verificarTransacoesNoFluxoCaixa(conciliacaoBancariaEntity, naoProcessados));
-			}
-			
-		} catch (InterruptedException | ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-		
-		return transacoes;
-	}
-
-	private List<ConciliacaoTransacaoEntity> verificarTransacoesNoFluxoCaixa(ConciliacaoBancariaEntity conciliacaoBancariaEntity,
-			List<ConciliacaoTransacaoEntity> naoProcessados) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	private List<ConciliacaoTransacaoEntity> verificarTransacoesNoContasPagar(ConciliacaoBancariaEntity conciliacaoBancariaEntity,
-			List<ConciliacaoTransacaoEntity> transacoesDedito, ServiceContextData serviceContextData) {
-		
-		ServiceContext.applyServiceContextData(serviceContextData);
+		ConciliacaoBancariaEntity conciliacaoBancariaEntity = contexto.getConciliacaoBancariaEntity();
 		
 		ConciliacaoBancariaDTO conciliacaoBancariaDTO = toDTO(conciliacaoBancariaEntity, transacoesDedito);
 		
@@ -302,7 +252,7 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
         
         List<ConciliacaoTransacaoEntity> transacoesAlteradas = transacoesDedito.stream().filter(it -> it.getTituloConciliadoId() != null).collect(Collectors.toList());
         if (!transacoesAlteradas.isEmpty()) {
-        	conciliacaoTransacaoService.salvarTransacoes(transacoesAlteradas, serviceContextData);
+        	conciliacaoTransacaoService.salvarTransacoes(transacoesAlteradas);
         }
         
 		return transacoesDedito;
@@ -311,11 +261,16 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 	/**
 	 * Caso tenha algum movimento (transação) não encontrado no Contas a Pagar e Contas a Receber, verifica se já foi lançado/ vai poder lançar no caixa.
 	 * */
-	private List<ConciliacaoTransacaoEntity> verificarModuloCaixa(ConciliacaoBancariaEntity conciliacaoBancariaEntity, 
-			List<ConciliacaoTransacaoEntity> transacoes,
-			ServiceContextData serviceContextData) {
+	private ConciliacaoContext verificarModuloCaixa(ConciliacaoContext contexto) {
 		
+		log.info("INICIO verificarModuloCaixa...");
+		
+		ServiceContextData serviceContextData = contexto.getServiceContextData();
 		ServiceContext.applyServiceContextData(serviceContextData);
+		
+		ConciliacaoBancariaEntity conciliacaoBancariaEntity = contexto.getConciliacaoBancariaEntity(); 
+		List<ConciliacaoTransacaoEntity> transacoes = contexto.getTransacoes();
+		
 		
 		List<ConciliacaoTransacaoEntity> transacoesNaoBaixadas = transacoes.stream().filter(it -> it.getTituloConciliadoId() == null).collect(Collectors.toList());
 		
@@ -354,19 +309,24 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
         .forEach(it -> it.setSituacaoConciliacaoTrn(SituacaoConciliacaoTrn.CONCILIAR_CAIXA));
         
         if (!transacoesNaoBaixadas.isEmpty()) {
-        	conciliacaoTransacaoService.salvarTransacoes(transacoesNaoBaixadas, serviceContextData);
+        	conciliacaoTransacaoService.salvarTransacoes(transacoesNaoBaixadas);
         }
         
-		return transacoes;
+        contexto.setTransacoes(transacoes);
+        
+        log.info("FIM verificarModuloCaixa.");
+        
+		return contexto;
 	}
 	
-	private CompletableFuture<List<ConciliacaoTransacaoEntity>> verificarTransacoesNoContasReceber(ConciliacaoBancariaEntity conciliacaoBancariaEntity,
-			List<ConciliacaoTransacaoEntity> transacoesCredito, ServiceContextData serviceContextData) {
+	private CompletableFuture<List<ConciliacaoTransacaoEntity>> verificarTransacoesNoContasReceber(ConciliacaoContext contexto, List<ConciliacaoTransacaoEntity> transacoesCredito) {
 		
 		return CompletableFuture.supplyAsync(() -> {
-
-
+			
+			ServiceContextData serviceContextData = contexto.getServiceContextData();
 			ServiceContext.applyServiceContextData(serviceContextData);
+			
+			ConciliacaoBancariaEntity conciliacaoBancariaEntity = contexto.getConciliacaoBancariaEntity();
 			
 			ConciliacaoBancariaDTO conciliacaoBancariaDTO = toDTO(conciliacaoBancariaEntity, transacoesCredito);
 			
@@ -392,14 +352,14 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 	        			transacao.setSituacaoConciliacaoTrn(it.getSituacaoConciliacaoTrn());
 	        		}
 	        		else {
-	        			log.warn("Transação de conciliação bancária retornada na resposta do Contas a Pagar não encontrada na lista corrente:" + it);
+	        			log.warn("Transação de conciliação bancária retornada na resposta do Contas a Receber não encontrada na lista corrente:" + it);
 	        		}
 	        	});
 	        }
 	        
 	        List<ConciliacaoTransacaoEntity> transacoesAlteradas = transacoesCredito.stream().filter(it -> it.getTituloConciliadoId() != null).collect(Collectors.toList());
 	        if (!transacoesAlteradas.isEmpty()) {
-	        	conciliacaoTransacaoService.salvarTransacoes(transacoesAlteradas, serviceContextData);
+	        	conciliacaoTransacaoService.salvarTransacoes(transacoesAlteradas);
 	        }
 	        
 			return transacoesCredito;

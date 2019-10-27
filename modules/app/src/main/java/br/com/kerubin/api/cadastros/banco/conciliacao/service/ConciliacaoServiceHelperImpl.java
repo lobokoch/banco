@@ -1,5 +1,7 @@
 package br.com.kerubin.api.cadastros.banco.conciliacao.service;
 
+import static br.com.kerubin.api.servicecore.util.CoreUtils.toPositive;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,16 +17,11 @@ import br.com.kerubin.api.cadastros.banco.SituacaoConciliacao;
 import br.com.kerubin.api.cadastros.banco.SituacaoConciliacaoTrn;
 import br.com.kerubin.api.cadastros.banco.TipoTransacao;
 import br.com.kerubin.api.cadastros.banco.conciliacao.ConciliacaoOFXReader;
-import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoContext;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaobancaria.ConciliacaoBancariaEntity;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaobancaria.ConciliacaoBancariaRepository;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacao.ConciliacaoTransacaoEntity;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacao.ConciliacaoTransacaoRepository;
-import br.com.kerubin.api.database.core.ServiceContext;
-import br.com.kerubin.api.database.core.ServiceContextData;
 import lombok.extern.slf4j.Slf4j;
-
-import static br.com.kerubin.api.servicecore.util.CoreUtils.*;
 
 @Slf4j
 @Service
@@ -38,10 +35,7 @@ public class ConciliacaoServiceHelperImpl implements ConciliacaoServiceHelper {
 	
 	@Transactional
 	@Override
-	public ConciliacaoContext criarTransacoes(ConciliacaoContext contexto, ConciliacaoOFXReader reader) {
-		
-		ServiceContext.applyServiceContextData(contexto.getServiceContextData());
-		ConciliacaoBancariaEntity conciliacaoBancariaEntity = contexto.getConciliacaoBancariaEntity();
+	public List<ConciliacaoTransacaoEntity> criarTransacoes(ConciliacaoBancariaEntity conciliacaoBancariaEntity, ConciliacaoOFXReader reader) {
 		
 		List<Transaction> transactions = reader.getTransactions();
 		List<ConciliacaoTransacaoEntity> transacoes = new ArrayList<>(transactions.size());
@@ -85,17 +79,16 @@ public class ConciliacaoServiceHelperImpl implements ConciliacaoServiceHelper {
 			
 		} // for
 		
-		contexto.setTransacoes(transacoes);
-		
-		return contexto;
+		return transacoes;
 	}
 	
 	@Transactional
 	@Override
-	public void salvarTransacoes(List<ConciliacaoTransacaoEntity> transacoesAlteradas) {
+	public List<ConciliacaoTransacaoEntity> salvarTransacoes(List<ConciliacaoTransacaoEntity> transacoes) {
 		try {
-			conciliacaoTransacaoRepository.saveAll(transacoesAlteradas);
+			transacoes = conciliacaoTransacaoRepository.saveAll(transacoes);
 			conciliacaoTransacaoRepository.flush();
+			return transacoes;
 		} catch (Exception e) {
 			log.error("Erro ao salvar lote de trandações de conciliação bancária. Erro: " + e.getMessage(), e);
 			throw e;
