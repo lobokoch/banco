@@ -1,4 +1,4 @@
-@label("Cadastros") //xxx
+@label("Cadastros") //xx
 domain cadastros
 
 @label("Banco")
@@ -200,6 +200,144 @@ service banco {
 		
 	}
 	
+	@label("Conciliação bancária")
+	entity ConciliacaoBancaria {
+		bancoId: string
+		label: "Banco"
+		web(styleClass: "ui-md-3")
+		
+		agenciaId: string
+		label: "Agência"
+		web(styleClass: "ui-md-1")
+		
+		contaId: string
+		label: "Conta"
+		web(styleClass: "ui-md-2")
+		
+		dataIni: date
+		label: "Data inicial"
+		web(styleClass: "ui-md-2")
+		
+		dataFim: date
+		label: "Data final"
+		web(styleClass: "ui-md-2")
+		
+		//transacoes: contains ConciliacaoTransacao optional many oneToMany
+		
+		situacaoConciliacao: SituacaoConciliacao
+		web(styleClass: "ui-md-2")
+	}
+	//
+	
+	@label("Transações")
+	//@labelMenu(")
+	@auditing
+	entity ConciliacaoTransacao {
+		trnData: date
+		label: "Data"
+		
+		trnHistorico: string
+		label: "Histórico"
+		
+		trnDocumento: string
+		label: "Documento"
+		
+		trnTipo: TipoTransacao
+		
+		trnValor: money
+		label: "Valor"
+		
+		conciliacaoBancaria: /*container*/refers ConciliacaoBancaria manyToOne
+		
+		situacaoConciliacaoTrn: SituacaoConciliacaoTrn
+		
+		tituloConciliadoId: uuid?
+		label: "Identificador do título conciliado"
+		
+		tituloConciliadoDesc: string?
+		label: "Descrição do título conciliado"
+		
+		dataConciliacao: date?
+		label: "Data da conciliação"
+		
+		conciliadoComErro: boolean?
+		label: "Erro"
+		
+		conciliadoMsg: string?
+		label: "Mensagem"
+	}
+	
+	@label("Situação da transação de conciliação")
+	enum SituacaoConciliacaoTrn {
+		NAO_CONCILIADO
+		label: "Não conciliado"
+		default
+		
+		CONCILIAR_CONTAS_PAGAR
+		label: "Conciliar ao contas a pagar"
+		
+		CONCILIADO_CONTAS_PAGAR
+		label: "Conciliado no contas a pagar"	
+			
+		CONTAS_PAGAR_BAIXADO_SEM_CONCILIACAO
+		label: "Baixado no contas a pagar sem conciliação"		
+		
+		CONCILIAR_CONTAS_RECEBER
+		label: "Conciliar ao contas a receber"
+		
+		CONCILIADO_CONTAS_RECEBER
+		label: "Conciliado no contas a receber"
+		
+		CONTAS_RECEBER_BAIXADO_SEM_CONCILIACAO
+		label: "Baixado no contas a receber sem conciliação"
+		
+		CONCILIAR_CAIXA
+		label: "Conciliar ao caixa"
+		
+		CONCILIADO_CAIXA
+		label: "Conciliado no caixa"
+		
+		CAIXA_BAIXADO_SEM_CONCILIACAO
+		label: "Baixado no caixa sem conciliação"
+		
+		CANCELADO
+		label: "Conciliação cancelada"
+	}
+	
+	@label("Situação da conciliação")
+	enum SituacaoConciliacao {
+		NAO_CONCILIADO
+		label: "Não conciliado"
+		default
+		
+		ANALISANDO_TRANSACOES
+		label: "Analisando transações"
+		
+		TRANSACOES_ANALISADAS
+		label: "Transações analisadas"
+		
+		CONCILIADO_TRANSACOES
+		label: "Conciliando transações"
+		
+		CONCILIADO_COM_ERRO
+		label: "Conciliado com erro"
+		
+		CONCILIADO
+		label: "Conciliado"
+	}
+	
+	@label("Tipo da transação")
+	enum TipoTransacao {
+		CREDITO
+		label: "Crédito"
+		default
+		
+		DEBITO
+		label: "Débito"
+		
+		OUTROS
+		label: "Outros"
+	}
 	
 	@label("Tipo da conta bancária")
 	enum TipoContaBancaria { 

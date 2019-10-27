@@ -1,0 +1,1071 @@
+OFXHEADER:100
+DATA:OFXSGML
+VERSION:102
+SECURITY:NONE
+ENCODING:USASCII
+CHARSET:1252
+COMPRESSION:NONE
+OLDFILEUID:NONE
+NEWFILEUID:NONE
+
+<OFX>
+	<SIGNONMSGSRSV1>
+		<SONRS>
+			<STATUS>
+				<CODE>0
+				<SEVERITY>INFO
+			</STATUS>
+			<DTSERVER>00000000000000
+			<LANGUAGE>POR
+		</SONRS>
+	</SIGNONMSGSRSV1>
+	<BANKMSGSRSV1>
+		<STMTTRNRS>
+			<TRNUID>1001
+			<STATUS>
+				<CODE>0
+				<SEVERITY>INFO
+			</STATUS>
+			<STMTRS>
+				<CURDEF>BRL
+				<BANKACCTFROM>
+					<BANKID>0237
+					<ACCTID>7225/12563
+					<ACCTTYPE>CHECKING
+				</BANKACCTFROM>
+				<BANKTRANLIST>
+					<DTSTART>20190815000000
+					<DTEND>20191014000000
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190815000000[-03:EST]
+						<TRNAMT>-102.85
+						<FITID>N10214:15/08/19:-102.85:5370001: Tit.capitalizac:
+						<CHECKNUM>5370001
+						<MEMO>Tit.capitalizac 
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190816000000[-03:EST]
+						<TRNAMT>-100.00
+						<FITID>N10231:16/08/19:-100.0:1608413: sq c/c Bco24h: 00047745                16081231
+						<CHECKNUM>1608413
+						<MEMO>sq c/c Bco24h 00047745 16081231
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190820000000[-03:EST]
+						<TRNAMT>-37.90
+						<FITID>N1024F:20/08/19:-37.9:0936033: Visa Electron: Netflix.com
+						<CHECKNUM>0936033
+						<MEMO>Visa Electron Netflix.com
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>CREDIT
+						<DTPOSTED>20190822000000[-03:EST]
+						<TRNAMT>3888.00
+						<FITID>N1026D:22/08/19:3888.0:4307413: Ted Csal p/ccor: Remet.marcio Koch
+						<CHECKNUM>4307413
+						<MEMO>Ted Csal p/ccor Remet.marcio Koch
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190822000000[-03:EST]
+						<TRNAMT>-35.76
+						<FITID>N1028A:22/08/19:-35.76:0000956: Visa Electron: Giassi Supermerca
+						<CHECKNUM>0000956
+						<MEMO>Visa Electron Giassi Supermerca
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190822000000[-03:EST]
+						<TRNAMT>-300.00
+						<FITID>N102A8:22/08/19:-300.0:2208008: sq c/c Bco24h: 00043354                22081238
+						<CHECKNUM>2208008
+						<MEMO>sq c/c Bco24h 00043354 22081238
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190823000000[-03:EST]
+						<TRNAMT>-96.90
+						<FITID>N102C6:23/08/19:-96.9:0317346: Visa Electron: Blue Pizzaria
+						<CHECKNUM>0317346
+						<MEMO>Visa Electron Blue Pizzaria
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190823000000[-03:EST]
+						<TRNAMT>-29.57
+						<FITID>N102E4:23/08/19:-29.57:0570606: Visa Electron: Big Blumenau Pos
+						<CHECKNUM>0570606
+						<MEMO>Visa Electron Big Blumenau Pos
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190823000000[-03:EST]
+						<TRNAMT>-150.00
+						<FITID>N10302:23/08/19:-150.0:2308678: sq c/c Bco24h: 00040409                23081222
+						<CHECKNUM>2308678
+						<MEMO>sq c/c Bco24h 00040409 23081222
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190826000000[-03:EST]
+						<TRNAMT>-249.70
+						<FITID>N10320:26/08/19:-249.7:0000038: Visa Electron: Lojas Renner fl 1
+						<CHECKNUM>0000038
+						<MEMO>Visa Electron Lojas Renner fl 1
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190826000000[-03:EST]
+						<TRNAMT>-77.70
+						<FITID>N1033E:26/08/19:-77.7:0000357: Visa Electron: mc Donalds Bpe
+						<CHECKNUM>0000357
+						<MEMO>Visa Electron mc Donalds Bpe
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190826000000[-03:EST]
+						<TRNAMT>-341.93
+						<FITID>N1035C:26/08/19:-341.93:0001999: Visa Electron: Bistek Superm f 167
+						<CHECKNUM>0001999
+						<MEMO>Visa Electron Bistek Superm f 167
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190826000000[-03:EST]
+						<TRNAMT>-169.90
+						<FITID>N1037A:26/08/19:-169.9:0095729: Visa Electron: Barbearia Park Europ
+						<CHECKNUM>0095729
+						<MEMO>Visa Electron Barbearia Park Europ
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190826000000[-03:EST]
+						<TRNAMT>-4.00
+						<FITID>N10398:26/08/19:-4.0:0124615: Visa Electron: Estapar Shop Park eu
+						<CHECKNUM>0124615
+						<MEMO>Visa Electron Estapar Shop Park eu
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190826000000[-03:EST]
+						<TRNAMT>-100.00
+						<FITID>N103B6:26/08/19:-100.0:0240160: Visa Electron: Auto Posto Testo
+						<CHECKNUM>0240160
+						<MEMO>Visa Electron Auto Posto Testo
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190826000000[-03:EST]
+						<TRNAMT>-199.00
+						<FITID>N103D4:26/08/19:-199.0:0294638: Visa Electron: wj Acessorios
+						<CHECKNUM>0294638
+						<MEMO>Visa Electron wj Acessorios
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190826000000[-03:EST]
+						<TRNAMT>-16.50
+						<FITID>N103F2:26/08/19:-16.5:0417009: Visa Electron: Mkscn Comercio de
+						<CHECKNUM>0417009
+						<MEMO>Visa Electron Mkscn Comercio de
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190826000000[-03:EST]
+						<TRNAMT>-16.00
+						<FITID>N10410:26/08/19:-16.0:0454065: Visa Electron: Arcoiris Bombonie
+						<CHECKNUM>0454065
+						<MEMO>Visa Electron Arcoiris Bombonie
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190826000000[-03:EST]
+						<TRNAMT>-152.00
+						<FITID>N1042E:26/08/19:-152.0:0457966: Visa Electron: Bar e Restaurante
+						<CHECKNUM>0457966
+						<MEMO>Visa Electron Bar e Restaurante
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190826000000[-03:EST]
+						<TRNAMT>-149.99
+						<FITID>N1044C:26/08/19:-149.99:0548348: Visa Electron: General Lyy Board sh
+						<CHECKNUM>0548348
+						<MEMO>Visa Electron General Lyy Board sh
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190826000000[-03:EST]
+						<TRNAMT>-32.30
+						<FITID>N1046A:26/08/19:-32.3:0717619: Visa Electron: Der Kaffee Platz
+						<CHECKNUM>0717619
+						<MEMO>Visa Electron Der Kaffee Platz
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190826000000[-03:EST]
+						<TRNAMT>-16.00
+						<FITID>N10488:26/08/19:-16.0:0817810: Visa Electron: Sociedade do Cafe
+						<CHECKNUM>0817810
+						<MEMO>Visa Electron Sociedade do Cafe
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190826000000[-03:EST]
+						<TRNAMT>-16.00
+						<FITID>N104A6:26/08/19:-16.0:0817822: Visa Electron: Sociedade do Cafe
+						<CHECKNUM>0817822
+						<MEMO>Visa Electron Sociedade do Cafe
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190826000000[-03:EST]
+						<TRNAMT>-110.00
+						<FITID>N104C4:26/08/19:-110.0:0883422: Visa Electron: Holz &amp; Stoff
+						<CHECKNUM>0883422
+						<MEMO>Visa Electron Holz &amp; Stoff
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190826000000[-03:EST]
+						<TRNAMT>-57.70
+						<FITID>N104E2:26/08/19:-57.7:0886907: Visa Electron: Balas Pfeiffer
+						<CHECKNUM>0886907
+						<MEMO>Visa Electron Balas Pfeiffer
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190827000000[-03:EST]
+						<TRNAMT>-14.00
+						<FITID>N10500:27/08/19:-14.0:0179990: Visa Electron: Loja Molon
+						<CHECKNUM>0179990
+						<MEMO>Visa Electron Loja Molon
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190828000000[-03:EST]
+						<TRNAMT>-25.80
+						<FITID>N1051E:28/08/19:-25.8:0000064: Visa Electron: mc Donalds Blu
+						<CHECKNUM>0000064
+						<MEMO>Visa Electron mc Donalds Blu
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190829000000[-03:EST]
+						<TRNAMT>-227.10
+						<FITID>N1053C:29/08/19:-227.1:0500271: Visa Electron: Hna*oboticario
+						<CHECKNUM>0500271
+						<MEMO>Visa Electron Hna*oboticario
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190829000000[-03:EST]
+						<TRNAMT>-63.72
+						<FITID>N1055A:29/08/19:-63.72:0500875: Visa Electron: Bistek Superm f 167
+						<CHECKNUM>0500875
+						<MEMO>Visa Electron Bistek Superm f 167
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190829000000[-03:EST]
+						<TRNAMT>-85.56
+						<FITID>N10578:29/08/19:-85.56:0546383: Visa Electron: Dimed sa Distribuido
+						<CHECKNUM>0546383
+						<MEMO>Visa Electron Dimed sa Distribuido
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190829000000[-03:EST]
+						<TRNAMT>-24.32
+						<FITID>N10596:29/08/19:-24.32:0775078: Visa Electron: Tecnofestas Artigos
+						<CHECKNUM>0775078
+						<MEMO>Visa Electron Tecnofestas Artigos
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190829000000[-03:EST]
+						<TRNAMT>-36.40
+						<FITID>N105B4:29/08/19:-36.4:0941252: Visa Electron: Produtos Orion Ltda
+						<CHECKNUM>0941252
+						<MEMO>Visa Electron Produtos Orion Ltda
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190829000000[-03:EST]
+						<TRNAMT>-369.00
+						<FITID>N105D2:29/08/19:-369.0:0945749: Visa Electron: Citroen Breitkopf
+						<CHECKNUM>0945749
+						<MEMO>Visa Electron Citroen Breitkopf
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190830000000[-03:EST]
+						<TRNAMT>-68.27
+						<FITID>N105F0:30/08/19:-68.27:0000027: Visa Electron: Mercado Schneider
+						<CHECKNUM>0000027
+						<MEMO>Visa Electron Mercado Schneider
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190830000000[-03:EST]
+						<TRNAMT>-30.60
+						<FITID>N1060E:30/08/19:-30.6:0000045: Visa Electron: Mercado Schneider
+						<CHECKNUM>0000045
+						<MEMO>Visa Electron Mercado Schneider
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190830000000[-03:EST]
+						<TRNAMT>-243.00
+						<FITID>N1062C:30/08/19:-243.0:0266597: Visa Electron: Marly Cabelo e Cia
+						<CHECKNUM>0266597
+						<MEMO>Visa Electron Marly Cabelo e Cia
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190903000000[-03:EST]
+						<TRNAMT>-146.75
+						<FITID>N1064A:03/09/19:-146.75:0010010: Visa Electron: Auto Posto Testo
+						<CHECKNUM>0010010
+						<MEMO>Visa Electron Auto Posto Testo
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190903000000[-03:EST]
+						<TRNAMT>-93.00
+						<FITID>N10668:03/09/19:-93.0:0078745: Visa Electron: Acougue Davi Ltda me
+						<CHECKNUM>0078745
+						<MEMO>Visa Electron Acougue Davi Ltda me
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190903000000[-03:EST]
+						<TRNAMT>-89.43
+						<FITID>N10686:03/09/19:-89.43:0500010: Visa Electron: Mercado Schneider
+						<CHECKNUM>0500010
+						<MEMO>Visa Electron Mercado Schneider
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190903000000[-03:EST]
+						<TRNAMT>-16.21
+						<FITID>N106A4:03/09/19:-16.21:6551676: Pgto Elet Trib: Bradesco C-dpvat-segur.lider
+						<CHECKNUM>6551676
+						<MEMO>Pgto Elet Trib Bradesco C-dpvat-segur.lider
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190905000000[-03:EST]
+						<TRNAMT>-30.66
+						<FITID>N106C2:05/09/19:-30.66:0000857: Visa Electron: Giassi Supermerca
+						<CHECKNUM>0000857
+						<MEMO>Visa Electron Giassi Supermerca
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>CREDIT
+						<DTPOSTED>20190906000000[-03:EST]
+						<TRNAMT>8167.83
+						<FITID>N106E0:06/09/19:8167.83:3694326: Ted Csal p/ccor: Remet.marcio Koch
+						<CHECKNUM>3694326
+						<MEMO>Ted Csal p/ccor Remet.marcio Koch
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190906000000[-03:EST]
+						<TRNAMT>-112.20
+						<FITID>N106FD:06/09/19:-112.2:0098353: Visa Electron: Restaurante Schoen
+						<CHECKNUM>0098353
+						<MEMO>Visa Electron Restaurante Schoen
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190909000000[-03:EST]
+						<TRNAMT>-365.37
+						<FITID>N1071B:09/09/19:-365.37:0000159: Pagto Cobranca: Hdi Seguros S/a
+						<CHECKNUM>0000159
+						<MEMO>Pagto Cobranca Hdi Seguros S/a
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190909000000[-03:EST]
+						<TRNAMT>-963.00
+						<FITID>N10739:09/09/19:-963.0:0000161: Pagto Cobranca: Bom Jesus
+						<CHECKNUM>0000161
+						<MEMO>Pagto Cobranca Bom Jesus
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190909000000[-03:EST]
+						<TRNAMT>-410.00
+						<FITID>N10757:09/09/19:-410.0:0000162: Pagto Cobranca: Joseane de Oliveira me
+						<CHECKNUM>0000162
+						<MEMO>Pagto Cobranca Joseane de Oliveira me
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190909000000[-03:EST]
+						<TRNAMT>-363.50
+						<FITID>N10775:09/09/19:-363.5:0000163: Pagto Cobranca: Wblumenau Servicos e Comercio lt
+						<CHECKNUM>0000163
+						<MEMO>Pagto Cobranca Wblumenau Servicos e Comercio lt
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190909000000[-03:EST]
+						<TRNAMT>-99.90
+						<FITID>N10793:09/09/19:-99.9:0000164: Pagto Cobranca: Conectel Telecomunicacoes e Info
+						<CHECKNUM>0000164
+						<MEMO>Pagto Cobranca Conectel Telecomunicacoes e Info
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190909000000[-03:EST]
+						<TRNAMT>-246.79
+						<FITID>N107B1:09/09/19:-246.79:0000165: Pagto Cobranca: Banco Semear
+						<CHECKNUM>0000165
+						<MEMO>Pagto Cobranca Banco Semear
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190909000000[-03:EST]
+						<TRNAMT>-1269.40
+						<FITID>N107CF:09/09/19:-1269.4:0000166: Pagto Cobranca: Banco Psa Finance Brasil sa
+						<CHECKNUM>0000166
+						<MEMO>Pagto Cobranca Banco Psa Finance Brasil sa
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190909000000[-03:EST]
+						<TRNAMT>-123.06
+						<FITID>N107ED:09/09/19:-123.06:0000167: Pagto Cobranca: Cartao Credito Nubank
+						<CHECKNUM>0000167
+						<MEMO>Pagto Cobranca Cartao Credito Nubank
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190909000000[-03:EST]
+						<TRNAMT>-113.48
+						<FITID>N1080B:09/09/19:-113.48:0223247: Visa Electron: Brotland Comercio de
+						<CHECKNUM>0223247
+						<MEMO>Visa Electron Brotland Comercio de
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190909000000[-03:EST]
+						<TRNAMT>-94.00
+						<FITID>N10829:09/09/19:-94.0:0273128: Visa Electron: Brotland Comercio de
+						<CHECKNUM>0273128
+						<MEMO>Visa Electron Brotland Comercio de
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190909000000[-03:EST]
+						<TRNAMT>-199.60
+						<FITID>N10847:09/09/19:-199.6:1161007: Pgto Elet Trib: Internet Bankin Gps 1007
+						<CHECKNUM>1161007
+						<MEMO>Pgto Elet Trib Internet Bankin Gps 1007
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190909000000[-03:EST]
+						<TRNAMT>-601.60
+						<FITID>N10865:09/09/19:-601.6:6779495: Pgto Elet Trib: Bradesco C-sefaz/sc
+						<CHECKNUM>6779495
+						<MEMO>Pgto Elet Trib Bradesco C-sefaz/sc
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190909000000[-03:EST]
+						<TRNAMT>-211.97
+						<FITID>N10883:09/09/19:-211.97:6971671: Conta de Luz: Bradesco C-celesc Distr./sc
+						<CHECKNUM>6971671
+						<MEMO>Conta de Luz Bradesco C-celesc Distr./sc
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190909000000[-03:EST]
+						<TRNAMT>-28.21
+						<FITID>N108A1:09/09/19:-28.21:6981010: Conta Agua/esgo: Bradesco C-odebrecht Ambiental
+						<CHECKNUM>6981010
+						<MEMO>Conta Agua/esgo Bradesco C-odebrecht Ambiental
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190910000000[-03:EST]
+						<TRNAMT>-60.00
+						<FITID>N108BF:10/09/19:-60.0:0000160: Pagto Cobranca: Medicos Sem Fronteiras
+						<CHECKNUM>0000160
+						<MEMO>Pagto Cobranca Medicos Sem Fronteiras
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190910000000[-03:EST]
+						<TRNAMT>-135.90
+						<FITID>N108DD:10/09/19:-135.9:1877491: tv p/assinatura: Sky-tv Assinatura*-118774910
+						<CHECKNUM>1877491
+						<MEMO>tv p/assinatura Sky-tv Assinatura*-118774910
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190910000000[-03:EST]
+						<TRNAMT>-215.00
+						<FITID>N108FB:10/09/19:-215.0:0476188: Visa Electron: Vida Animal
+						<CHECKNUM>0476188
+						<MEMO>Visa Electron Vida Animal
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>CREDIT
+						<DTPOSTED>20190911000000[-03:EST]
+						<TRNAMT>600.00
+						<FITID>N10919:11/09/19:600.0:1020378: Depos ag Dinh: Antonio Branco Dias
+						<CHECKNUM>1020378
+						<MEMO>Depos ag Dinh Antonio Branco Dias
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190911000000[-03:EST]
+						<TRNAMT>-738.45
+						<FITID>N10936:11/09/19:-738.45:0002468: Visa Electron: Giassi Supermerca
+						<CHECKNUM>0002468
+						<MEMO>Visa Electron Giassi Supermerca
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190911000000[-03:EST]
+						<TRNAMT>-66.00
+						<FITID>N10954:11/09/19:-66.0:0074004: Visa Electron: Pag*podologadeise
+						<CHECKNUM>0074004
+						<MEMO>Visa Electron Pag*podologadeise
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190911000000[-03:EST]
+						<TRNAMT>-15.00
+						<FITID>N10972:11/09/19:-15.0:0100943: Visa Electron: Floresta Lanches
+						<CHECKNUM>0100943
+						<MEMO>Visa Electron Floresta Lanches
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190911000000[-03:EST]
+						<TRNAMT>-102.00
+						<FITID>N10990:11/09/19:-102.0:0110132: Visa Electron: Auto Posto Testo
+						<CHECKNUM>0110132
+						<MEMO>Visa Electron Auto Posto Testo
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190911000000[-03:EST]
+						<TRNAMT>-55.80
+						<FITID>N109AE:11/09/19:-55.8:0395281: Visa Electron: Chartum
+						<CHECKNUM>0395281
+						<MEMO>Visa Electron Chartum
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190911000000[-03:EST]
+						<TRNAMT>-129.98
+						<FITID>N109CC:11/09/19:-129.98:6966182: Conta Telefone: Bradesco C-tim S.a.
+						<CHECKNUM>6966182
+						<MEMO>Conta Telefone Bradesco C-tim S.a.
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190912000000[-03:EST]
+						<TRNAMT>-300.00
+						<FITID>N109EA:12/09/19:-300.0:8824906: Saque c/c Bdn: Ag03117maq018824seq0490612091236
+						<CHECKNUM>8824906
+						<MEMO>Saque c/c Bdn Ag03117maq018824seq0490612091236
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190913000000[-03:EST]
+						<TRNAMT>-350.00
+						<FITID>N10A08:13/09/19:-350.0:1309258: sq c/c Bco24h: 00004309                13091240
+						<CHECKNUM>1309258
+						<MEMO>sq c/c Bco24h 00004309 13091240
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>CREDIT
+						<DTPOSTED>20190916000000[-03:EST]
+						<TRNAMT>503.60
+						<FITID>N10A26:16/09/19:503.6:6957804: Ted Csal p/ccor: Remet.marcio Koch
+						<CHECKNUM>6957804
+						<MEMO>Ted Csal p/ccor Remet.marcio Koch
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190916000000[-03:EST]
+						<TRNAMT>-59.70
+						<FITID>N10A43:16/09/19:-59.7:0500037: Visa Electron: Mercado Schneider
+						<CHECKNUM>0500037
+						<MEMO>Visa Electron Mercado Schneider
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190916000000[-03:EST]
+						<TRNAMT>-26.44
+						<FITID>N10A61:16/09/19:-26.44:0500766: Visa Electron: Giassi Supermerca
+						<CHECKNUM>0500766
+						<MEMO>Visa Electron Giassi Supermerca
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190916000000[-03:EST]
+						<TRNAMT>-134.00
+						<FITID>N10A7F:16/09/19:-134.0:0539689: Visa Electron: Acougue Davi Ltda me
+						<CHECKNUM>0539689
+						<MEMO>Visa Electron Acougue Davi Ltda me
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190916000000[-03:EST]
+						<TRNAMT>-107.64
+						<FITID>N10A9D:16/09/19:-107.64:5370001: Tit.capitalizac:
+						<CHECKNUM>5370001
+						<MEMO>Tit.capitalizac 
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190917000000[-03:EST]
+						<TRNAMT>-98.33
+						<FITID>N10ABA:17/09/19:-98.33:0100757: Visa Electron: Farmacia Alkima
+						<CHECKNUM>0100757
+						<MEMO>Visa Electron Farmacia Alkima
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190918000000[-03:EST]
+						<TRNAMT>-26.55
+						<FITID>N10AD8:18/09/19:-26.55:0500609: Visa Electron: Giassi Supermerca
+						<CHECKNUM>0500609
+						<MEMO>Visa Electron Giassi Supermerca
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190919000000[-03:EST]
+						<TRNAMT>-2.90
+						<FITID>N10AF6:19/09/19:-2.9:0275415: Visa Electron: Naturapro Com Prod n
+						<CHECKNUM>0275415
+						<MEMO>Visa Electron Naturapro Com Prod n
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190920000000[-03:EST]
+						<TRNAMT>-37.90
+						<FITID>N10B14:20/09/19:-37.9:0305122: Visa Electron: Netflix.com
+						<CHECKNUM>0305122
+						<MEMO>Visa Electron Netflix.com
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190923000000[-03:EST]
+						<TRNAMT>-84.43
+						<FITID>N10B32:23/09/19:-84.43:0000890: Visa Electron: Giassi Supermerca
+						<CHECKNUM>0000890
+						<MEMO>Visa Electron Giassi Supermerca
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190923000000[-03:EST]
+						<TRNAMT>-222.00
+						<FITID>N10B50:23/09/19:-222.0:0448147: Visa Electron: Don Peppone
+						<CHECKNUM>0448147
+						<MEMO>Visa Electron Don Peppone
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190923000000[-03:EST]
+						<TRNAMT>-135.00
+						<FITID>N10B6E:23/09/19:-135.0:0981460: Visa Electron: Boutique do Pao de l
+						<CHECKNUM>0981460
+						<MEMO>Visa Electron Boutique do Pao de l
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190924000000[-03:EST]
+						<TRNAMT>-28.88
+						<FITID>N10B8C:24/09/19:-28.88:0500831: Visa Electron: Giassi Supermerca
+						<CHECKNUM>0500831
+						<MEMO>Visa Electron Giassi Supermerca
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190925000000[-03:EST]
+						<TRNAMT>-170.00
+						<FITID>N10BAA:25/09/19:-170.0:2509717: sq c/c Bco24h: 00037821                25091211
+						<CHECKNUM>2509717
+						<MEMO>sq c/c Bco24h 00037821 25091211
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190926000000[-03:EST]
+						<TRNAMT>-26.76
+						<FITID>N10BC8:26/09/19:-26.76:0500990: Visa Electron: Giassi Supermerca
+						<CHECKNUM>0500990
+						<MEMO>Visa Electron Giassi Supermerca
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190927000000[-03:EST]
+						<TRNAMT>-80.08
+						<FITID>N10BE6:27/09/19:-80.08:0000056: Visa Electron: Farmacia Preco Popul
+						<CHECKNUM>0000056
+						<MEMO>Visa Electron Farmacia Preco Popul
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190927000000[-03:EST]
+						<TRNAMT>-60.00
+						<FITID>N10C04:27/09/19:-60.0:0251643: Visa Electron: Wizard Blumenau
+						<CHECKNUM>0251643
+						<MEMO>Visa Electron Wizard Blumenau
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190927000000[-03:EST]
+						<TRNAMT>-37.50
+						<FITID>N10C22:27/09/19:-37.5:0356507: Visa Electron: Sabor do Cafe
+						<CHECKNUM>0356507
+						<MEMO>Visa Electron Sabor do Cafe
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190927000000[-03:EST]
+						<TRNAMT>-100.00
+						<FITID>N10C40:27/09/19:-100.0:0727798: Visa Electron: Posto Rdp
+						<CHECKNUM>0727798
+						<MEMO>Visa Electron Posto Rdp
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190927000000[-03:EST]
+						<TRNAMT>-44.50
+						<FITID>N10C5E:27/09/19:-44.5:0906061: Visa Electron: Restaurante Schoen
+						<CHECKNUM>0906061
+						<MEMO>Visa Electron Restaurante Schoen
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190930000000[-03:EST]
+						<TRNAMT>-68.49
+						<FITID>N10C7C:30/09/19:-68.49:0274649: Visa Electron: Brotland Comercio de
+						<CHECKNUM>0274649
+						<MEMO>Visa Electron Brotland Comercio de
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190930000000[-03:EST]
+						<TRNAMT>-58.00
+						<FITID>N10C9A:30/09/19:-58.0:0280038: Visa Electron: Blumenau
+						<CHECKNUM>0280038
+						<MEMO>Visa Electron Blumenau
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190930000000[-03:EST]
+						<TRNAMT>-12.00
+						<FITID>N10CB8:30/09/19:-12.0:0347125: Visa Electron: Shopping Neumarkt
+						<CHECKNUM>0347125
+						<MEMO>Visa Electron Shopping Neumarkt
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190930000000[-03:EST]
+						<TRNAMT>-155.00
+						<FITID>N10CD6:30/09/19:-155.0:0458549: Visa Electron: Bar e Restaurante
+						<CHECKNUM>0458549
+						<MEMO>Visa Electron Bar e Restaurante
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190930000000[-03:EST]
+						<TRNAMT>-23.38
+						<FITID>N10CF4:30/09/19:-23.38:0500802: Visa Electron: Giassi Supermerca
+						<CHECKNUM>0500802
+						<MEMO>Visa Electron Giassi Supermerca
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20191001000000[-03:EST]
+						<TRNAMT>-13.50
+						<FITID>N10D12:01/10/19:-13.5:0000784: Visa Electron: Giassi Supermerca
+						<CHECKNUM>0000784
+						<MEMO>Visa Electron Giassi Supermerca
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20191003000000[-03:EST]
+						<TRNAMT>-17.36
+						<FITID>N10D30:03/10/19:-17.36:0000928: Visa Electron: Giassi Supermerca
+						<CHECKNUM>0000928
+						<MEMO>Visa Electron Giassi Supermerca
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>CREDIT
+						<DTPOSTED>20191004000000[-03:EST]
+						<TRNAMT>6461.51
+						<FITID>N10D4E:04/10/19:6461.51:1347842: Ted Csal p/ccor: Remet.marcio Koch
+						<CHECKNUM>1347842
+						<MEMO>Ted Csal p/ccor Remet.marcio Koch
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20191004000000[-03:EST]
+						<TRNAMT>-300.00
+						<FITID>N10D6B:04/10/19:-300.0:7012497: Saque c/c Bdn: Ag00333maq037012seq0949704101222
+						<CHECKNUM>7012497
+						<MEMO>Saque c/c Bdn Ag00333maq037012seq0949704101222
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20191007000000[-03:EST]
+						<TRNAMT>-365.37
+						<FITID>N10D89:07/10/19:-365.37:0000168: Pagto Cobranca: Hdi Seguros S/a
+						<CHECKNUM>0000168
+						<MEMO>Pagto Cobranca Hdi Seguros S/a
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20191007000000[-03:EST]
+						<TRNAMT>-963.00
+						<FITID>N10DA7:07/10/19:-963.0:0000170: Pagto Cobranca: Bom Jesus
+						<CHECKNUM>0000170
+						<MEMO>Pagto Cobranca Bom Jesus
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20191007000000[-03:EST]
+						<TRNAMT>-410.00
+						<FITID>N10DC5:07/10/19:-410.0:0000171: Pagto Cobranca: Joseane de Oliveira me
+						<CHECKNUM>0000171
+						<MEMO>Pagto Cobranca Joseane de Oliveira me
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20191007000000[-03:EST]
+						<TRNAMT>-363.50
+						<FITID>N10DE3:07/10/19:-363.5:0000172: Pagto Cobranca: Wblumenau Servicos e Comercio lt
+						<CHECKNUM>0000172
+						<MEMO>Pagto Cobranca Wblumenau Servicos e Comercio lt
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20191007000000[-03:EST]
+						<TRNAMT>-99.90
+						<FITID>N10E01:07/10/19:-99.9:0000173: Pagto Cobranca: Conectel Telecomunicacoes e Info
+						<CHECKNUM>0000173
+						<MEMO>Pagto Cobranca Conectel Telecomunicacoes e Info
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20191007000000[-03:EST]
+						<TRNAMT>-246.19
+						<FITID>N10E1F:07/10/19:-246.19:0000174: Pagto Cobranca: Banco Semear
+						<CHECKNUM>0000174
+						<MEMO>Pagto Cobranca Banco Semear
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20191007000000[-03:EST]
+						<TRNAMT>-1269.40
+						<FITID>N10E3D:07/10/19:-1269.4:0000175: Pagto Cobranca: Banco Psa Finance Brasil sa
+						<CHECKNUM>0000175
+						<MEMO>Pagto Cobranca Banco Psa Finance Brasil sa
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20191007000000[-03:EST]
+						<TRNAMT>-179.07
+						<FITID>N10E5B:07/10/19:-179.07:0000176: Pagto Cobranca: Cartao Credito Nubank
+						<CHECKNUM>0000176
+						<MEMO>Pagto Cobranca Cartao Credito Nubank
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20191007000000[-03:EST]
+						<TRNAMT>-82.70
+						<FITID>N10E79:07/10/19:-82.7:0000048: Visa Electron: mc Donalds Bpe
+						<CHECKNUM>0000048
+						<MEMO>Visa Electron mc Donalds Bpe
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20191007000000[-03:EST]
+						<TRNAMT>-718.45
+						<FITID>N10E97:07/10/19:-718.45:0001222: Visa Electron: Bistek Superm f 167
+						<CHECKNUM>0001222
+						<MEMO>Visa Electron Bistek Superm f 167
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20191007000000[-03:EST]
+						<TRNAMT>-104.51
+						<FITID>N10EB5:07/10/19:-104.51:0051670: Visa Electron: Cooper
+						<CHECKNUM>0051670
+						<MEMO>Visa Electron Cooper
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20191007000000[-03:EST]
+						<TRNAMT>-80.00
+						<FITID>N10ED3:07/10/19:-80.0:0095829: Visa Electron: Barbearia Park Europ
+						<CHECKNUM>0095829
+						<MEMO>Visa Electron Barbearia Park Europ
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20191007000000[-03:EST]
+						<TRNAMT>-45.00
+						<FITID>N10EF1:07/10/19:-45.0:0379665: Visa Electron: Marly Cabelo e Cia
+						<CHECKNUM>0379665
+						<MEMO>Visa Electron Marly Cabelo e Cia
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>CREDIT
+						<DTPOSTED>20191011000000[-03:EST]
+						<TRNAMT>942.97
+						<FITID>N10022:11/10/19:942.97:1107225: Resg.tit.capitalizacao:
+						<CHECKNUM>1107225
+						<MEMO>Resg.tit.capitalizacao 
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>CREDIT
+						<DTPOSTED>20191011000000[-03:EST]
+						<TRNAMT>942.97
+						<FITID>N1003E:11/10/19:942.97:1107225: Resg.tit.capitalizacao:
+						<CHECKNUM>1107225
+						<MEMO>Resg.tit.capitalizacao 
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>CREDIT
+						<DTPOSTED>20191011000000[-03:EST]
+						<TRNAMT>942.97
+						<FITID>N1005A:11/10/19:942.97:1107225: Resg.tit.capitalizacao:
+						<CHECKNUM>1107225
+						<MEMO>Resg.tit.capitalizacao 
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>CREDIT
+						<DTPOSTED>20191011000000[-03:EST]
+						<TRNAMT>942.97
+						<FITID>N10076:11/10/19:942.97:1107225: Resg.tit.capitalizacao:
+						<CHECKNUM>1107225
+						<MEMO>Resg.tit.capitalizacao 
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>CREDIT
+						<DTPOSTED>20191011000000[-03:EST]
+						<TRNAMT>942.97
+						<FITID>N10092:11/10/19:942.97:1107225: Resg.tit.capitalizacao:
+						<CHECKNUM>1107225
+						<MEMO>Resg.tit.capitalizacao 
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>CREDIT
+						<DTPOSTED>20191011000000[-03:EST]
+						<TRNAMT>2023.80
+						<FITID>N100AE:11/10/19:2023.8:1107225: Resg.tit.capitalizacao:
+						<CHECKNUM>1107225
+						<MEMO>Resg.tit.capitalizacao 
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>CREDIT
+						<DTPOSTED>20191011000000[-03:EST]
+						<TRNAMT>600.00
+						<FITID>N100CA:11/10/19:600.0:1010378: Depos Entre Ags Dinheiro: Antonio Branco Dias
+						<CHECKNUM>1010378
+						<MEMO>Depos Entre Ags Dinheiro Antonio Branco Dias
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20191011000000[-03:EST]
+						<TRNAMT>-81.60
+						<FITID>N100E7:11/10/19:-81.6:0000072: Cartao Visa Electron: Mercado Schneider
+						<CHECKNUM>0000072
+						<MEMO>Cartao Visa Electron Mercado Schneider
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20191011000000[-03:EST]
+						<TRNAMT>-65.54
+						<FITID>N10105:11/10/19:-65.54:0110013: Cartao Visa Electron: Cacau Mania Com p
+						<CHECKNUM>0110013
+						<MEMO>Cartao Visa Electron Cacau Mania Com p
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20191011000000[-03:EST]
+						<TRNAMT>-76.15
+						<FITID>N10123:11/10/19:-76.15:0449473: Cartao Visa Electron: Acougue Davi Ltda me
+						<CHECKNUM>0449473
+						<MEMO>Cartao Visa Electron Acougue Davi Ltda me
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20191011000000[-03:EST]
+						<TRNAMT>-95.00
+						<FITID>N10141:11/10/19:-95.0:0454268: Cartao Visa Electron: Agropecuaria Jjl
+						<CHECKNUM>0454268
+						<MEMO>Cartao Visa Electron Agropecuaria Jjl
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20191011000000[-03:EST]
+						<TRNAMT>-123.00
+						<FITID>N1015F:11/10/19:-123.0:0970125: Cartao Visa Electron: Daniela Augusta
+						<CHECKNUM>0970125
+						<MEMO>Cartao Visa Electron Daniela Augusta
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20191014000000[-03:EST]
+						<TRNAMT>-152.07
+						<FITID>N1017D:14/10/19:-152.07:0120022: Cartao Visa Electron:
+						<CHECKNUM>0120022
+						<MEMO>Cartao Visa Electron 
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20191014000000[-03:EST]
+						<TRNAMT>-111.38
+						<FITID>N1019A:14/10/19:-111.38:0163384: Cartao Visa Electron:
+						<CHECKNUM>0163384
+						<MEMO>Cartao Visa Electron 
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20191014000000[-03:EST]
+						<TRNAMT>-147.00
+						<FITID>N101B7:14/10/19:-147.0:0595391: Cartao Visa Electron:
+						<CHECKNUM>0595391
+						<MEMO>Cartao Visa Electron 
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20191014000000[-03:EST]
+						<TRNAMT>-189.03
+						<FITID>N101D4:14/10/19:-189.03:0664303: Cartao Visa Electron:
+						<CHECKNUM>0664303
+						<MEMO>Cartao Visa Electron 
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20191107000000[-03:EST]
+						<TRNAMT>-365.37
+						<FITID>N10F20:07/11/19:-365.37:0000177: Pagto Eletron  Cobranca: Hdi Seguros S/a
+						<CHECKNUM>0000177
+						<MEMO>Pagto Eletron Cobranca Hdi Seguros S/a
+					</STMTTRN>
+				</BANKTRANLIST>
+				<LEDGERBAL>
+					<BALAMT>1427.70
+					<DTASOF>20191007000000[-03:EST]
+				</LEDGERBAL>
+			</STMTRS>
+		</STMTTRNRS>
+	</BANKMSGSRSV1>
+</OFX>

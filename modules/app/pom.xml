@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
@@ -8,16 +9,16 @@
 
 	<name>cadastros-banco-app</name>
 	<description>Kerubin cadastros-banco-app Service</description>
-	
+
 	<properties>
 		<docker.image.prefix>lobokoch</docker.image.prefix>
 		<dockerfile.maven.plugin.version>1.4.10</dockerfile.maven.plugin.version>
 	</properties>
 
 	<parent>
-	    <groupId>br.com.kerubin.api</groupId>
-	    <artifactId>cadastros-banco-parent</artifactId>
-	    <version>1.0.0</version>
+		<groupId>br.com.kerubin.api</groupId>
+		<artifactId>cadastros-banco-parent</artifactId>
+		<version>1.0.0</version>
 	</parent>
 
 	<dependencies>
@@ -52,8 +53,8 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-		    <groupId>org.apache.commons</groupId>
-		    <artifactId>commons-lang3</artifactId>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -64,8 +65,21 @@
 			<groupId>br.com.kerubin.api</groupId>
 			<artifactId>messaging-core</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>com.webcohesion.ofx4j</groupId>
+			<artifactId>ofx4j</artifactId>
+			<version>1.17</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
 	</dependencies>
-	
+
 	<build>
 		<finalName>${project.artifactId}-${project.version}</finalName>
 		<plugins>
@@ -83,7 +97,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+
 			<!-- For Build and Publish Docker image -->
 			<!-- mvn clean package dockerfile:build -->
 			<!-- mvn dockerfile:push -->
@@ -94,10 +108,10 @@
 				<configuration>
 					<repository>${docker.image.prefix}/${project.artifactId}</repository>
 					<tag>${project.version}</tag>
-        			<useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+					<useMavenSettingsForAuth>true</useMavenSettingsForAuth>
 				</configuration>
 			</plugin>
-			
+
 		</plugins>
 	</build>
 
