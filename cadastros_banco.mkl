@@ -247,7 +247,8 @@ service banco {
 		trnValor: money
 		label: "Valor"
 		
-		conciliacaoBancaria: /*container*/refers ConciliacaoBancaria manyToOne
+		conciliacaoBancaria: /*container*/refers ConciliacaoBancaria manyToOne /*findBy(paged)*/
+		listFilter(isEqualTo: "Conciliação bancária" styleClass: "ui-md-4")
 		
 		situacaoConciliacaoTrn: SituacaoConciliacaoTrn
 		
