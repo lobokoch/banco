@@ -226,6 +226,12 @@ service banco {
 		
 		situacaoConciliacao: SituacaoConciliacao
 		web(styleClass: "ui-md-2")
+		
+		rules {
+			
+			with(form).apply(polling(callback: recarregarConciliacao))
+			
+		}
 	}
 	//
 	
@@ -266,6 +272,12 @@ service banco {
 		
 		conciliadoMsg: string?
 		label: "Mensagem"
+		
+		rules {
+			
+			with(formList).apply(polling(callback: recarregarTransacoes))
+			
+		}
 	}
 	
 	@label("Situação da transação de conciliação")
