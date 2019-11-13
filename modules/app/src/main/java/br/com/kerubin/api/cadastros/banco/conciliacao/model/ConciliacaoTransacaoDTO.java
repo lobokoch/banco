@@ -51,5 +51,13 @@ public class ConciliacaoTransacaoDTO {
 	private String lastModifiedBy;
 	
 	private java.time.LocalDateTime lastModifiedDate;
+	
+	public boolean isCredito() {
+		return TipoTransacao.CREDITO.equals(trnTipo);
+	}
+	
+	public boolean isDebito() {
+		return TipoTransacao.DEBITO.equals(trnTipo);
+	}
 
 }

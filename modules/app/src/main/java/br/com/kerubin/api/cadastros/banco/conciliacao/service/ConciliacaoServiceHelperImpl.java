@@ -3,14 +3,21 @@ package br.com.kerubin.api.cadastros.banco.conciliacao.service;
 import static br.com.kerubin.api.servicecore.util.CoreUtils.toPositive;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.webcohesion.ofx4j.domain.data.common.Transaction;
 
 import br.com.kerubin.api.cadastros.banco.SituacaoConciliacao;
@@ -21,7 +28,10 @@ import br.com.kerubin.api.cadastros.banco.entity.conciliacaobancaria.Conciliacao
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaobancaria.ConciliacaoBancariaRepository;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacao.ConciliacaoTransacaoEntity;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacao.ConciliacaoTransacaoRepository;
+import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacao.QConciliacaoTransacaoEntity;
 import lombok.extern.slf4j.Slf4j;
+
+import static br.com.kerubin.api.servicecore.util.CoreUtils.*;
 
 @Slf4j
 @Service
@@ -33,17 +43,25 @@ public class ConciliacaoServiceHelperImpl implements ConciliacaoServiceHelper {
 	@Inject
 	private ConciliacaoTransacaoRepository conciliacaoTransacaoRepository;
 	
+	@PersistenceContext
+	private EntityManager em;
+	
 	@Transactional
 	@Override
 	public List<ConciliacaoTransacaoEntity> criarTransacoes(ConciliacaoBancariaEntity conciliacaoBancariaEntity, ConciliacaoOFXReader reader) {
 		
 		List<Transaction> transactions = reader.getTransactions();
+		
+		// Desconsidera lançamentos futuros. Cuidar que se tiver lançamentos futuros do dia, vão ser computados.
+		LocalDate tomorrow = LocalDate.now().plusDays(1);
+		transactions = transactions.stream().filter(it -> toLocalDate(it.getDatePosted()).isBefore(tomorrow)).collect(Collectors.toList());
+		
 		List<ConciliacaoTransacaoEntity> transacoes = new ArrayList<>(transactions.size());
 		for (Transaction transacao : transactions) {
 			ConciliacaoTransacaoEntity entity = new ConciliacaoTransacaoEntity();
 			entity.setConciliacaoBancaria(conciliacaoBancariaEntity);
 			
-			entity.setTrnData(reader.toDate(transacao.getDatePosted()));
+			entity.setTrnData(toLocalDate(transacao.getDatePosted()));
 			entity.setTrnHistorico(transacao.getMemo());
 			entity.setTrnDocumento(reader.getTransactionDocument(transacao));
 			
@@ -121,6 +139,31 @@ public class ConciliacaoServiceHelperImpl implements ConciliacaoServiceHelper {
 			log.error("Erro ao salvar conciliação bancária. Erro: " + e.getMessage(), e);
 			throw e;
 		}
+	}
+	
+	@Transactional(readOnly = true)
+	@Override
+	public List<ConciliacaoTransacaoEntity> buscarTransacoesAConciliar(
+			ConciliacaoBancariaEntity conciliacaoBancariaEntity) {
+
+		JPAQueryFactory query = new JPAQueryFactory(em);
+		QConciliacaoTransacaoEntity qConciliacaoTransacaoEntity = QConciliacaoTransacaoEntity.conciliacaoTransacaoEntity;
+		
+		List<SituacaoConciliacaoTrn> situacoes = Arrays.asList(SituacaoConciliacaoTrn.CONCILIAR_CONTAS_PAGAR, 
+				SituacaoConciliacaoTrn.CONCILIAR_CONTAS_RECEBER, 
+				SituacaoConciliacaoTrn.CONCILIAR_CAIXA);
+		
+		BooleanExpression filtro = qConciliacaoTransacaoEntity.conciliacaoBancaria.id.eq(conciliacaoBancariaEntity.getId());
+		filtro.and(qConciliacaoTransacaoEntity.situacaoConciliacaoTrn.in(situacoes));
+		
+		
+		List<ConciliacaoTransacaoEntity> result = query.
+			selectFrom(qConciliacaoTransacaoEntity)
+			.where(filtro)
+			.orderBy(qConciliacaoTransacaoEntity.situacaoConciliacaoTrn.asc())
+			.fetch();
+		
+		return result;
 	}
 
 }

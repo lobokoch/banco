@@ -13,6 +13,7 @@ public interface ConciliacaoServiceHelper {
 
 	List<ConciliacaoTransacaoEntity> criarTransacoes(ConciliacaoBancariaEntity conciliacaoBancariaEntity, ConciliacaoOFXReader reader);
 	List<ConciliacaoTransacaoEntity> salvarTransacoes(List<ConciliacaoTransacaoEntity> transacoesAlteradas);
+	List<ConciliacaoTransacaoEntity> buscarTransacoesAConciliar(ConciliacaoBancariaEntity conciliacaoBancariaEntity);
 
 
 }

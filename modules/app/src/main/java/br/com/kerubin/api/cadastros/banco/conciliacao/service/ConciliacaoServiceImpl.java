@@ -1,8 +1,11 @@
 package br.com.kerubin.api.cadastros.banco.conciliacao.service;
 
-import static br.com.kerubin.api.messaging.constants.MessagingConstants.HEADER_TENANT;
-import static br.com.kerubin.api.messaging.constants.MessagingConstants.HEADER_TENANT_ACCOUNT_TYPE;
-import static br.com.kerubin.api.messaging.constants.MessagingConstants.HEADER_USER;
+import static br.com.kerubin.api.cadastros.banco.conciliacao.ConciliacaoUtils.buildHttpHeaders;
+import static br.com.kerubin.api.cadastros.banco.conciliacao.ConciliacaoUtils.toDTO;
+import static br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBancariaConstants.FINANCEIRO_CONTASPAGAR_SERVICE;
+import static br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBancariaConstants.FINANCEIRO_CONTASRECEBER_SERVICE;
+import static br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBancariaConstants.FINANCEIRO_FLUXOCAIXA_SERVICE;
+import static br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBancariaConstants.HTTP;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -39,10 +42,10 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class ConciliacaoServiceImpl implements ConciliacaoService {
 	
-	public static final String HTTP = "http://";
+	/*public static final String HTTP = "http://";
 	public static final String FINANCEIRO_CONTASPAGAR_SERVICE = "financeiro-contaspagar/financeiro/contas_pagar/conciliacaoBancaria";
 	public static final String FINANCEIRO_CONTASRECEBER_SERVICE = "financeiro-contasreceber/financeiro/contas_receber/conciliacaoBancaria";
-	public static final String FINANCEIRO_FLUXOCAIXA_SERVICE = "financeiro-fluxocaixa/financeiro/fluxo_caixa/conciliacaoBancaria";
+	public static final String FINANCEIRO_FLUXOCAIXA_SERVICE = "financeiro-fluxocaixa/financeiro/fluxo_caixa/conciliacaoBancaria";*/
 	
 	@Inject
 	private ConciliacaoServiceHelper conciliacaoTransacaoService;
@@ -368,43 +371,8 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 		
 	}
 	
-	private HttpHeaders buildHttpHeaders(ServiceContextData serviceContextData) {
-		HttpHeaders headers = new HttpHeaders();
-		headers.set(HEADER_TENANT, serviceContextData.getTenant());
-        headers.set(HEADER_USER, serviceContextData.getUsername());
-        headers.set(HEADER_TENANT_ACCOUNT_TYPE, serviceContextData.getTenantAccountType());
-        
-        return headers;
-	}
 	
-	private ConciliacaoBancariaDTO toDTO(ConciliacaoBancariaEntity conciliacaoBancariaEntity, List<ConciliacaoTransacaoEntity> transacoes) {
-		
-		List<ConciliacaoTransacaoDTO> transacoesDTO = transacoes.stream().map(it -> {
-			
-			ConciliacaoTransacaoDTO dto = ConciliacaoTransacaoDTO.builder()
-					.id(it.getId())
-					.trnData(it.getTrnData())
-					.trnHistorico(it.getTrnHistorico())
-					.trnDocumento(it.getTrnDocumento())
-					.trnTipo(it.getTrnTipo())
-					.trnValor(it.getTrnValor())
-					.build();
-			
-			return dto;
-			
-		}).collect(Collectors.toList());
-		
-		ConciliacaoBancariaDTO conciliacaoBancariaDTO = ConciliacaoBancariaDTO.builder()
-				.id(conciliacaoBancariaEntity.getId())
-				.bancoId(conciliacaoBancariaEntity.getBancoId())
-				.agenciaId(conciliacaoBancariaEntity.getAgenciaId())
-				.contaId(conciliacaoBancariaEntity.getContaId())
-				.dataIni(conciliacaoBancariaEntity.getDataIni())
-				.dataFim(conciliacaoBancariaEntity.getDataFim())
-				.transacoes(transacoesDTO)
-				.build();
-		
-		return conciliacaoBancariaDTO;
-	}
+	
+	
 
 }

@@ -17,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoFileUploadResult;
 import br.com.kerubin.api.cadastros.banco.conciliacao.service.ConciliacaoService;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacao.ConciliacaoTransacaoDTOConverter;
-import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacao.ConciliacaoTransacaoService;
 
 @RestController
 @RequestMapping("cadastros/banco/entities/conciliacaoBancaria")
@@ -25,9 +24,6 @@ public class ConciliacaoController {
 	
 	@Inject
 	private ConciliacaoService conciliacaoService;
-	
-	@Autowired
-	private ConciliacaoTransacaoService conciliacaoTransacaoService;
 	
 	@Autowired
 	ConciliacaoTransacaoDTOConverter conciliacaoTransacaoDTOConverter;

@@ -1,15 +1,16 @@
 package br.com.kerubin.api.cadastros.banco.conciliacao;
 
+import static br.com.kerubin.api.servicecore.util.CoreUtils.*;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
+
+import static org.apache.commons.lang3.StringUtils.stripStart;
 
 import com.webcohesion.ofx4j.domain.data.MessageSetType;
 import com.webcohesion.ofx4j.domain.data.ResponseEnvelope;
@@ -49,7 +50,8 @@ public class ConciliacaoOFXReader {
 	 * Retorna o número do banco, exemplo: 0237, para o Bradesco.
 	 * */
 	public String getBankId() {
-		return bankStatementResponseTransaction.getMessage().getAccount().getBankId();
+		String bankId = bankStatementResponseTransaction.getMessage().getAccount().getBankId();
+		return trimLeftZeros(bankId);
 	}
 	
 	/**
@@ -58,7 +60,7 @@ public class ConciliacaoOFXReader {
 	public String getBranchId() {
 		String ag = bankStatementResponseTransaction.getMessage().getAccount().getBranchId();
 		if (ag != null) {
-			return ag;
+			return trimLeftZeros(ag);
 		}
 		
 		ag = bankStatementResponseTransaction.getMessage().getAccount().getAccountNumber();
@@ -67,7 +69,7 @@ public class ConciliacaoOFXReader {
 		if (ag != null) {
 			String[] valores = ag.split("/");
 			if (valores != null & valores.length > 0) {
-				return valores[0];
+				return trimLeftZeros(valores[0]);
 			}
 		}
 		
@@ -79,8 +81,8 @@ public class ConciliacaoOFXReader {
 	 * */
 	public String getAccountNumber() {
 		String ag = bankStatementResponseTransaction.getMessage().getAccount().getBranchId();
-		if (ag != null) {
-			return bankStatementResponseTransaction.getMessage().getAccount().getAccountNumber();
+		if (isNotEmpty(ag)) {
+			return trimLeftZeros(bankStatementResponseTransaction.getMessage().getAccount().getAccountNumber());
 		}
 		
 		String str = bankStatementResponseTransaction.getMessage().getAccount().getAccountNumber();
@@ -89,7 +91,7 @@ public class ConciliacaoOFXReader {
 		if (str != null) {
 			String[] valores = str.split("/");
 			if (valores != null & valores.length >= 2) {
-				return valores[1];
+				return trimLeftZeros(valores[1]);
 			}
 		}
 		
@@ -100,14 +102,14 @@ public class ConciliacaoOFXReader {
 	 * Retorna a data inicial da lista de transações.
 	 * */
 	public LocalDate getTransactionsStartDate() {
-		return toDate(bankStatementResponseTransaction.getMessage().getTransactionList().getStart());
+		return toLocalDate(bankStatementResponseTransaction.getMessage().getTransactionList().getStart());
 	}
 	
 	/**
 	 * Retorna a data final da lista de transações.
 	 * */
 	public LocalDate getTransactionsEndDate() {
-		return toDate(bankStatementResponseTransaction.getMessage().getTransactionList().getEnd());
+		return toLocalDate(bankStatementResponseTransaction.getMessage().getTransactionList().getEnd());
 	}
 
 	public void readOFXFile(File file) {
@@ -160,8 +162,8 @@ public class ConciliacaoOFXReader {
 		
 	}
 	
-	public LocalDate toDate(Date date) {
-		return Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
+	public static String trimLeftZeros(String str) {
+		return stripStart(str, "0");
 	}
-
+	
 }

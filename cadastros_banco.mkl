@@ -31,6 +31,10 @@ service banco {
 		publishedInEvents
 		listFilter(many: "Nome do(s) banco(s)")
 		web(styleClass: "ui-md-8")
+		
+		rules {
+			with(numero).apply(trimLeft("0"))
+		}
 	}
 	
 	@publishEvents
@@ -66,6 +70,10 @@ service banco {
 		fone: string[50]?
 		label: "Telefone da agência"
 		web(styleClass: "ui-md-2")
+		
+		rules {
+			with(numeroAgencia).apply(trimLeft("0"))
+		}
 		
 	}
 	
@@ -147,6 +155,10 @@ service banco {
 		web(styleClass: "ui-md-4")
 		//--
 		
+		rules {
+			with(numeroConta).apply(trimLeft("0"))
+		}
+		
 	}
 	
 	@publishEvents
@@ -202,6 +214,9 @@ service banco {
 	
 	@label("Conciliação bancária")
 	entity ConciliacaoBancaria {
+		
+		id: uuid
+		
 		bancoId: string
 		label: "Banco"
 		web(styleClass: "ui-md-3")
@@ -229,7 +244,16 @@ service banco {
 		
 		rules {
 			
+			with(bancoId).apply(trimLeft("0"))
+			with(agenciaId).apply(trimLeft("0"))
+			with(contaId).apply(trimLeft("0"))
+			
 			with(form).apply(polling(callback: recarregarConciliacao))
+			
+			with(form.actions)
+				.apply(function(name: aplicarConciliacaoBancaria params:[this] return: this))
+				.when(id.isNotNull and situacaoConciliacao.isEquals(SituacaoConciliacao.TRANSACOES_ANALISADAS))
+				.action(name: aplicarConciliacao button(tooltip: "Aplicar conciliação" label: "Aplicar conciliação" cssClass: "ui-button-success" icon: "pi pi-play"))
 			
 		}
 	}
@@ -257,6 +281,7 @@ service banco {
 		listFilter(isEqualTo: "Conciliação bancária" styleClass: "ui-md-4")
 		
 		situacaoConciliacaoTrn: SituacaoConciliacaoTrn
+		
 		
 		tituloConciliadoId: uuid?
 		label: "Identificador do título conciliado"
@@ -313,6 +338,9 @@ service banco {
 		CAIXA_BAIXADO_SEM_CONCILIACAO
 		label: "Baixado no caixa sem conciliação"
 		
+		ERRO
+		label: "Erro na conciliação"
+		
 		CANCELADO
 		label: "Conciliação cancelada"
 	}
@@ -329,14 +357,17 @@ service banco {
 		TRANSACOES_ANALISADAS
 		label: "Transações analisadas"
 		
-		CONCILIADO_TRANSACOES
+		CONCILIANDO_TRANSACOES
 		label: "Conciliando transações"
+		
+		CONCILIADO
+		label: "Conciliado"
 		
 		CONCILIADO_COM_ERRO
 		label: "Conciliado com erro"
 		
-		CONCILIADO
-		label: "Conciliado"
+		CANCELADO
+		label: "Cancelado"
 	}
 	
 	@label("Tipo da transação")

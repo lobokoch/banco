@@ -23,6 +23,7 @@ import com.webcohesion.ofx4j.io.AggregateUnmarshaller;
 import com.webcohesion.ofx4j.io.OFXParseException;
 
 import br.com.kerubin.api.cadastros.banco.conciliacao.ConciliacaoOFXReader;
+import static br.com.kerubin.api.servicecore.util.CoreUtils.*;
 
 public class ConciliacaoParser {
 	
@@ -45,7 +46,7 @@ public class ConciliacaoParser {
 		System.out.println("");
 		System.out.println(list.size() + " TRANSAÇÕES ENCONTRADAS\n");
 		for (Transaction transaction : list) {
-			System.out.println("Data: " + reader.toDate(transaction.getDatePosted()));
+			System.out.println("Data: " + toLocalDate(transaction.getDatePosted()));
 			System.out.println("Histórico: " + transaction.getMemo());
 			System.out.println("Documento: " + reader.getTransactionDocument(transaction));
 			System.out.println("Tipo (C/D): " + transaction.getTransactionType().name());
