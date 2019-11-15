@@ -10,8 +10,8 @@ import static br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBa
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
@@ -29,10 +29,12 @@ import br.com.kerubin.api.cadastros.banco.SituacaoConciliacao;
 import br.com.kerubin.api.cadastros.banco.SituacaoConciliacaoTrn;
 import br.com.kerubin.api.cadastros.banco.TipoTransacao;
 import br.com.kerubin.api.cadastros.banco.conciliacao.ConciliacaoOFXReader;
+import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBancariaAsyncExecution;
 import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBancariaDTO;
 import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoContext;
 import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoTransacaoDTO;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaobancaria.ConciliacaoBancariaEntity;
+import br.com.kerubin.api.cadastros.banco.entity.conciliacaobancaria.ConciliacaoBancariaRepository;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacao.ConciliacaoTransacaoEntity;
 import br.com.kerubin.api.database.core.ServiceContext;
 import br.com.kerubin.api.database.core.ServiceContextData;
@@ -42,43 +44,43 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class ConciliacaoServiceImpl implements ConciliacaoService {
 	
-	/*public static final String HTTP = "http://";
-	public static final String FINANCEIRO_CONTASPAGAR_SERVICE = "financeiro-contaspagar/financeiro/contas_pagar/conciliacaoBancaria";
-	public static final String FINANCEIRO_CONTASRECEBER_SERVICE = "financeiro-contasreceber/financeiro/contas_receber/conciliacaoBancaria";
-	public static final String FINANCEIRO_FLUXOCAIXA_SERVICE = "financeiro-fluxocaixa/financeiro/fluxo_caixa/conciliacaoBancaria";*/
-	
 	@Inject
 	private ConciliacaoServiceHelper conciliacaoTransacaoService;
 	
 	@Inject
 	private RestTemplate restTemplate;
 	
+	@Inject
+	private ConciliacaoBancariaRepository conciliacaoBancariaRepository;
+	
 	@Override
-	public UUID processarArquivo(InputStream stream) {
+	public ConciliacaoBancariaAsyncExecution processarArquivo(InputStream stream) {
 		ConciliacaoOFXReader reader = new ConciliacaoOFXReader();
 		reader.readOFXStream(stream);
 		
 		ConciliacaoBancariaEntity conciliacaoBancariaEntity = createConciliacaoBancaria(reader);
 		
-		createConciliacaoTransacaoAsync(conciliacaoBancariaEntity, reader);
+		CompletableFuture<ConciliacaoBancariaEntity> future = createConciliacaoTransacaoAsync(conciliacaoBancariaEntity, reader);
 		
-		return conciliacaoBancariaEntity.getId();
+		ConciliacaoBancariaAsyncExecution result = ConciliacaoBancariaAsyncExecution.builder().id(conciliacaoBancariaEntity.getId()).future(future).build();
+		
+		return result;
 	}
 
-	private void createConciliacaoTransacaoAsync(ConciliacaoBancariaEntity conciliacaoBancariaEntity, ConciliacaoOFXReader reader) {
+	private CompletableFuture<ConciliacaoBancariaEntity> createConciliacaoTransacaoAsync(ConciliacaoBancariaEntity conciliacaoBancariaEntity, ConciliacaoOFXReader reader) {
 		
 		ConciliacaoContext contextoInicial = ConciliacaoContext.builder()
 				.conciliacaoBancariaEntity(conciliacaoBancariaEntity)
 				.serviceContextData(ServiceContext.getServiceContextData())
 				.build();
 		
-		CompletableFuture
+		return CompletableFuture
 			.supplyAsync(() -> criarTransacoes(contextoInicial, reader))
 			.thenApply(contexto -> inicializarAnaliseDasTransacoes(contexto)) //
 			.thenApply(contexto -> verificarModulosDeContas(contexto)) //
 			.thenApply(contexto -> verificarModuloCaixa(contexto)) //
 			.thenApply(contexto -> finalizarProcessamentoDasTransacoes(contexto)) //
-			.thenAccept(contexto -> finalizarProcessamentoConciliacao(contexto)); //
+			.thenApply(contexto -> finalizarProcessamentoConciliacao(contexto)); //
 		
 	}
 
@@ -91,7 +93,13 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 		
 		ServiceContext.applyServiceContextData(contexto.getServiceContextData());
 		
-		List<ConciliacaoTransacaoEntity> transacoes = conciliacaoTransacaoService.criarTransacoes(contexto.getConciliacaoBancariaEntity(), reader);
+		List<ConciliacaoTransacaoEntity> transacoes = null;
+		try {
+			transacoes = conciliacaoTransacaoService.criarTransacoes(contexto.getConciliacaoBancariaEntity(), reader);
+		} catch(Exception e) {
+			log.error("Erro ao gerar transações:" + e.getMessage(), e);
+			transacoes = Collections.emptyList();
+		}
 		contexto.setTransacoes(transacoes);
 		
 		log.info("FIM criarTransacoes.");
@@ -193,7 +201,7 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 	/**
 	 * Finaliza o processamento da conciliação.
 	 * */
-	private void finalizarProcessamentoConciliacao(ConciliacaoContext contexto) {
+	private ConciliacaoBancariaEntity finalizarProcessamentoConciliacao(ConciliacaoContext contexto) {
 		
 		log.info("INICIO finalizarProcessamentoConciliacao...");
 		
@@ -207,6 +215,8 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 		contexto.setConciliacaoBancariaEntity(conciliacaoBancariaEntity);
 		
 		log.info("FIM finalizarProcessamentoConciliacao...");
+		
+		return conciliacaoBancariaEntity;
 		
 	}
 	
@@ -238,6 +248,7 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
         ConciliacaoBancariaDTO serviceResponse = response.getBody();
 		
         // Faz o match e atualiza as transações atuais com as retornadas, no caso se achou alguma que faz match no Contas a Pagar.
+
         if (serviceResponse != null && serviceResponse.getTransacoes() != null) {
         	List<ConciliacaoTransacaoDTO> transacoesMatched = serviceResponse.getTransacoes().stream().filter(it -> it.getTituloConciliadoId() != null).collect(Collectors.toList());
         	transacoesMatched.forEach(it -> {
@@ -246,6 +257,7 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
         			transacao.setTituloConciliadoId(it.getTituloConciliadoId());
         			transacao.setTituloConciliadoDesc(it.getTituloConciliadoDesc());
         			transacao.setSituacaoConciliacaoTrn(it.getSituacaoConciliacaoTrn());
+        			transacao.setDataConciliacao(it.getDataConciliacao());
         		}
         		else {
         			log.warn("Transação de conciliação bancária retornada na resposta do Contas a Pagar não encontrada na lista corrente:" + it);
@@ -299,6 +311,7 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
         			transacao.setTituloConciliadoId(it.getTituloConciliadoId());
         			transacao.setTituloConciliadoDesc(it.getTituloConciliadoDesc());
         			transacao.setSituacaoConciliacaoTrn(it.getSituacaoConciliacaoTrn());
+        			transacao.setDataConciliacao(it.getDataConciliacao());
         		}
         		else {
         			log.warn("Transação de conciliação bancária retornada na resposta do Contas a Pagar não encontrada na lista corrente:" + it);
@@ -353,6 +366,7 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 	        			transacao.setTituloConciliadoId(it.getTituloConciliadoId());
 	        			transacao.setTituloConciliadoDesc(it.getTituloConciliadoDesc());
 	        			transacao.setSituacaoConciliacaoTrn(it.getSituacaoConciliacaoTrn());
+	        			transacao.setDataConciliacao(it.getDataConciliacao());
 	        		}
 	        		else {
 	        			log.warn("Transação de conciliação bancária retornada na resposta do Contas a Receber não encontrada na lista corrente:" + it);

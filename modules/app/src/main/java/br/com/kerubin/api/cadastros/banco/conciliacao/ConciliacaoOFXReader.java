@@ -20,6 +20,7 @@ import com.webcohesion.ofx4j.domain.data.banking.BankStatementResponseTransactio
 import com.webcohesion.ofx4j.domain.data.banking.BankingResponseMessageSet;
 import com.webcohesion.ofx4j.domain.data.common.Transaction;
 import com.webcohesion.ofx4j.domain.data.common.TransactionList;
+import com.webcohesion.ofx4j.domain.data.common.TransactionType;
 import com.webcohesion.ofx4j.io.AggregateUnmarshaller;
 import com.webcohesion.ofx4j.io.OFXParseException;
 
@@ -164,6 +165,14 @@ public class ConciliacaoOFXReader {
 	
 	public static String trimLeftZeros(String str) {
 		return stripStart(str, "0");
+	}
+	
+	public static boolean isCredito(Transaction transaction) {
+		return transaction != null && TransactionType.CREDIT.equals(transaction.getTransactionType());
+	}
+	
+	public static boolean isDebito(Transaction transaction) {
+		return transaction != null && TransactionType.DEBIT.equals(transaction.getTransactionType());
 	}
 	
 }

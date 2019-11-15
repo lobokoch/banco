@@ -279,6 +279,7 @@ service banco {
 		
 		conciliacaoBancaria: /*container*/refers ConciliacaoBancaria manyToOne /*findBy(paged)*/
 		listFilter(isEqualTo: "Conciliação bancária" styleClass: "ui-md-4")
+		findBy
 		
 		situacaoConciliacaoTrn: SituacaoConciliacaoTrn
 		

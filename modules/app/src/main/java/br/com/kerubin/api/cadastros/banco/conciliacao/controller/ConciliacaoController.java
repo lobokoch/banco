@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBancariaAsyncExecution;
 import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoFileUploadResult;
 import br.com.kerubin.api.cadastros.banco.conciliacao.service.ConciliacaoService;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacao.ConciliacaoTransacaoDTOConverter;
@@ -30,7 +31,9 @@ public class ConciliacaoController {
 	
 	@PostMapping("/uploadArquivoConciliacao")
 	public ResponseEntity<ConciliacaoFileUploadResult> uploadArquivoConciliacao(@RequestParam MultipartFile arquivoConciliacao) throws IOException {
-		UUID conciliacaoId = conciliacaoService.processarArquivo(arquivoConciliacao.getInputStream());
+		ConciliacaoBancariaAsyncExecution execAsync = conciliacaoService.processarArquivo(arquivoConciliacao.getInputStream());
+		UUID conciliacaoId = execAsync.getId();
+		
 		ConciliacaoFileUploadResult result = ConciliacaoFileUploadResult.builder()
 				.conciliacaoId(conciliacaoId)
 				.result(true)

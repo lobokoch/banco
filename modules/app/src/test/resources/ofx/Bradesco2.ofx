@@ -1,0 +1,191 @@
+OFXHEADER:100
+DATA:OFXSGML
+VERSION:102
+SECURITY:NONE
+ENCODING:USASCII
+CHARSET:1252
+COMPRESSION:NONE
+OLDFILEUID:NONE
+NEWFILEUID:NONE
+
+<OFX>
+	<SIGNONMSGSRSV1>
+		<SONRS>
+			<STATUS>
+				<CODE>0
+				<SEVERITY>INFO
+			</STATUS>
+			<DTSERVER>00000000000000
+			<LANGUAGE>POR
+		</SONRS>
+	</SIGNONMSGSRSV1>
+	<BANKMSGSRSV1>
+		<STMTTRNRS>
+			<TRNUID>1001
+			<STATUS>
+				<CODE>0
+				<SEVERITY>INFO
+			</STATUS>
+			<STMTRS>
+				<CURDEF>BRL
+				<BANKACCTFROM>
+					<BANKID>0237
+					<ACCTID>7225/12563
+					<ACCTTYPE>CHECKING
+				</BANKACCTFROM>
+				<BANKTRANLIST>
+					<DTSTART>20190815000000
+					<DTEND>20191014000000
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190815000000[-03:EST]
+						<TRNAMT>-102.85
+						<FITID>N10214:15/08/19:-102.85:5370001: Tit.capitalizac:
+						<CHECKNUM>5370001
+						<MEMO>Tit.capitalizac 
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190816000000[-03:EST]
+						<TRNAMT>-100.00
+						<FITID>N10231:16/08/19:-100.0:1608413: sq c/c Bco24h: 00047745                16081231
+						<CHECKNUM>1608413
+						<MEMO>sq c/c Bco24h 00047745 16081231
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190820000000[-03:EST]
+						<TRNAMT>-37.90
+						<FITID>N1024F:20/08/19:-37.9:0936033: Visa Electron: Netflix.com
+						<CHECKNUM>0936033
+						<MEMO>Visa Electron Netflix.com
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>CREDIT
+						<DTPOSTED>20190822000000[-03:EST]
+						<TRNAMT>3888.00
+						<FITID>N1026D:22/08/19:3888.0:4307413: Ted Csal p/ccor: Remet.marcio Koch
+						<CHECKNUM>4307413
+						<MEMO>Ted Csal p/ccor Remet.marcio Koch
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190822000000[-03:EST]
+						<TRNAMT>-35.76
+						<FITID>N1028A:22/08/19:-35.76:0000956: Visa Electron: Giassi Supermerca
+						<CHECKNUM>0000956
+						<MEMO>Visa Electron Giassi Supermerca
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190822000000[-03:EST]
+						<TRNAMT>-300.00
+						<FITID>N102A8:22/08/19:-300.0:2208008: sq c/c Bco24h: 00043354                22081238
+						<CHECKNUM>2208008
+						<MEMO>sq c/c Bco24h 00043354 22081238
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190823000000[-03:EST]
+						<TRNAMT>-96.90
+						<FITID>N102C6:23/08/19:-96.9:0317346: Visa Electron: Blue Pizzaria
+						<CHECKNUM>0317346
+						<MEMO>Visa Electron Blue Pizzaria
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190823000000[-03:EST]
+						<TRNAMT>-29.57
+						<FITID>N102E4:23/08/19:-29.57:0570606: Visa Electron: Big Blumenau Pos
+						<CHECKNUM>0570606
+						<MEMO>Visa Electron Big Blumenau Pos
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190823000000[-03:EST]
+						<TRNAMT>-150.00
+						<FITID>N10302:23/08/19:-150.0:2308678: sq c/c Bco24h: 00040409                23081222
+						<CHECKNUM>2308678
+						<MEMO>sq c/c Bco24h 00040409 23081222
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20190826000000[-03:EST]
+						<TRNAMT>-249.70
+						<FITID>N10320:26/08/19:-249.7:0000038: Visa Electron: Lojas Renner fl 1
+						<CHECKNUM>0000038
+						<MEMO>Visa Electron Lojas Renner fl 1
+					</STMTTRN>					
+					<STMTTRN>
+						<TRNTYPE>CREDIT
+						<DTPOSTED>20190906000000[-03:EST]
+						<TRNAMT>8167.83
+						<FITID>N106E0:06/09/19:8167.83:3694326: Ted Csal p/ccor: Remet.marcio Koch
+						<CHECKNUM>3694326
+						<MEMO>Ted Csal p/ccor Remet.marcio Koch
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>CREDIT
+						<DTPOSTED>20190911000000[-03:EST]
+						<TRNAMT>600.00
+						<FITID>N10919:11/09/19:600.0:1020378: Depos ag Dinh: Antonio Branco Dias
+						<CHECKNUM>1020378
+						<MEMO>Depos ag Dinh Antonio Branco Dias
+					</STMTTRN>					
+					<STMTTRN>
+						<TRNTYPE>CREDIT
+						<DTPOSTED>20190916000000[-03:EST]
+						<TRNAMT>503.60
+						<FITID>N10A26:16/09/19:503.6:6957804: Ted Csal p/ccor: Remet.marcio Koch
+						<CHECKNUM>6957804
+						<MEMO>Ted Csal p/ccor Remet.marcio Koch
+					</STMTTRN>					
+					<STMTTRN>
+						<TRNTYPE>CREDIT
+						<DTPOSTED>20191004000000[-03:EST]
+						<TRNAMT>6461.51
+						<FITID>N10D4E:04/10/19:6461.51:1347842: Ted Csal p/ccor: Remet.marcio Koch
+						<CHECKNUM>1347842
+						<MEMO>Ted Csal p/ccor Remet.marcio Koch
+					</STMTTRN>					
+					<STMTTRN>
+						<TRNTYPE>CREDIT
+						<DTPOSTED>20191011000000[-03:EST]
+						<TRNAMT>942.97
+						<FITID>N10022:11/10/19:942.97:1107225: Resg.tit.capitalizacao:
+						<CHECKNUM>1107225
+						<MEMO>Resg.tit.capitalizacao 
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>CREDIT
+						<DTPOSTED>20191011000000[-03:EST]
+						<TRNAMT>942.97
+						<FITID>N1003E:11/10/19:942.97:1107225: Resg.tit.capitalizacao:
+						<CHECKNUM>1107225
+						<MEMO>Resg.tit.capitalizacao 
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>CREDIT
+						<DTPOSTED>20191011000000[-03:EST]
+						<TRNAMT>942.97
+						<FITID>N1005A:11/10/19:942.97:1107225: Resg.tit.capitalizacao:
+						<CHECKNUM>1107225
+						<MEMO>Resg.tit.capitalizacao 
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>CREDIT
+						<DTPOSTED>20191011000000[-03:EST]
+						<TRNAMT>942.97
+						<FITID>N10076:11/10/19:942.97:1107225: Resg.tit.capitalizacao:
+						<CHECKNUM>1107225
+						<MEMO>Resg.tit.capitalizacao 
+					</STMTTRN>						
+				</BANKTRANLIST>
+				<LEDGERBAL>
+					<BALAMT>1427.70
+					<DTASOF>20191007000000[-03:EST]
+				</LEDGERBAL>
+			</STMTRS>
+		</STMTTRNRS>
+	</BANKMSGSRSV1>
+</OFX>

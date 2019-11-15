@@ -1,4 +1,4 @@
-package br.com.kerubin.api.banco.conciliacao;
+package br.com.kerubin.api.cadastros.banco.conciliacao;
 
 import java.io.File;
 import java.io.FileInputStream;
