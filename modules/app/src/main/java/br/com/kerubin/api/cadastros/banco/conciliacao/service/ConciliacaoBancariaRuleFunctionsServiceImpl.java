@@ -6,9 +6,10 @@ import static br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBa
 import static br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBancariaConstants.MODULOS_FINANCEIRO;
 import static br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBancariaConstants.MODULOS_FINANCEIRO_DESC;
 import static br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBancariaConstants.MODULO_FINANCEIRO_CONTASPAGAR;
+import static br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBancariaConstants.MODULO_FINANCEIRO_CONTASRECEBER;
+import static br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBancariaConstants.MODULO_FINANCEIRO_FLUXOCAIXA;
 import static br.com.kerubin.api.servicecore.util.CoreUtils.format;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -29,6 +30,7 @@ import org.springframework.web.client.RestTemplate;
 
 import br.com.kerubin.api.cadastros.banco.SituacaoConciliacao;
 import br.com.kerubin.api.cadastros.banco.SituacaoConciliacaoTrn;
+import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBancariaAsyncExecution;
 import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBancariaDTO;
 import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoContext;
 import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoTransacaoDTO;
@@ -60,13 +62,25 @@ public class ConciliacaoBancariaRuleFunctionsServiceImpl implements ConciliacaoB
 	@Override
 	public ConciliacaoBancariaEntity aplicarConciliacaoBancaria(UUID id, ConciliacaoBancaria conciliacaoBancaria) {
 		
+		ConciliacaoBancariaAsyncExecution execAsync = aplicarConciliacaoBancariaAsync(id, conciliacaoBancaria);
+		
+		return execAsync.getConciliacaoBancaria();
+	}
+	
+	public ConciliacaoBancariaAsyncExecution aplicarConciliacaoBancariaAsync(UUID id, ConciliacaoBancaria conciliacaoBancaria) {
+		
 		ConciliacaoBancariaEntity conciliacaoBancariaEntity = conciliacaoBancariaDTOConverter.convertDtoToEntity(conciliacaoBancaria);
 		
 		conciliacaoBancariaEntity = salvarConciliandoTransacoes(conciliacaoBancariaEntity);
 		
-		aplicarConciliacaoBancariaAsync(conciliacaoBancariaEntity);
+		CompletableFuture<ConciliacaoBancariaEntity> future = aplicarConciliacaoBancariaAsync(conciliacaoBancariaEntity);
 		
-		return conciliacaoBancariaEntity;
+		ConciliacaoBancariaAsyncExecution result = ConciliacaoBancariaAsyncExecution.builder()
+				.conciliacaoBancaria(conciliacaoBancariaEntity)
+				.future(future)
+				.build();
+		
+		return result;
 	}
 	
 	private ConciliacaoBancariaEntity salvarConciliandoTransacoes(ConciliacaoBancariaEntity conciliacaoBancariaEntity) {
@@ -75,18 +89,17 @@ public class ConciliacaoBancariaRuleFunctionsServiceImpl implements ConciliacaoB
 		return conciliacaoBancariaEntity;
 	}
 
-	private void aplicarConciliacaoBancariaAsync(ConciliacaoBancariaEntity conciliacaoBancariaEntity) {
+	private CompletableFuture<ConciliacaoBancariaEntity> aplicarConciliacaoBancariaAsync(ConciliacaoBancariaEntity conciliacaoBancariaEntity) {
 
 		ConciliacaoContext contextoInicial = ConciliacaoContext.builder()
 				.conciliacaoBancariaEntity(conciliacaoBancariaEntity)
 				.serviceContextData(ServiceContext.getServiceContextData())
 				.build();
 		
-		CompletableFuture
+		return CompletableFuture
 			.supplyAsync(() -> buscarTransacoesAConciliar(contextoInicial, conciliacaoBancariaEntity))
 			.thenApply(contexto -> applicarConciliacaoNosModulos(contexto))
-			.thenAccept(contexto -> finalizarProcessamentoConciliacao(contexto));
-		
+			.thenApply(contexto -> finalizarProcessamentoConciliacao(contexto));
 	}
 
 	private ConciliacaoContext buscarTransacoesAConciliar(ConciliacaoContext contexto,
@@ -175,15 +188,15 @@ public class ConciliacaoBancariaRuleFunctionsServiceImpl implements ConciliacaoB
 	
 	private CompletableFuture<List<ConciliacaoTransacaoEntity>> aplicarConciliacaoContasReceber(
 			ConciliacaoContext contexto, List<ConciliacaoTransacaoEntity> transacoes) {
-		return CompletableFuture.supplyAsync(() -> Collections.emptyList());
-		//return aplicarConciliacao(contexto, transacoes, MODULO_FINANCEIRO_CONTASRECEBER);
+		
+		return aplicarConciliacao(contexto, transacoes, MODULO_FINANCEIRO_CONTASRECEBER);
 		
 	}
 	
 	private CompletableFuture<List<ConciliacaoTransacaoEntity>> aplicarConciliacaoFluxoCaixa(
 			ConciliacaoContext contexto, List<ConciliacaoTransacaoEntity> transacoes) {
-		return CompletableFuture.supplyAsync(() -> Collections.emptyList());
-		//return aplicarConciliacao(contexto, transacoes, MODULO_FINANCEIRO_FLUXOCAIXA);
+		
+		return aplicarConciliacao(contexto, transacoes, MODULO_FINANCEIRO_FLUXOCAIXA);
 		
 	}
 	
@@ -238,7 +251,7 @@ public class ConciliacaoBancariaRuleFunctionsServiceImpl implements ConciliacaoB
 					transacao.setSituacaoConciliacaoTrn(trnDto.getSituacaoConciliacaoTrn());
 					transacao.setConciliadoComErro(trnDto.getConciliadoComErro());
 					transacao.setConciliadoMsg(trnDto.getConciliadoMsg());
-					transacao.setDataConciliacao(LocalDate.now());
+					transacao.setDataConciliacao(trnDto.getDataConciliacao());
 				}
 				else {
 					log.error(format("Service não retornou a transação id: {0}, trnDoc: {1}, trnHis: {2}", 
@@ -247,7 +260,7 @@ public class ConciliacaoBancariaRuleFunctionsServiceImpl implements ConciliacaoB
 					//transacao.setSituacaoConciliacaoTrn(SituacaoConciliacaoTrn.ERRO);
 					transacao.setConciliadoComErro(true);
 					transacao.setConciliadoMsg("Item não devolvido pelo módulo de " + MODULOS_FINANCEIRO_DESC[moduloIndex] + ".");
-					transacao.setDataConciliacao(LocalDate.now());
+					transacao.setDataConciliacao(null);
 				}
 				
 			});
@@ -262,7 +275,7 @@ public class ConciliacaoBancariaRuleFunctionsServiceImpl implements ConciliacaoB
 		
 	}
 
-	private void finalizarProcessamentoConciliacao(ConciliacaoContext contexto) {
+	private ConciliacaoBancariaEntity finalizarProcessamentoConciliacao(ConciliacaoContext contexto) {
 		
 		log.info("INICIO finalizarProcessamentoConciliacao...");
 		
@@ -285,9 +298,11 @@ public class ConciliacaoBancariaRuleFunctionsServiceImpl implements ConciliacaoB
 		
 		SituacaoConciliacao situacaoConciliacao = processadasComErro == 0 ? SituacaoConciliacao.CONCILIADO : SituacaoConciliacao.CONCILIADO_COM_ERRO; 
 		conciliacaoBancariaEntity.setSituacaoConciliacao(situacaoConciliacao);
-		conciliacaoServiceHelper.salvarConciliacao(conciliacaoBancariaEntity);	
+		conciliacaoBancariaEntity = conciliacaoServiceHelper.salvarConciliacao(conciliacaoBancariaEntity);	
 		
 		log.info("FIM finalizarProcessamentoConciliacao.");
+		
+		return conciliacaoBancariaEntity;
 	}
 
 }

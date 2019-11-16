@@ -32,7 +32,7 @@ public class ConciliacaoController {
 	@PostMapping("/uploadArquivoConciliacao")
 	public ResponseEntity<ConciliacaoFileUploadResult> uploadArquivoConciliacao(@RequestParam MultipartFile arquivoConciliacao) throws IOException {
 		ConciliacaoBancariaAsyncExecution execAsync = conciliacaoService.processarArquivo(arquivoConciliacao.getInputStream());
-		UUID conciliacaoId = execAsync.getId();
+		UUID conciliacaoId = execAsync.getConciliacaoBancaria().getId();
 		
 		ConciliacaoFileUploadResult result = ConciliacaoFileUploadResult.builder()
 				.conciliacaoId(conciliacaoId)

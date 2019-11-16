@@ -34,7 +34,6 @@ import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBancariaD
 import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoContext;
 import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoTransacaoDTO;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaobancaria.ConciliacaoBancariaEntity;
-import br.com.kerubin.api.cadastros.banco.entity.conciliacaobancaria.ConciliacaoBancariaRepository;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacao.ConciliacaoTransacaoEntity;
 import br.com.kerubin.api.database.core.ServiceContext;
 import br.com.kerubin.api.database.core.ServiceContextData;
@@ -50,9 +49,6 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 	@Inject
 	private RestTemplate restTemplate;
 	
-	@Inject
-	private ConciliacaoBancariaRepository conciliacaoBancariaRepository;
-	
 	@Override
 	public ConciliacaoBancariaAsyncExecution processarArquivo(InputStream stream) {
 		ConciliacaoOFXReader reader = new ConciliacaoOFXReader();
@@ -62,7 +58,10 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 		
 		CompletableFuture<ConciliacaoBancariaEntity> future = createConciliacaoTransacaoAsync(conciliacaoBancariaEntity, reader);
 		
-		ConciliacaoBancariaAsyncExecution result = ConciliacaoBancariaAsyncExecution.builder().id(conciliacaoBancariaEntity.getId()).future(future).build();
+		ConciliacaoBancariaAsyncExecution result = ConciliacaoBancariaAsyncExecution.builder()
+				.conciliacaoBancaria(conciliacaoBancariaEntity)
+				.future(future)
+				.build();
 		
 		return result;
 	}

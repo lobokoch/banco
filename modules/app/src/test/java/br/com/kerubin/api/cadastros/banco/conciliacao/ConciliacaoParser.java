@@ -49,6 +49,7 @@ public class ConciliacaoParser {
 			System.out.println("Data: " + toLocalDate(transaction.getDatePosted()));
 			System.out.println("Histórico: " + transaction.getMemo());
 			System.out.println("Documento: " + reader.getTransactionDocument(transaction));
+			System.out.println("Id: " + reader.getTransactionId(transaction));
 			System.out.println("Tipo (C/D): " + transaction.getTransactionType().name());
 			System.out.println("Valor: " + transaction.getAmount());
 			System.out.println("");

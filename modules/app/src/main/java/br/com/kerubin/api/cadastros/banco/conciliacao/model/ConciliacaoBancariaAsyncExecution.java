@@ -1,6 +1,5 @@
 package br.com.kerubin.api.cadastros.banco.conciliacao.model;
 
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaobancaria.ConciliacaoBancariaEntity;
@@ -13,7 +12,7 @@ import lombok.Setter;
 @Builder
 public class ConciliacaoBancariaAsyncExecution {
 	
-	private UUID id;
+	private ConciliacaoBancariaEntity conciliacaoBancaria;
 	private CompletableFuture<ConciliacaoBancariaEntity> future;
 	
 

@@ -65,7 +65,7 @@ import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacao.Conciliaca
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacao.ConciliacaoTransacaoServiceImpl;
 
 @RunWith(SpringRunner.class)
-public class ConciliacaoBancariaServiceTest extends ConciliacaoBancariaBaseTest {
+public class ConciliacaoBancariaProcessarArquivoServiceTest extends ConciliacaoBancariaBaseTest {
 	
 	private static final String BANCO_ID = "237";
 	private static final String AGENCIA_ID = "7225";
@@ -165,10 +165,12 @@ public class ConciliacaoBancariaServiceTest extends ConciliacaoBancariaBaseTest 
 		ClassLoader classLoader = getClass().getClassLoader();
 		File file = new File(classLoader.getResource("ofx/Bradesco2.ofx").getFile());
 		
-		// Executa o serviço
+		// ******* EXECUTA O SERVIÇO *********
 		ConciliacaoBancariaAsyncExecution execution = conciliacaoService.processarArquivo(new FileInputStream(file));
+		// ***********************************
 		
-    	assertThat(execution.getId()).isNotNull();
+		assertThat(execution.getConciliacaoBancaria()).isNotNull();
+    	assertThat(execution.getConciliacaoBancaria().getId()).isNotNull();
     	
     	ConciliacaoBancariaEntity conciliacaoBancariaEntity = execution.getFuture().get();
     	

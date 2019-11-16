@@ -10,6 +10,8 @@ import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import static org.apache.commons.lang3.StringUtils.stripStart;
 
 import com.webcohesion.ofx4j.domain.data.MessageSetType;
@@ -148,7 +150,29 @@ public class ConciliacaoOFXReader {
 	 * */
 	public String getTransactionDocument(Transaction transaction) {
 		return transaction.getCheckNumber();
-		//return getTransactionDocument(transaction.getId());
+	}
+	
+	/**
+	 * Monta e retorna o identificador único da transação: banco, agência, conta e FITID.
+	 * */
+	public String getTransactionId(Transaction transaction) {
+		String bancoId = getBankId();
+		String agenciaId = getBranchId();
+		String contaId = getAccountNumber();
+		
+		String id = transaction.getId();
+		id = StringUtils.normalizeSpace(id);
+
+		// If it is null, I would like to know about that.
+		id = id.replace(" ", "_");
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(bancoId).append("_")
+		.append(agenciaId).append("_")
+		.append(contaId).append("_")
+		.append(id);
+		
+		return sb.toString();
 	}
 	
 	/**
