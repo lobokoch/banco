@@ -33,11 +33,15 @@ import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBancariaA
 import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBancariaDTO;
 import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoContext;
 import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoTransacaoDTO;
+import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoTransacaoTituloDTO;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaobancaria.ConciliacaoBancariaEntity;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacao.ConciliacaoTransacaoEntity;
+import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacaotitulo.ConciliacaoTransacaoTituloEntity;
 import br.com.kerubin.api.database.core.ServiceContext;
 import br.com.kerubin.api.database.core.ServiceContextData;
 import lombok.extern.slf4j.Slf4j;
+
+import static br.com.kerubin.api.servicecore.util.CoreUtils.*;
 
 @Slf4j
 @Service
@@ -248,15 +252,24 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 		
         // Faz o match e atualiza as transações atuais com as retornadas, no caso se achou alguma que faz match no Contas a Pagar.
 
-        if (serviceResponse != null && serviceResponse.getTransacoes() != null) {
-        	List<ConciliacaoTransacaoDTO> transacoesMatched = serviceResponse.getTransacoes().stream().filter(it -> it.getTituloConciliadoId() != null).collect(Collectors.toList());
+        if (isNotEmpty(serviceResponse) && isNotEmpty(serviceResponse.getTransacoes())) {
+        	List<ConciliacaoTransacaoDTO> transacoesMatched = serviceResponse.getTransacoes().stream() //
+        			.filter(it -> isNotEmpty(it.getTituloConciliadoId())) //
+        			.collect(Collectors.toList());
+        	
+        	// Fez metch com algum título
+        	/*List<ConciliacaoTransacaoDTO> transacoesMatched = serviceResponse.getTransacoes().stream()
+        			.filter(it -> isNotEmpty(it.getConciliacaoTransacaoTitulosDTO())).collect(Collectors.toList());*/
+        	
         	transacoesMatched.forEach(it -> {
         		ConciliacaoTransacaoEntity transacao = transacoesDedito.stream().filter(it2 -> it2.getId().equals(it.getId())).findFirst().orElse(null);
-        		if (transacao != null) {
+        		if (isNotEmpty(transacao)) {
         			transacao.setTituloConciliadoId(it.getTituloConciliadoId());
         			transacao.setTituloConciliadoDesc(it.getTituloConciliadoDesc());
         			transacao.setSituacaoConciliacaoTrn(it.getSituacaoConciliacaoTrn());
         			transacao.setDataConciliacao(it.getDataConciliacao());
+        			
+        			transacao.setConciliacaoTransacaoTitulos(toEntity(it.getConciliacaoTransacaoTitulosDTO()));
         		}
         		else {
         			log.warn("Transação de conciliação bancária retornada na resposta do Contas a Pagar não encontrada na lista corrente:" + it);
@@ -264,7 +277,7 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
         	});
         }
         
-        List<ConciliacaoTransacaoEntity> transacoesAlteradas = transacoesDedito.stream().filter(it -> it.getTituloConciliadoId() != null).collect(Collectors.toList());
+        List<ConciliacaoTransacaoEntity> transacoesAlteradas = transacoesDedito.stream().filter(it -> isNotEmpty(it.getTituloConciliadoId())).collect(Collectors.toList());
         if (!transacoesAlteradas.isEmpty()) {
         	conciliacaoTransacaoService.salvarTransacoes(transacoesAlteradas);
         }
@@ -272,6 +285,27 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 		return transacoesDedito;
 	}
 	
+	private List<ConciliacaoTransacaoTituloEntity> toEntity(List<ConciliacaoTransacaoTituloDTO> dto) {
+		if (isNotEmpty(dto)) {
+			List<ConciliacaoTransacaoTituloEntity> titulos = dto.stream().map(it -> { 
+				ConciliacaoTransacaoTituloEntity titulo = new ConciliacaoTransacaoTituloEntity(); 
+				titulo.setId(it.getId());
+				titulo.setTituloConciliadoId(it.getTituloConciliadoId());
+				titulo.setTituloConciliadoDesc(it.getTituloConciliadoDesc());
+				titulo.setTituloConciliadoDataVen(it.getTituloConciliadoDataVen());
+				titulo.setTituloConciliadoDataPag(it.getTituloConciliadoDataPag());
+				titulo.setDataConciliacao(it.getDataConciliacao());
+				titulo.setSituacaoConciliacaoTrn(it.getSituacaoConciliacaoTrn());
+				
+				return titulo;
+			}).collect(Collectors.toList());
+			
+			return titulos;
+		}
+		
+		return null;
+	}
+
 	/**
 	 * Caso tenha algum movimento (transação) não encontrado no Contas a Pagar e Contas a Receber, verifica se já foi lançado/ vai poder lançar no caixa.
 	 * */
@@ -302,15 +336,17 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
         ConciliacaoBancariaDTO serviceResponse = response.getBody();
 		
         // Faz o match e atualiza as transações atuais com as retornadas, no caso se achou alguma que faz match no F.
-        if (serviceResponse != null && serviceResponse.getTransacoes() != null) {
-        	List<ConciliacaoTransacaoDTO> transacoesMatched = serviceResponse.getTransacoes().stream().filter(it -> it.getTituloConciliadoId() != null).collect(Collectors.toList());
+        if (isNotEmpty(serviceResponse) && isNotEmpty(serviceResponse.getTransacoes())) {
+        	List<ConciliacaoTransacaoDTO> transacoesMatched = serviceResponse.getTransacoes().stream().filter(it -> isNotEmpty(it.getTituloConciliadoId())).collect(Collectors.toList());
         	transacoesMatched.forEach(it -> {
         		ConciliacaoTransacaoEntity transacao = transacoesNaoBaixadas.stream().filter(it2 -> it2.getId().equals(it.getId())).findFirst().orElse(null);
-        		if (transacao != null) {
+        		if (isNotEmpty(transacao)) {
         			transacao.setTituloConciliadoId(it.getTituloConciliadoId());
         			transacao.setTituloConciliadoDesc(it.getTituloConciliadoDesc());
         			transacao.setSituacaoConciliacaoTrn(it.getSituacaoConciliacaoTrn());
         			transacao.setDataConciliacao(it.getDataConciliacao());
+        			
+        			transacao.setConciliacaoTransacaoTitulos(toEntity(it.getConciliacaoTransacaoTitulosDTO()));
         		}
         		else {
         			log.warn("Transação de conciliação bancária retornada na resposta do Contas a Pagar não encontrada na lista corrente:" + it);
@@ -319,9 +355,8 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
         }
         
         // Marca os itens ainda não baixados, para serem baixados no caixa.
-        transacoesNaoBaixadas.stream()
-        .filter(it -> it.getTituloConciliadoId() == null)
-        .forEach(it -> it.setSituacaoConciliacaoTrn(SituacaoConciliacaoTrn.CONCILIAR_CAIXA));
+        transacoesNaoBaixadas.stream().filter(it -> isEmpty(it.getTituloConciliadoId()))
+	        .forEach(it -> it.setSituacaoConciliacaoTrn(SituacaoConciliacaoTrn.CONCILIAR_CAIXA));
         
         if (!transacoesNaoBaixadas.isEmpty()) {
         	conciliacaoTransacaoService.salvarTransacoes(transacoesNaoBaixadas);
@@ -358,14 +393,16 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 			
 	        // Faz o match e atualiza as transações atuais com as retornadas, no caso se achou alguma que faz match no Contas a Receber.
 	        if (serviceResponse != null && serviceResponse.getTransacoes() != null) {
-	        	List<ConciliacaoTransacaoDTO> transacoesMatched = serviceResponse.getTransacoes().stream().filter(it -> it.getTituloConciliadoId() != null).collect(Collectors.toList());
+	        	List<ConciliacaoTransacaoDTO> transacoesMatched = serviceResponse.getTransacoes().stream().filter(it -> isNotEmpty(it.getTituloConciliadoId())).collect(Collectors.toList());
 	        	transacoesMatched.forEach(it -> {
 	        		ConciliacaoTransacaoEntity transacao = transacoesCredito.stream().filter(it2 -> it2.getId().equals(it.getId())).findFirst().orElse(null);
-	        		if (transacao != null) {
+	        		if (isNotEmpty(transacao)) {
 	        			transacao.setTituloConciliadoId(it.getTituloConciliadoId());
 	        			transacao.setTituloConciliadoDesc(it.getTituloConciliadoDesc());
 	        			transacao.setSituacaoConciliacaoTrn(it.getSituacaoConciliacaoTrn());
 	        			transacao.setDataConciliacao(it.getDataConciliacao());
+	        			
+	        			transacao.setConciliacaoTransacaoTitulos(toEntity(it.getConciliacaoTransacaoTitulosDTO()));
 	        		}
 	        		else {
 	        			log.warn("Transação de conciliação bancária retornada na resposta do Contas a Receber não encontrada na lista corrente:" + it);
@@ -373,7 +410,7 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 	        	});
 	        }
 	        
-	        List<ConciliacaoTransacaoEntity> transacoesAlteradas = transacoesCredito.stream().filter(it -> it.getTituloConciliadoId() != null).collect(Collectors.toList());
+	        List<ConciliacaoTransacaoEntity> transacoesAlteradas = transacoesCredito.stream().filter(it -> isNotEmpty(it.getTituloConciliadoId())).collect(Collectors.toList());
 	        if (!transacoesAlteradas.isEmpty()) {
 	        	conciliacaoTransacaoService.salvarTransacoes(transacoesAlteradas);
 	        }

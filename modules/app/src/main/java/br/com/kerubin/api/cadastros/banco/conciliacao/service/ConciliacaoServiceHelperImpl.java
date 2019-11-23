@@ -1,5 +1,6 @@
 package br.com.kerubin.api.cadastros.banco.conciliacao.service;
 
+import static br.com.kerubin.api.servicecore.util.CoreUtils.toLocalDate;
 import static br.com.kerubin.api.servicecore.util.CoreUtils.toPositive;
 
 import java.math.BigDecimal;
@@ -7,6 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -17,6 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.webcohesion.ofx4j.domain.data.common.Transaction;
 
@@ -29,9 +34,8 @@ import br.com.kerubin.api.cadastros.banco.entity.conciliacaobancaria.Conciliacao
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacao.ConciliacaoTransacaoEntity;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacao.ConciliacaoTransacaoRepository;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacao.QConciliacaoTransacaoEntity;
+import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacaotitulo.QConciliacaoTransacaoTituloEntity;
 import lombok.extern.slf4j.Slf4j;
-
-import static br.com.kerubin.api.servicecore.util.CoreUtils.*;
 
 @Slf4j
 @Service
@@ -43,8 +47,37 @@ public class ConciliacaoServiceHelperImpl implements ConciliacaoServiceHelper {
 	@Inject
 	private ConciliacaoTransacaoRepository conciliacaoTransacaoRepository;
 	
-	@PersistenceContext
+	@PersistenceContext	
 	private EntityManager em;
+	
+	@Transactional(readOnly = true)
+	@Override
+	public long countConciliacaoTransacaoComMaisDeUmTituloCandidato(UUID conciliacaoBancariaId) {
+		JPAQueryFactory query = new JPAQueryFactory(em);
+		QConciliacaoTransacaoEntity qConciliacaoTransacao = QConciliacaoTransacaoEntity.conciliacaoTransacaoEntity;
+		QConciliacaoTransacaoTituloEntity qConciliacaoTransacaoTitulo = QConciliacaoTransacaoTituloEntity.conciliacaoTransacaoTituloEntity;
+		
+		NumberExpression<Long> conciliacaoTransacaoCount = qConciliacaoTransacao.id.count();
+		
+		BooleanExpression existsQuery = JPAExpressions.selectOne()
+			.from(qConciliacaoTransacaoTitulo)
+			.where(qConciliacaoTransacaoTitulo.conciliacaoTransacao.id.eq(qConciliacaoTransacao.id))
+			.having(qConciliacaoTransacaoTitulo.conciliacaoTransacao.id.count().gt(1))
+			.groupBy(qConciliacaoTransacaoTitulo.conciliacaoTransacao.id)
+			.exists();
+		
+		JPAQuery<Long> countQuery = query.select(conciliacaoTransacaoCount.as("conciliacaoTransacaoCount"))
+			.from(qConciliacaoTransacao)
+			.where(
+					qConciliacaoTransacao.conciliacaoBancaria.id.eq(conciliacaoBancariaId)
+					.and(existsQuery)
+			);
+		
+		long count = countQuery.fetchOne();
+		
+		return count;
+		
+	}
 	
 	@Transactional
 	@Override
@@ -57,16 +90,17 @@ public class ConciliacaoServiceHelperImpl implements ConciliacaoServiceHelper {
 		transactions = transactions.stream().filter(it -> toLocalDate(it.getDatePosted()).isBefore(tomorrow)).collect(Collectors.toList());
 		
 		List<ConciliacaoTransacaoEntity> transacoes = new ArrayList<>(transactions.size());
-		for (Transaction transacao : transactions) {
+		for (Transaction transaction : transactions) {
 			ConciliacaoTransacaoEntity entity = new ConciliacaoTransacaoEntity();
 			entity.setConciliacaoBancaria(conciliacaoBancariaEntity);
 			
-			entity.setTrnData(toLocalDate(transacao.getDatePosted()));
-			entity.setTrnHistorico(transacao.getMemo());
-			entity.setTrnDocumento(reader.getTransactionDocument(transacao));
+			entity.setTrnId(reader.getTransactionId(transaction));
+			entity.setTrnData(toLocalDate(transaction.getDatePosted()));
+			entity.setTrnHistorico(transaction.getMemo());
+			entity.setTrnDocumento(reader.getTransactionDocument(transaction));
 			
 			TipoTransacao trnTipo = TipoTransacao.OUTROS;
-			switch (transacao.getTransactionType()) {
+			switch (transaction.getTransactionType()) {
 			case CREDIT:
 				trnTipo = TipoTransacao.CREDITO;
 				break;
@@ -80,7 +114,7 @@ public class ConciliacaoServiceHelperImpl implements ConciliacaoServiceHelper {
 			}
 			entity.setTrnTipo(trnTipo);
 			
-			BigDecimal valor = BigDecimal.valueOf(transacao.getAmount());
+			BigDecimal valor = BigDecimal.valueOf(transaction.getAmount());
 			valor = toPositive(valor); // DEBIT, geralmente virá como valor negativo
 			
 			entity.setTrnValor(valor);

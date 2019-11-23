@@ -263,47 +263,102 @@ service banco {
 	//@labelMenu(")
 	@auditing
 	entity ConciliacaoTransacao {
+		
+		// Financial Institution Transaction ID <FITID>
+		trnId: string
+		label: "Identificador da transação"
+		grid(hidden)
+		
+		/////
 		trnData: date
 		label: "Data"
+		listFilter(between: "Movimento de;Até;Intervalo de tempo" default: "Personalizado")
+		////  
 		
+		////
 		trnHistorico: string
 		label: "Histórico"
+		listFilter(many: "Histórico" styleClass: "ui-md-6")
+		// grid(showDataWithIcon)
 		
 		trnDocumento: string
 		label: "Documento"
+		listFilter(many: "Documento" styleClass: "ui-md-6")
+		/////
 		
+		/////
 		trnTipo: TipoTransacao
+		web(styleClass: "ui-md-3")
+		listFilter(isEqualTo: "Crédito/Débito" styleClass: "ui-md-3")
 		
 		trnValor: money
 		label: "Valor"
+		web(styleClass: "ui-md-9")
+		listFilter(between: "Valores de;até;")
+		////
 		
 		conciliacaoBancaria: /*container*/refers ConciliacaoBancaria manyToOne /*findBy(paged)*/
-		listFilter(isEqualTo: "Conciliação bancária" styleClass: "ui-md-4")
+		listFilter(isEqualTo: "Conciliação bancária" styleClass: "ui-md-4" hidden)
 		findBy
+		grid(hidden)
 		
 		situacaoConciliacaoTrn: SituacaoConciliacaoTrn
+		listFilter(isEqualTo: "Situação" styleClass: "ui-md-9")
 		
-		
+		////
 		tituloConciliadoId: uuid?
-		label: "Identificador do título conciliado"
+		label: "Id. tít. conc."
+		grid(showDataWithIcon)		
 		
 		tituloConciliadoDesc: string?
-		label: "Descrição do título conciliado"
+		label: "Desc. tít. conc."
+		
+		//vencimentoTituloConciliado: date
+		//label: "Venc. tít. conc."
 		
 		dataConciliacao: date?
 		label: "Data da conciliação"
 		
+		conciliacaoTransacaoTitulos: contains ConciliacaoTransacaoTitulo?* oneToMany(opposite: conciliacaoTransacao fetch: eager) // avoid PersistenceBag errors
+		/////
+		
 		conciliadoComErro: boolean?
 		label: "Erro"
+		listFilter(isNotNull: "Com erro" styleClass: "ui-md-3")
+		grid(hidden)
 		
 		conciliadoMsg: string?
 		label: "Mensagem"
+		grid(showDataWithIcon)
 		
 		rules {
 			
 			with(formList).apply(polling(callback: recarregarTransacoes))
 			
 		}
+	}
+	
+	@label("Títulos da transação de conciliação")
+	entity ConciliacaoTransacaoTitulo {
+		conciliacaoTransacao: refers ConciliacaoTransacao manyToOne
+		
+		tituloConciliadoId: uuid
+		label: "Id. título"
+		
+		tituloConciliadoDesc: string
+		label: "Descrição título"
+		
+		tituloConciliadoDataVen: date
+		label: "Data vencimento"
+		
+		tituloConciliadoDataPag: date?
+		label: "Data pagamento"
+		
+		dataConciliacao: date?
+		label: "Data da conciliação"
+		
+		situacaoConciliacaoTrn: SituacaoConciliacaoTrn
+		listFilter(isEqualTo: "Situação" styleClass: "ui-md-9")
 	}
 	
 	@label("Situação da transação de conciliação")

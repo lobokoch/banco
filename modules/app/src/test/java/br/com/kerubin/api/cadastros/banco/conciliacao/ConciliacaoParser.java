@@ -28,7 +28,7 @@ import static br.com.kerubin.api.servicecore.util.CoreUtils.*;
 public class ConciliacaoParser {
 	
 	@Test
-	public void test1() throws FileNotFoundException, IOException, OFXParseException {
+	public void testParser() throws FileNotFoundException, IOException, OFXParseException {
 		
 		ConciliacaoOFXReader reader = new ConciliacaoOFXReader();
 		ClassLoader classLoader = getClass().getClassLoader();

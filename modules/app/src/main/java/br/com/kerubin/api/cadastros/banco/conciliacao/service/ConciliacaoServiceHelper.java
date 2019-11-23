@@ -1,6 +1,7 @@
 package br.com.kerubin.api.cadastros.banco.conciliacao.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import br.com.kerubin.api.cadastros.banco.conciliacao.ConciliacaoOFXReader;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaobancaria.ConciliacaoBancariaEntity;
@@ -14,6 +15,7 @@ public interface ConciliacaoServiceHelper {
 	List<ConciliacaoTransacaoEntity> criarTransacoes(ConciliacaoBancariaEntity conciliacaoBancariaEntity, ConciliacaoOFXReader reader);
 	List<ConciliacaoTransacaoEntity> salvarTransacoes(List<ConciliacaoTransacaoEntity> transacoesAlteradas);
 	List<ConciliacaoTransacaoEntity> buscarTransacoesAConciliar(ConciliacaoBancariaEntity conciliacaoBancariaEntity);
+	long countConciliacaoTransacaoComMaisDeUmTituloCandidato(UUID conciliacaoBancariaId);
 
 
 }

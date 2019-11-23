@@ -10,6 +10,7 @@ import static br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBa
 import static br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBancariaConstants.MODULO_FINANCEIRO_FLUXOCAIXA;
 import static br.com.kerubin.api.servicecore.util.CoreUtils.format;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -30,6 +31,7 @@ import org.springframework.web.client.RestTemplate;
 
 import br.com.kerubin.api.cadastros.banco.SituacaoConciliacao;
 import br.com.kerubin.api.cadastros.banco.SituacaoConciliacaoTrn;
+import br.com.kerubin.api.cadastros.banco.conciliacao.exception.ConciliacaoBancariaException;
 import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBancariaAsyncExecution;
 import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBancariaDTO;
 import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoContext;
@@ -61,6 +63,13 @@ public class ConciliacaoBancariaRuleFunctionsServiceImpl implements ConciliacaoB
 	
 	@Override
 	public ConciliacaoBancariaEntity aplicarConciliacaoBancaria(UUID id, ConciliacaoBancaria conciliacaoBancaria) {
+		
+		// Validar se tem lançamentos com mais de 1 título candidato.
+		long count = conciliacaoServiceHelper.countConciliacaoTransacaoComMaisDeUmTituloCandidato(id);
+		if (count > 0) {
+			String message = MessageFormat.format("Existem {0} transações com mais de 1 título candidato para coniliação, sendo que pode haver no máximo um título candidato. Por favor corrija e tente novamente.", count);
+			throw new ConciliacaoBancariaException(message);
+		}
 		
 		ConciliacaoBancariaAsyncExecution execAsync = aplicarConciliacaoBancariaAsync(id, conciliacaoBancaria);
 		

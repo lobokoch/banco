@@ -13,6 +13,7 @@ import static br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBa
 import static br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBancariaConstants.FINANCEIRO_FLUXOCAIXA_SERVICE;
 import static br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBancariaConstants.HTTP;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.doAnswer;
 
 import java.io.File;
@@ -174,6 +175,13 @@ public class ConciliacaoBancariaProcessarArquivoServiceTest extends ConciliacaoB
     	
     	ConciliacaoBancariaEntity conciliacaoBancariaEntity = execution.getFuture().get();
     	
+    	int times = 0;
+    	while (times < 50 && transacoesProcessadas.size() < 3) {
+    		Thread.sleep(100);
+    		times++;
+    	}
+    	System.out.println("Times:" + times);
+    	
     	assertThat(conciliacaoBancariaEntity).isNotNull();
 		assertThat(conciliacaoBancariaEntity.getId()).isNotNull();
 		
@@ -198,16 +206,33 @@ public class ConciliacaoBancariaProcessarArquivoServiceTest extends ConciliacaoB
     
     private void validarTransacoesDosModulos(String modulo, Collection<ConciliacaoTransacaoEntity> transacoes) {
     	List<ConciliacaoTransacaoDTO> tps = transacoesProcessadas.get(modulo);
+    	
+    	if (tps == null) {
+    		fail("Módulo: " + modulo + " não processado a tempo.");
+    	}
 		
 		for (ConciliacaoTransacaoDTO tp: tps) {
 			ConciliacaoTransacaoEntity trn = transacoes.stream().filter(it -> it.getId().equals(tp.getId())).findFirst().orElse(null);
-			assertThat(trn).isNotNull()
+			assertThat(trn).isNotNull();
+			
+			assertThat(tp)
+	    	.extracting(ConciliacaoTransacaoDTO::getTrnId, 
+	    			ConciliacaoTransacaoDTO::getTrnDocumento, 
+	    			ConciliacaoTransacaoDTO::getTrnValor,
+	    			ConciliacaoTransacaoDTO::getTrnData,
+	    			ConciliacaoTransacaoDTO::getTrnTipo,
+	    			ConciliacaoTransacaoDTO::getTrnHistorico
+	    			)
+	    	.doesNotContain(null, null, null, null, null, null);
+			
+			assertThat(trn)
 			.extracting(ConciliacaoTransacaoEntity::getSituacaoConciliacaoTrn,
 					ConciliacaoTransacaoEntity::getTituloConciliadoId,
 					ConciliacaoTransacaoEntity::getTituloConciliadoDesc,
 					ConciliacaoTransacaoEntity::getDataConciliacao,
 					ConciliacaoTransacaoEntity::getConciliadoComErro,
 					ConciliacaoTransacaoEntity::getConciliadoMsg,
+					ConciliacaoTransacaoEntity::getTrnId,
 					ConciliacaoTransacaoEntity::getTrnData,
 					ConciliacaoTransacaoEntity::getTrnHistorico,
 					ConciliacaoTransacaoEntity::getTrnDocumento,
@@ -220,6 +245,7 @@ public class ConciliacaoBancariaProcessarArquivoServiceTest extends ConciliacaoB
 					tp.getDataConciliacao(),
 					tp.getConciliadoComErro(),
 					tp.getConciliadoMsg(),
+					tp.getTrnId(),
 					tp.getTrnData(),
 					tp.getTrnHistorico(),
 					tp.getTrnDocumento(),
@@ -231,6 +257,12 @@ public class ConciliacaoBancariaProcessarArquivoServiceTest extends ConciliacaoB
 	
     private ConciliacaoBancariaDTO gerarRespostaContasPagar(ConciliacaoBancariaDTO dto) {
     	List<ConciliacaoTransacaoDTO>  transacoes = dto.getTransacoes().stream().limit(6).collect(Collectors.toList());
+    	
+    	/*assertThat(transacoes).isNotNull().hasSize(6);
+    	
+    	assertThat(transacoes.get(0))
+    	.extracting(ConciliacaoTransacaoDTO::getTrnId, ConciliacaoTransacaoDTO::getTrnDocumento, ConciliacaoTransacaoDTO::getTrnValor, ConciliacaoTransacaoDTO::getTrnData)
+    	.contains(not(null), not(null), not(null), not(null));*/
     	
     	List<SituacaoConciliacaoTrn> situacoes = Arrays.asList(SituacaoConciliacaoTrn.CONTAS_PAGAR_BAIXADO_SEM_CONCILIACAO,
     			SituacaoConciliacaoTrn.CONCILIADO_CONTAS_PAGAR,

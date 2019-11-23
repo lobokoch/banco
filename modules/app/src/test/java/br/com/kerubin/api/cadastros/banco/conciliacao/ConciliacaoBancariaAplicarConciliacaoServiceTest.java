@@ -237,7 +237,12 @@ public class ConciliacaoBancariaAplicarConciliacaoServiceTest extends Conciliaca
     	
     	conciliacaoBancariaEntity = execution.getFuture().get();
     	
-    	
+    	int times = 0;
+    	while (times < 50 && transacoesProcessadas.size() < 3) {
+    		Thread.sleep(100);
+    		times++;
+    	}
+    	System.out.println("Times:" + times);
     	
     	assertThat(conciliacaoBancariaEntity).isNotNull();
 		assertThat(conciliacaoBancariaEntity.getId()).isNotNull();
@@ -292,6 +297,7 @@ public class ConciliacaoBancariaAplicarConciliacaoServiceTest extends Conciliaca
 			ConciliacaoTransacaoEntity entity = new ConciliacaoTransacaoEntity();
 			entity.setConciliacaoBancaria(conciliacaoBancariaEntity);
 			
+			entity.setTrnId(reader.getTransactionId(transacao));
 			entity.setTrnData(toLocalDate(transacao.getDatePosted()));
 			entity.setTrnHistorico(transacao.getMemo());
 			entity.setTrnDocumento(reader.getTransactionDocument(transacao));
@@ -383,6 +389,7 @@ public class ConciliacaoBancariaAplicarConciliacaoServiceTest extends Conciliaca
 					ConciliacaoTransacaoEntity::getDataConciliacao,
 					ConciliacaoTransacaoEntity::getConciliadoComErro,
 					ConciliacaoTransacaoEntity::getConciliadoMsg,
+					ConciliacaoTransacaoEntity::getTrnId,
 					ConciliacaoTransacaoEntity::getTrnData,
 					ConciliacaoTransacaoEntity::getTrnHistorico,
 					ConciliacaoTransacaoEntity::getTrnDocumento,
@@ -395,6 +402,7 @@ public class ConciliacaoBancariaAplicarConciliacaoServiceTest extends Conciliaca
 					tp.getDataConciliacao(),
 					tp.getConciliadoComErro(),
 					tp.getConciliadoMsg(),
+					tp.getTrnId(),
 					tp.getTrnData(),
 					tp.getTrnHistorico(),
 					tp.getTrnDocumento(),

@@ -11,10 +11,12 @@ import org.springframework.http.HttpHeaders;
 
 import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBancariaDTO;
 import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoTransacaoDTO;
+import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoTransacaoTituloDTO;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaobancaria.ConciliacaoBancariaEntity;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaobancaria.ConciliacaoBancariaLookupResult;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacao.ConciliacaoTransacaoEntity;
 import br.com.kerubin.api.database.core.ServiceContextData;
+import static br.com.kerubin.api.servicecore.util.CoreUtils.*;
 
 public class ConciliacaoUtils {
 	
@@ -37,18 +39,22 @@ public class ConciliacaoUtils {
 			
 			ConciliacaoTransacaoDTO dto = ConciliacaoTransacaoDTO.builder()
 					.id(it.getId())
+					.trnId(it.getTrnId())
 					.trnData(it.getTrnData())
 					.trnHistorico(it.getTrnHistorico())
 					.trnDocumento(it.getTrnDocumento())
 					.trnTipo(it.getTrnTipo())
 					.trnValor(it.getTrnValor())
-					//.conciliacaoBancaria(conciliacaoBancaria)
-					.situacaoConciliacaoTrn(it.getSituacaoConciliacaoTrn())
-					.tituloConciliadoId(it.getTituloConciliadoId())
-					.tituloConciliadoDesc(it.getTituloConciliadoDesc())
-					.dataConciliacao(it.getDataConciliacao())
 					.conciliadoComErro(it.getConciliadoComErro())
 					.conciliadoMsg(it.getConciliadoMsg())
+					
+					////
+                    .tituloConciliadoId(it.getTituloConciliadoId())
+                    .tituloConciliadoDesc(it.getTituloConciliadoDesc())
+                    .dataConciliacao(it.getDataConciliacao())
+                    .situacaoConciliacaoTrn(it.getSituacaoConciliacaoTrn())
+					////
+					.conciliacaoTransacaoTitulosDTO(toDTO(it)) //
 					.build();
 			
 			return dto;
@@ -67,6 +73,30 @@ public class ConciliacaoUtils {
 				.build();
 		
 		return conciliacaoBancariaDTO;
+	}
+
+	private static List<ConciliacaoTransacaoTituloDTO> toDTO(ConciliacaoTransacaoEntity conciliacaoTransacaoEntity) {
+		if (isNotEmpty(conciliacaoTransacaoEntity.getConciliacaoTransacaoTitulos())) {
+			
+			List<ConciliacaoTransacaoTituloDTO> titulos = conciliacaoTransacaoEntity.getConciliacaoTransacaoTitulos().stream().map(it -> {
+				ConciliacaoTransacaoTituloDTO dto = ConciliacaoTransacaoTituloDTO.builder()
+						.id(it.getId())
+						.tituloConciliadoId(it.getTituloConciliadoId())
+						.tituloConciliadoDesc(it.getTituloConciliadoDesc())
+						.tituloConciliadoDataVen(it.getTituloConciliadoDataVen())
+						.tituloConciliadoDataPag(it.getTituloConciliadoDataPag())
+						.dataConciliacao(it.getDataConciliacao())
+						.situacaoConciliacaoTrn(it.getSituacaoConciliacaoTrn())
+						.build();
+				
+				return dto;
+				
+			}).collect(Collectors.toList());
+			
+			return titulos;
+		}
+		
+		return null;
 	}
 
 }
