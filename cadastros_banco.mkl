@@ -1,4 +1,4 @@
-@label("Cadastros") //xx
+@label("Cadastros") //xxx
 domain cadastros
 
 @label("Banco")
@@ -219,28 +219,28 @@ service banco {
 		
 		bancoId: string
 		label: "Banco"
-		web(styleClass: "ui-md-3")
+		web(styleClass: "ui-md-3" readOnly)
 		
 		agenciaId: string
 		label: "Agência"
-		web(styleClass: "ui-md-1")
+		web(styleClass: "ui-md-1" readOnly)
 		
 		contaId: string
 		label: "Conta"
-		web(styleClass: "ui-md-2")
+		web(styleClass: "ui-md-2"  readOnly)
 		
 		dataIni: date
 		label: "Data inicial"
-		web(styleClass: "ui-md-2")
+		web(styleClass: "ui-md-2" readOnly)
 		
 		dataFim: date
 		label: "Data final"
-		web(styleClass: "ui-md-2")
+		web(styleClass: "ui-md-2" readOnly)
 		
 		//transacoes: contains ConciliacaoTransacao optional many oneToMany
 		
 		situacaoConciliacao: SituacaoConciliacao
-		web(styleClass: "ui-md-2")
+		web(styleClass: "ui-md-2" readOnly)
 		
 		rules {
 			
@@ -249,6 +249,8 @@ service banco {
 			with(contaId).apply(trimLeft("0"))
 			
 			with(form).apply(polling(callback: recarregarConciliacao))
+			
+			//with(form).apply(disableCUD).when(id.isNotNull)
 			
 			with(form.actions)
 				.apply(function(name: aplicarConciliacaoBancaria params:[this] return: this))

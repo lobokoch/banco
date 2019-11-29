@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
@@ -23,6 +24,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import br.com.kerubin.api.cadastros.banco.SituacaoConciliacao;
@@ -49,6 +51,9 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 	
 	@Inject
 	private ConciliacaoServiceHelper conciliacaoTransacaoService;
+	
+	@Inject
+	private ConciliacaoServiceHelper conciliacaoServiceHelper;
 	
 	@Inject
 	private RestTemplate restTemplate;
@@ -419,6 +424,15 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 			
 		});
 		
+	}
+	
+	@Transactional(readOnly = true)
+	@Override
+	public long countConciliacaoTransacaoComMaisDeUmTitulo(UUID id) {
+		
+		long count = conciliacaoServiceHelper.countConciliacaoTransacaoComMaisDeUmTituloCandidato(id);
+		
+		return count;
 	}
 	
 	
