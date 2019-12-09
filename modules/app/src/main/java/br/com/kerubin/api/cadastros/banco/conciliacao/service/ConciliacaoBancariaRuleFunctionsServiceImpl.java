@@ -64,16 +64,36 @@ public class ConciliacaoBancariaRuleFunctionsServiceImpl implements ConciliacaoB
 	@Override
 	public ConciliacaoBancariaEntity aplicarConciliacaoBancaria(UUID id, ConciliacaoBancaria conciliacaoBancaria) {
 		
-		// Validar se tem lançamentos com mais de 1 título candidato.
-		long count = conciliacaoServiceHelper.countConciliacaoTransacaoComMaisDeUmTituloCandidato(id);
-		if (count > 0) {
-			String message = MessageFormat.format("Existem {0} transações com mais de 1 título candidato para coniliação, sendo que pode haver no máximo um título candidato. Por favor corrija e tente novamente.", count);
-			throw new ConciliacaoBancariaException(message);
-		}
+		validarConciliacao(id);
 		
 		ConciliacaoBancariaAsyncExecution execAsync = aplicarConciliacaoBancariaAsync(id, conciliacaoBancaria);
 		
 		return execAsync.getConciliacaoBancaria();
+	}
+
+	private void validarConciliacao(UUID id) {
+		validarConciliacaoTransacaoComTituloRepetido(id);
+		validarConciliacaoTransacaoComMaisDeUmTituloCandidato(id);
+		
+	}
+
+	private void validarConciliacaoTransacaoComTituloRepetido(UUID id) {
+		long count = conciliacaoServiceHelper.countConciliacaoTransacaoComTitulosRepetidos(id);
+		if (count > 0) {
+			String message = MessageFormat.format("Existem {0} títulos, do contas a pagar e/ou contas a receber, que estão associados a mais de uma transação, " + 
+					"sendo que um título pode estar associado a apenas uma transação. Por favor corrija e tente novamente.", count);
+			throw new ConciliacaoBancariaException(message);
+		}
+		
+	}
+
+	private void validarConciliacaoTransacaoComMaisDeUmTituloCandidato(UUID id) {
+		// Validar se tem lançamentos com mais de 1 título candidato.
+		long count = conciliacaoServiceHelper.countConciliacaoTransacaoComMaisDeUmTituloCandidato(id);
+		if (count > 0) {
+			String message = MessageFormat.format("Existem {0} transações com mais de 1 título associado para coniliação, sendo que pode haver no máximo um título para cada transação. Por favor corrija e tente novamente.", count);
+			throw new ConciliacaoBancariaException(message);
+		}
 	}
 	
 	public ConciliacaoBancariaAsyncExecution aplicarConciliacaoBancariaAsync(UUID id, ConciliacaoBancaria conciliacaoBancaria) {

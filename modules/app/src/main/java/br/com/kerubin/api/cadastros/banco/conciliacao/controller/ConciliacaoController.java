@@ -19,7 +19,9 @@ import org.springframework.web.multipart.MultipartFile;
 import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBancariaAsyncExecution;
 import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoFileUploadResult;
 import br.com.kerubin.api.cadastros.banco.conciliacao.model.CountConciliacaoTransacaoComMaisDeUmTituloDTO;
+import br.com.kerubin.api.cadastros.banco.conciliacao.model.CountDTO;
 import br.com.kerubin.api.cadastros.banco.conciliacao.service.ConciliacaoService;
+import br.com.kerubin.api.cadastros.banco.conciliacao.service.ConciliacaoServiceHelper;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacao.ConciliacaoTransacaoDTOConverter;
 
 @RestController
@@ -28,6 +30,9 @@ public class ConciliacaoController {
 	
 	@Inject
 	private ConciliacaoService conciliacaoService;
+	
+	@Inject
+	private ConciliacaoServiceHelper conciliacaoServiceHelper;
 	
 	@Autowired
 	ConciliacaoTransacaoDTOConverter conciliacaoTransacaoDTOConverter;
@@ -50,6 +55,14 @@ public class ConciliacaoController {
 		long count = conciliacaoService.countConciliacaoTransacaoComMaisDeUmTitulo(id);
 		
 		CountConciliacaoTransacaoComMaisDeUmTituloDTO result = new CountConciliacaoTransacaoComMaisDeUmTituloDTO(count);
+		return ResponseEntity.ok(result);
+	}
+	
+	@GetMapping("/countConciliacaoTransacaoComTitulosRepetidos/{id}")
+	public ResponseEntity<CountDTO> countConciliacaoTransacaoComTitulosRepetidos(@PathVariable java.util.UUID id) {
+		long count = conciliacaoServiceHelper.countConciliacaoTransacaoComTitulosRepetidos(id);
+		
+		CountDTO result = new CountDTO(count);
 		return ResponseEntity.ok(result);
 	}
 	

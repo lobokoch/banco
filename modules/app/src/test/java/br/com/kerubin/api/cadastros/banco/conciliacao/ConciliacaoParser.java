@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -28,6 +29,29 @@ import static br.com.kerubin.api.servicecore.util.CoreUtils.*;
 public class ConciliacaoParser {
 	
 	@Test
+	public void testToString() {
+		BigDecimal value = new BigDecimal("123456.12345");
+		System.out.println("value.toString():" + value.toString());
+		System.out.println("value.toPlainString():" + value.toPlainString());
+		
+		value = new BigDecimal("123456.12");
+		System.out.println("value.toString():" + value.toString());
+		System.out.println("value.toPlainString():" + value.toPlainString());
+		
+		value = new BigDecimal("123456");
+		System.out.println("value.toString():" + value.toString());
+		System.out.println("value.toPlainString():" + value.toPlainString());
+		
+		value = new BigDecimal("-123456.12");
+		System.out.println("value.toString():" + value.toString());
+		System.out.println("value.toPlainString():" + value.toPlainString());
+		
+		value = new BigDecimal("0");
+		System.out.println("value.toString():" + value.toString());
+		System.out.println("value.toPlainString():" + value.toPlainString());
+	}
+	
+	//@Test
 	public void testParser() throws FileNotFoundException, IOException, OFXParseException {
 		
 		ConciliacaoOFXReader reader = new ConciliacaoOFXReader();

@@ -16,6 +16,7 @@ public interface ConciliacaoServiceHelper {
 	List<ConciliacaoTransacaoEntity> salvarTransacoes(List<ConciliacaoTransacaoEntity> transacoesAlteradas);
 	List<ConciliacaoTransacaoEntity> buscarTransacoesAConciliar(ConciliacaoBancariaEntity conciliacaoBancariaEntity);
 	long countConciliacaoTransacaoComMaisDeUmTituloCandidato(UUID conciliacaoBancariaId);
+	long countConciliacaoTransacaoComTitulosRepetidos(UUID conciliacaoBancariaId);
 
 
 }

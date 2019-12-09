@@ -310,7 +310,9 @@ service banco {
 		////
 		tituloConciliadoId: uuid?
 		label: "Id. tít. conc."
-		grid(showDataWithIcon)		
+		grid(showDataWithIcon)
+		index
+		findBy(resultKind:List custom: "findByIdIsNotAndTituloConciliadoIdIs(java.util.UUID id, java.util.UUID tituloConciliadoId)")
 		
 		tituloConciliadoDesc: string?
 		label: "Desc. tít. conc."

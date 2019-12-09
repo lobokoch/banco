@@ -140,3 +140,4 @@ ALTER TABLE conciliacao_transacao_titulo ADD CONSTRAINT fk_conciliacao_transacao
 
 
 /* INDEXES */
+CREATE INDEX conciliacao_transacao_titulo_conciliado_id_idx ON conciliacao_transacao (titulo_conciliado_id);

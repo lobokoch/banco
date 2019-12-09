@@ -79,11 +79,32 @@ public class ConciliacaoServiceHelperImpl implements ConciliacaoServiceHelper {
 		
 	}
 	
+	@Transactional(readOnly = true)
+	@Override
+	public long countConciliacaoTransacaoComTitulosRepetidos(UUID conciliacaoBancariaId) {
+		JPAQueryFactory query = new JPAQueryFactory(em);
+		QConciliacaoTransacaoEntity qConciliacaoTransacao = QConciliacaoTransacaoEntity.conciliacaoTransacaoEntity;
+		
+		List<Integer> resut = query
+			.selectOne()
+			.from(qConciliacaoTransacao)
+			.where(qConciliacaoTransacao.conciliacaoBancaria.id.eq(conciliacaoBancariaId))
+			.groupBy(qConciliacaoTransacao.tituloConciliadoId)
+			.having(qConciliacaoTransacao.tituloConciliadoId.count().gt(1L))
+			.fetch();
+		
+		long count = resut.size();
+		
+		return count;
+	}
+	
 	@Transactional
 	@Override
 	public List<ConciliacaoTransacaoEntity> criarTransacoes(ConciliacaoBancariaEntity conciliacaoBancariaEntity, ConciliacaoOFXReader reader) {
 		
 		List<Transaction> transactions = reader.getTransactions();
+		
+		//transactions = transactions.stream().filter(it -> Math.abs(it.getAmount()) == 37.90).collect(Collectors.toList());
 		
 		// Desconsidera lançamentos futuros. Cuidar que se tiver lançamentos futuros do dia, vão ser computados.
 		LocalDate tomorrow = LocalDate.now().plusDays(1);
