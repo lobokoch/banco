@@ -318,7 +318,7 @@ public class ConciliacaoBancariaRuleFunctionsServiceImpl implements ConciliacaoB
 		
 		long processadasComErro = transacoes.stream().filter(it -> it.getConciliadoComErro()).count();
 		
-		if (processadasComErro == 0) {
+		if (processadasComErro > 0) {
 			log.warn("Transações processadas com erro: {}.", processadasComErro);
 		}
 		else {
