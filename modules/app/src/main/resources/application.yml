@@ -12,4 +12,3 @@ logging:
     org.hibernate.SQL: DEBUG
 #    org.hibernate.type: TRACE
 
-# debug: true

@@ -26,6 +26,9 @@ import com.webcohesion.ofx4j.domain.data.common.TransactionType;
 import com.webcohesion.ofx4j.io.AggregateUnmarshaller;
 import com.webcohesion.ofx4j.io.OFXParseException;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class ConciliacaoOFXReader {
 
 	private BankStatementResponseTransaction bankStatementResponseTransaction;
@@ -172,7 +175,13 @@ public class ConciliacaoOFXReader {
 		.append(contaId).append("_")
 		.append(id);
 		
-		return sb.toString();
+		String str = sb.toString();
+		if (str.length() > 255) {
+			log.warn("getTransactionId with more then 255 characteres: ({}) {}", str.length(), str);
+			str = str.substring(255);
+		}
+		
+		return str;
 	}
 	
 	/**

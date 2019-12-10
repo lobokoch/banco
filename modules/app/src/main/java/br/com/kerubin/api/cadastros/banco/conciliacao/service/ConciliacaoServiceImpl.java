@@ -273,6 +273,8 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
         			transacao.setTituloConciliadoDesc(it.getTituloConciliadoDesc());
         			transacao.setSituacaoConciliacaoTrn(it.getSituacaoConciliacaoTrn());
         			transacao.setDataConciliacao(it.getDataConciliacao());
+        			transacao.setConciliadoComErro(it.getConciliadoComErro());
+        			transacao.setConciliadoMsg(it.getConciliadoMsg());
         			
         			transacao.setConciliacaoTransacaoTitulos(toEntity(it.getConciliacaoTransacaoTitulosDTO()));
         		}
