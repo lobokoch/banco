@@ -30,7 +30,7 @@ public class CustomConciliacaoTransacaoServiceImpl extends ConciliacaoTransacaoS
 		
 		// Se removeu todos os títulos, entende que deseja lançar no caixa.
 		if (conciliacaoTransacaoEntity.getConciliacaoTransacaoTitulos() == null || conciliacaoTransacaoEntity.getConciliacaoTransacaoTitulos().isEmpty()) {
-			conciliacaoTransacaoEntity.setTituloConciliadoDesc(null);
+			// conciliacaoTransacaoEntity.setTituloConciliadoDesc(null); esse o usuário pode querer alterar
 			conciliacaoTransacaoEntity.setTituloConciliadoId(null);
 			conciliacaoTransacaoEntity.setSituacaoConciliacaoTrn(SituacaoConciliacaoTrn.CONCILIAR_CAIXA);
 			conciliacaoTransacaoEntity.setDataConciliacao(null);
