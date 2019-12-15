@@ -14,6 +14,12 @@ service banco {
 		databaseCore {version:"1.0.0"}
 	}
 	
+	dependency {
+		groupId: "br.com.kerubin.api"
+		artifactId: "financeiro-planocontas-client"
+		version: "1.0.0" 
+	}
+	
 	@publishEvents// (events=[created, updated, deleted]) 
 	@auditing
 	@label("Banco")
@@ -317,6 +323,9 @@ service banco {
 		tituloConciliadoDesc: string?
 		label: "Desc. tít. conc."
 		
+		tituloPlanoContas: refers PlanoConta? manyToOne(/*fetch: eager*/)
+		autoCompleteWithOwnerParams
+		
 		//vencimentoTituloConciliado: date
 		//label: "Venc. tít. conc."
 		
@@ -363,6 +372,52 @@ service banco {
 		
 		situacaoConciliacaoTrn: SituacaoConciliacaoTrn
 		listFilter(isEqualTo: "Situação" styleClass: "ui-md-9")
+	}
+	
+	@externalEntity
+	@subscribe(domain= financeiro, service=plano_contas, events=[cud])
+	@label("Plano de contas")
+	entity PlanoConta {
+		
+		codigo: string
+		label: "Código"
+		autoComplete(data sort:asc)
+		
+		descricao: string
+		label: "Descrição"
+		autoComplete
+		
+		tipoFinanceiro: TipoPlanoContaFinanceiro
+		
+		tipoReceitaDespesa: TipoReceitaDespesa?
+		label: "Tipo receita/despesa"
+		
+		planoContaPai: refers PlanoConta? manyToOne
+		label: "Plano de conta pai"
+		
+		ativo: boolean default: true // Will be replecated
+		label: "Ativo"
+		
+	}
+	
+	// From Plano de Contas ///
+	@label("Tipo da receita/despesa")
+	enum TipoReceitaDespesa {
+		VARIAVEL
+		label: "Variável"
+		default
+		
+		FIXO
+		label: "Fixa"
+	}
+	
+	@label("Tipo financeiro do plano de contas")
+	enum TipoPlanoContaFinanceiro {
+		RECEITA
+		label: "Receita"
+		
+		DESPESA
+		label: "Despesa"
 	}
 	
 	@label("Situação da transação de conciliação")

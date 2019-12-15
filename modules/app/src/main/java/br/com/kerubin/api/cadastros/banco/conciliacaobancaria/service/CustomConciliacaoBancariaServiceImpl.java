@@ -1,11 +1,17 @@
 package br.com.kerubin.api.cadastros.banco.conciliacaobancaria.service;
 
+import java.util.Iterator;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +19,10 @@ import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
+import br.com.kerubin.api.cadastros.banco.entity.conciliacaobancaria.ConciliacaoBancariaEntity;
+import br.com.kerubin.api.cadastros.banco.entity.conciliacaobancaria.ConciliacaoBancariaListFilter;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaobancaria.ConciliacaoBancariaServiceImpl;
+import br.com.kerubin.api.cadastros.banco.entity.conciliacaobancaria.QConciliacaoBancariaEntity;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacao.QConciliacaoTransacaoEntity;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacaotitulo.QConciliacaoTransacaoTituloEntity;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +34,31 @@ public class CustomConciliacaoBancariaServiceImpl extends ConciliacaoBancariaSer
 	
 	@PersistenceContext
 	private EntityManager em;
+	
+	@Transactional(readOnly = true)
+	@Override
+	public Page<ConciliacaoBancariaEntity> list(ConciliacaoBancariaListFilter conciliacaoBancariaListFilter,
+			Pageable pageable) {
+		
+		String fieldId = QConciliacaoBancariaEntity.conciliacaoBancariaEntity.id.getMetadata().getName();
+		String fieldDataFim = QConciliacaoBancariaEntity.conciliacaoBancariaEntity.dataFim.getMetadata().getName();
+		String fieldDataIni = QConciliacaoBancariaEntity.conciliacaoBancariaEntity.dataIni.getMetadata().getName();
+		
+		Iterator<Order> orders = pageable.getSort().iterator();
+		if (pageable.getSort().isSorted() && orders.hasNext()) {
+			Order order = orders.next();
+			if (fieldId.equals(order.getProperty()) && !orders.hasNext()) {
+				Sort sort = Sort.by(fieldDataFim).descending()
+						.and(Sort.by(fieldDataIni).descending());
+				
+				pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+				
+			}
+		}
+		
+		return super.list(conciliacaoBancariaListFilter, pageable);
+		
+	}
 	
 	@Transactional
 	@Override

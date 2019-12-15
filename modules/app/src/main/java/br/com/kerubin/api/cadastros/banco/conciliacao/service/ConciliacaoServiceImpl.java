@@ -36,9 +36,11 @@ import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBancariaD
 import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoContext;
 import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoTransacaoDTO;
 import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoTransacaoTituloDTO;
+import br.com.kerubin.api.cadastros.banco.conciliacao.model.PlanoContaDTO;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaobancaria.ConciliacaoBancariaEntity;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacao.ConciliacaoTransacaoEntity;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacaotitulo.ConciliacaoTransacaoTituloEntity;
+import br.com.kerubin.api.cadastros.banco.entity.planoconta.PlanoContaEntity;
 import br.com.kerubin.api.database.core.ServiceContext;
 import br.com.kerubin.api.database.core.ServiceContextData;
 import lombok.extern.slf4j.Slf4j;
@@ -350,6 +352,7 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
         		if (isNotEmpty(transacao)) {
         			transacao.setTituloConciliadoId(it.getTituloConciliadoId());
         			transacao.setTituloConciliadoDesc(it.getTituloConciliadoDesc());
+        			transacao.setTituloPlanoContas(toEntity(it.getTituloPlanoContas()));
         			transacao.setSituacaoConciliacaoTrn(it.getSituacaoConciliacaoTrn());
         			transacao.setDataConciliacao(it.getDataConciliacao());
         			
@@ -376,6 +379,19 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 		return contexto;
 	}
 	
+	private PlanoContaEntity toEntity(PlanoContaDTO tituloPlanoContas) {
+		if (tituloPlanoContas == null) {
+			return null;
+		}
+		
+		PlanoContaEntity entity = new PlanoContaEntity();
+		entity.setId(tituloPlanoContas.getId());
+		entity.setCodigo(tituloPlanoContas.getCodigo());
+		entity.setDescricao(tituloPlanoContas.getDescricao());
+		
+		return entity;
+	}
+
 	private CompletableFuture<List<ConciliacaoTransacaoEntity>> verificarTransacoesNoContasReceber(ConciliacaoContext contexto, List<ConciliacaoTransacaoEntity> transacoesCredito) {
 		
 		return CompletableFuture.supplyAsync(() -> {

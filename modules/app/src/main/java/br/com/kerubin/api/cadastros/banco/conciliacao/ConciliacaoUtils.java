@@ -12,9 +12,11 @@ import org.springframework.http.HttpHeaders;
 import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBancariaDTO;
 import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoTransacaoDTO;
 import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoTransacaoTituloDTO;
+import br.com.kerubin.api.cadastros.banco.conciliacao.model.PlanoContaDTO;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaobancaria.ConciliacaoBancariaEntity;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaobancaria.ConciliacaoBancariaLookupResult;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacao.ConciliacaoTransacaoEntity;
+import br.com.kerubin.api.cadastros.banco.entity.planoconta.PlanoContaEntity;
 import br.com.kerubin.api.database.core.ServiceContextData;
 import static br.com.kerubin.api.servicecore.util.CoreUtils.*;
 
@@ -51,6 +53,7 @@ public class ConciliacaoUtils {
 					////
                     .tituloConciliadoId(it.getTituloConciliadoId())
                     .tituloConciliadoDesc(it.getTituloConciliadoDesc())
+                    .tituloPlanoContas(toDTO(it.getTituloPlanoContas()))
                     .dataConciliacao(it.getDataConciliacao())
                     .situacaoConciliacaoTrn(it.getSituacaoConciliacaoTrn())
 					////
@@ -75,6 +78,20 @@ public class ConciliacaoUtils {
 		return conciliacaoBancariaDTO;
 	}
 
+	private static PlanoContaDTO toDTO(PlanoContaEntity tituloPlanoContas) {
+		if (tituloPlanoContas == null) {
+			return null;
+		}
+		
+		PlanoContaDTO dto = PlanoContaDTO.builder()
+				.id(tituloPlanoContas.getId()) // Lazy vs eager Hibernate problem.
+				//.codigo(tituloPlanoContas.getCodigo())
+				//.descricao(tituloPlanoContas.getDescricao())
+				.build();
+		
+		return dto;
+	}
+
 	private static List<ConciliacaoTransacaoTituloDTO> toDTO(ConciliacaoTransacaoEntity conciliacaoTransacaoEntity) {
 		if (isNotEmpty(conciliacaoTransacaoEntity.getConciliacaoTransacaoTitulos())) {
 			
@@ -97,6 +114,16 @@ public class ConciliacaoUtils {
 		}
 		
 		return null;
+	}
+	
+	public static PlanoContaEntity toEntity(PlanoContaDTO tituloPlanoContas) {
+		if (isEmpty(tituloPlanoContas)) {
+			return null;
+		}
+		
+		PlanoContaEntity entity = new PlanoContaEntity();
+		entity.setId(tituloPlanoContas.getId());
+		return entity;
 	}
 
 }

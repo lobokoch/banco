@@ -2,6 +2,7 @@ package br.com.kerubin.api.cadastros.banco.conciliacao.service;
 
 import static br.com.kerubin.api.cadastros.banco.conciliacao.ConciliacaoUtils.buildHttpHeaders;
 import static br.com.kerubin.api.cadastros.banco.conciliacao.ConciliacaoUtils.toDTO;
+import static br.com.kerubin.api.cadastros.banco.conciliacao.ConciliacaoUtils.toEntity;
 import static br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBancariaConstants.HTTP;
 import static br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBancariaConstants.MODULOS_FINANCEIRO;
 import static br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBancariaConstants.MODULOS_FINANCEIRO_DESC;
@@ -247,7 +248,25 @@ public class ConciliacaoBancariaRuleFunctionsServiceImpl implements ConciliacaoB
 			
 			ConciliacaoBancariaEntity conciliacaoBancariaEntity = contexto.getConciliacaoBancariaEntity();
 			
-			ConciliacaoBancariaDTO conciliacaoBancariaDTO = toDTO(conciliacaoBancariaEntity, transacoes);
+			ConciliacaoBancariaDTO conciliacaoBancariaDTO = null;
+			try {
+				conciliacaoBancariaDTO = toDTO(conciliacaoBancariaEntity, transacoes);
+			} catch (Exception e) {
+				String msg = MessageFormat.format("Error at toDTO:{0}", e.getMessage());
+				log.error(msg, e);
+				
+				transacoes.forEach(it -> {
+					it.setConciliadoComErro(true);
+					it.setConciliadoMsg(msg);
+				});
+				
+				try {
+					conciliacaoTransacaoService.salvarTransacoes(transacoes);
+				} catch (Exception e2) {
+					log.error(MessageFormat.format("Error saving error at toDTO:{0}", e.getMessage()), e);
+				}
+				return transacoes;
+			}
 			
 			String url = HTTP + modulo + "/aplicarConciliacaoBancaria";
 			
@@ -260,7 +279,20 @@ public class ConciliacaoBancariaRuleFunctionsServiceImpl implements ConciliacaoB
 			try {
 				response = restTemplate.exchange(url, HttpMethod.POST, request, ConciliacaoBancariaDTO.class);
 			} catch (Exception e) {
-				log.error("Erro ao executar URL: " + url, e);
+				String msg = MessageFormat.format("Erro ao executar URL:{0}, erro: {1}", url, e.getMessage());
+				log.error(msg, e);
+				
+				transacoes.forEach(it -> {
+					it.setConciliadoComErro(true);
+					it.setConciliadoMsg(msg);
+				});
+				
+				try {
+					conciliacaoTransacaoService.salvarTransacoes(transacoes);
+				} catch (Exception e2) {
+					log.error(MessageFormat.format("Erro ao salvar erro ao executar URL:{0}, erro: {1}", url, e.getMessage()), e);
+				}
+				
 				return transacoes;
 			}
 			log.info("DEPOIS de chamar: {}", url);
@@ -281,6 +313,7 @@ public class ConciliacaoBancariaRuleFunctionsServiceImpl implements ConciliacaoB
 					transacao.setConciliadoComErro(trnDto.getConciliadoComErro());
 					transacao.setConciliadoMsg(trnDto.getConciliadoMsg());
 					transacao.setDataConciliacao(trnDto.getDataConciliacao());
+					transacao.setTituloPlanoContas(toEntity(trnDto.getTituloPlanoContas()));
 				}
 				else {
 					log.error(format("Service não retornou a transação id: {0}, trnDoc: {1}, trnHis: {2}", 

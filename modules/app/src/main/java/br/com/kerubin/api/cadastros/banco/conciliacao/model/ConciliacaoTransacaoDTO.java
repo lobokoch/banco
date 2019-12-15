@@ -41,7 +41,9 @@ public class ConciliacaoTransacaoDTO {
     
     private String tituloConciliadoDesc;
     
-    private SituacaoConciliacaoTrn situacaoConciliacaoTrn;    
+    private PlanoContaDTO tituloPlanoContas;
+    
+    private SituacaoConciliacaoTrn situacaoConciliacaoTrn;
     
     private java.time.LocalDate dataConciliacao;
     
