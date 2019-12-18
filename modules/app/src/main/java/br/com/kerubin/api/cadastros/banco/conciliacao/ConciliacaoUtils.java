@@ -53,6 +53,9 @@ public class ConciliacaoUtils {
 					////
                     .tituloConciliadoId(it.getTituloConciliadoId())
                     .tituloConciliadoDesc(it.getTituloConciliadoDesc())
+                    .tituloConciliadoValor(it.getTituloConciliadoValor())
+                    .tituloConciliadoDataVen(it.getTituloConciliadoDataVen())
+                    .tituloConciliadoDataPag(it.getTituloConciliadoDataPag())
                     .tituloPlanoContas(toDTO(it.getTituloPlanoContas()))
                     .dataConciliacao(it.getDataConciliacao())
                     .situacaoConciliacaoTrn(it.getSituacaoConciliacaoTrn())
@@ -95,18 +98,20 @@ public class ConciliacaoUtils {
 	private static List<ConciliacaoTransacaoTituloDTO> toDTO(ConciliacaoTransacaoEntity conciliacaoTransacaoEntity) {
 		if (isNotEmpty(conciliacaoTransacaoEntity.getConciliacaoTransacaoTitulos())) {
 			
-			List<ConciliacaoTransacaoTituloDTO> titulos = conciliacaoTransacaoEntity.getConciliacaoTransacaoTitulos().stream().map(it -> {
-				ConciliacaoTransacaoTituloDTO dto = ConciliacaoTransacaoTituloDTO.builder()
-						.id(it.getId())
-						.tituloConciliadoId(it.getTituloConciliadoId())
-						.tituloConciliadoDesc(it.getTituloConciliadoDesc())
-						.tituloConciliadoDataVen(it.getTituloConciliadoDataVen())
-						.tituloConciliadoDataPag(it.getTituloConciliadoDataPag())
-						.dataConciliacao(it.getDataConciliacao())
-						.situacaoConciliacaoTrn(it.getSituacaoConciliacaoTrn())
+			List<ConciliacaoTransacaoTituloDTO> titulos = conciliacaoTransacaoEntity.getConciliacaoTransacaoTitulos().stream().map(transacaoEntity -> {
+				ConciliacaoTransacaoTituloDTO transacaoDTO = ConciliacaoTransacaoTituloDTO.builder()
+						.id(transacaoEntity.getId())
+						.tituloConciliadoId(transacaoEntity.getTituloConciliadoId())
+						.tituloConciliadoDesc(transacaoEntity.getTituloConciliadoDesc())
+						.tituloConciliadoValor(transacaoEntity.getTituloConciliadoValor())
+						.tituloConciliadoDataVen(transacaoEntity.getTituloConciliadoDataVen())
+						.tituloConciliadoDataPag(transacaoEntity.getTituloConciliadoDataPag())
+						.dataConciliacao(transacaoEntity.getDataConciliacao())
+						.situacaoConciliacaoTrn(transacaoEntity.getSituacaoConciliacaoTrn())
+						.tituloPlanoContas(toDTO(transacaoEntity.getTituloPlanoContas()))
 						.build();
 				
-				return dto;
+				return transacaoDTO;
 				
 			}).collect(Collectors.toList());
 			

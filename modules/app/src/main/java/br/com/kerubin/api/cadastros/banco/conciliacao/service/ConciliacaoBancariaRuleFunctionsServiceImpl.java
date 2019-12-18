@@ -230,6 +230,7 @@ public class ConciliacaoBancariaRuleFunctionsServiceImpl implements ConciliacaoB
 		
 	}
 	
+	
 	private CompletableFuture<List<ConciliacaoTransacaoEntity>> aplicarConciliacao(
 			ConciliacaoContext contexto, List<ConciliacaoTransacaoEntity> transacoes, int moduloIndex) {
 		

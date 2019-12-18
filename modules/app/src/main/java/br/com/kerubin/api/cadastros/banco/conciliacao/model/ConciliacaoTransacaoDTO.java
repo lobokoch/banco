@@ -1,6 +1,9 @@
 package br.com.kerubin.api.cadastros.banco.conciliacao.model;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 import br.com.kerubin.api.cadastros.banco.SituacaoConciliacaoTrn;
 import br.com.kerubin.api.cadastros.banco.TipoTransacao;
@@ -20,11 +23,11 @@ import lombok.ToString;
 @AllArgsConstructor
 public class ConciliacaoTransacaoDTO {
 	
-	private java.util.UUID id;
+	private UUID id;
 	
 	private String trnId;
 	
-	private java.time.LocalDate trnData;
+	private LocalDate trnData;
 	
 	private String trnHistorico;
 	
@@ -32,20 +35,19 @@ public class ConciliacaoTransacaoDTO {
 	
 	private TipoTransacao trnTipo;
 	
-	private java.math.BigDecimal trnValor;
+	private BigDecimal trnValor;
 	
 	private ConciliacaoBancariaLookupResult conciliacaoBancaria;
 	
 	////
-	private java.util.UUID tituloConciliadoId;
-    
+	private UUID tituloConciliadoId;
     private String tituloConciliadoDesc;
-    
+    private BigDecimal tituloConciliadoValor;    
+    private LocalDate tituloConciliadoDataVen;
+    private LocalDate tituloConciliadoDataPag;
     private PlanoContaDTO tituloPlanoContas;
-    
     private SituacaoConciliacaoTrn situacaoConciliacaoTrn;
-    
-    private java.time.LocalDate dataConciliacao;
+    private LocalDate dataConciliacao;
     
     /////
     private List<ConciliacaoTransacaoTituloDTO> conciliacaoTransacaoTitulosDTO;

@@ -104,7 +104,7 @@ public class ConciliacaoServiceHelperImpl implements ConciliacaoServiceHelper {
 		
 		List<Transaction> transactions = reader.getTransactions();
 		
-		//transactions = transactions.stream().filter(it -> Math.abs(it.getAmount()) == 37.90).collect(Collectors.toList());
+		// transactions = transactions.stream().filter(it -> Math.abs(it.getAmount()) == 28.21).collect(Collectors.toList());
 		
 		// Desconsidera lançamentos futuros. Cuidar que se tiver lançamentos futuros do dia, vão ser computados.
 		LocalDate tomorrow = LocalDate.now().plusDays(1);

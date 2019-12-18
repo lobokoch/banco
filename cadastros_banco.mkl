@@ -219,6 +219,7 @@ service banco {
 	}
 	
 	@label("Conciliação bancária")
+	@auditing
 	entity ConciliacaoBancaria {
 		
 		id: uuid
@@ -323,11 +324,19 @@ service banco {
 		tituloConciliadoDesc: string?
 		label: "Desc. tít. conc."
 		
+		tituloConciliadoValor: money?
+		label: "Val. tít."
+		
+		tituloConciliadoDataVen: date?
+		label: "Ven. tít."
+		grid(showDataWithIcon(icon: "pi-calendar"))
+		
+		tituloConciliadoDataPag: date?
+		label: "Pag. tít."
+		grid(showDataWithIcon(icon: "pi-calendar"))
+		
 		tituloPlanoContas: refers PlanoConta? manyToOne(/*fetch: eager*/)
 		autoCompleteWithOwnerParams
-		
-		//vencimentoTituloConciliado: date
-		//label: "Venc. tít. conc."
 		
 		dataConciliacao: date?
 		label: "Data da conciliação"
@@ -361,11 +370,16 @@ service banco {
 		tituloConciliadoDesc: string
 		label: "Descrição título"
 		
+		tituloConciliadoValor: money?
+		label: "Val. tít."
+		
 		tituloConciliadoDataVen: date
 		label: "Data vencimento"
 		
 		tituloConciliadoDataPag: date?
 		label: "Data pagamento"
+		
+		tituloPlanoContas: refers PlanoConta? manyToOne(/*fetch: eager*/)
 		
 		dataConciliacao: date?
 		label: "Data da conciliação"

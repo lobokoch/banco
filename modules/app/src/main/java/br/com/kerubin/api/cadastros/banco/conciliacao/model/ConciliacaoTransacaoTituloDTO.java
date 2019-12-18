@@ -8,6 +8,8 @@ WARNING: DO NOT CHANGE THIS CODE BECAUSE THE CHANGES WILL BE LOST IN THE NEXT CO
 
 package br.com.kerubin.api.cadastros.banco.conciliacao.model;
 
+import java.math.BigDecimal;
+
 import br.com.kerubin.api.cadastros.banco.SituacaoConciliacaoTrn;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,19 +26,15 @@ import lombok.ToString;
 @AllArgsConstructor
 public class ConciliacaoTransacaoTituloDTO {
 
-	private java.util.UUID id;
-	
-	private java.util.UUID tituloConciliadoId;
-	
-	private String tituloConciliadoDesc;
-	
-	private java.time.LocalDate tituloConciliadoDataVen;
-	
+	private java.util.UUID id;	
+	private java.util.UUID tituloConciliadoId;	
+	private String tituloConciliadoDesc;	
+	private BigDecimal tituloConciliadoValor;
+	private java.time.LocalDate tituloConciliadoDataVen;	
 	private java.time.LocalDate tituloConciliadoDataPag;
-	
-	private java.time.LocalDate dataConciliacao;
-	
+	private PlanoContaDTO tituloPlanoContas;
 	private SituacaoConciliacaoTrn situacaoConciliacaoTrn;
+	private java.time.LocalDate dataConciliacao;	
 	
 	
 }
