@@ -1,6 +1,7 @@
 package br.com.kerubin.api.cadastros.banco.conciliacaotransacao.service;
 
 import static br.com.kerubin.api.servicecore.util.CoreUtils.isNotEmpty;
+import static br.com.kerubin.api.servicecore.util.CoreUtils.isEmpty;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -52,13 +53,25 @@ public class CustomConciliacaoTransacaoServiceImpl extends ConciliacaoTransacaoS
 	
 	@Override
 	public ConciliacaoTransacaoEntity update(UUID id, ConciliacaoTransacaoEntity conciliacaoTransacaoEntity) {
+		ConciliacaoTransacaoEntity atual = read(id);
+		// em.detach(atual);
+		
+		boolean atualTemTitulos = isNotEmpty(atual.getConciliacaoTransacaoTitulos());
 		
 		// Se removeu todos os títulos, entende que deseja lançar no caixa.
-		if (conciliacaoTransacaoEntity.getConciliacaoTransacaoTitulos() == null || conciliacaoTransacaoEntity.getConciliacaoTransacaoTitulos().isEmpty()) {
+		if (atualTemTitulos && isEmpty(conciliacaoTransacaoEntity.getConciliacaoTransacaoTitulos())) {
 			// conciliacaoTransacaoEntity.setTituloConciliadoDesc(null); esse o usuário pode querer alterar
 			conciliacaoTransacaoEntity.setTituloConciliadoId(null);
 			conciliacaoTransacaoEntity.setSituacaoConciliacaoTrn(SituacaoConciliacaoTrn.CONCILIAR_CAIXA);
 			conciliacaoTransacaoEntity.setDataConciliacao(null);
+			
+			conciliacaoTransacaoEntity.setTituloConciliadoDesc(null);
+			conciliacaoTransacaoEntity.setTituloConciliadoValor(null);
+			conciliacaoTransacaoEntity.setTituloConciliadoDataVen(null);
+			conciliacaoTransacaoEntity.setTituloConciliadoDataPag(null);
+			conciliacaoTransacaoEntity.setTituloPlanoContas(null);
+			conciliacaoTransacaoEntity.setConciliadoMsg(null);
+			conciliacaoTransacaoEntity.setConciliadoComErro(false);
 		}
 		
 		ConciliacaoTransacaoEntity result =  super.update(id, conciliacaoTransacaoEntity);
