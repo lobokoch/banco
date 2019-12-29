@@ -8,6 +8,7 @@ import static br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBa
 import static br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBancariaConstants.HTTP;
 
 import java.io.InputStream;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -295,7 +297,30 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 			transacaoEntity.setConciliadoComErro(transacaoDTO.getConciliadoComErro());
 			transacaoEntity.setConciliadoMsg(transacaoDTO.getConciliadoMsg());
 			
-			transacaoEntity.setConciliacaoTransacaoTitulos(toEntity(transacaoDTO.getConciliacaoTransacaoTitulosDTO()));
+			if (isNotEmpty(transacaoDTO.getConciliacaoTransacaoTitulosDTO())) {
+				List<ConciliacaoTransacaoTituloDTO> titulosDTO = toSafeList(transacaoDTO.getConciliacaoTransacaoTitulosDTO());
+				List<ConciliacaoTransacaoTituloEntity> titulosEntity = toSafeList(transacaoEntity.getConciliacaoTransacaoTitulos());
+				try {
+					titulosDTO = titulosDTO.stream()
+							.filter(tituloDTO -> titulosEntity
+								.stream()
+								.noneMatch(
+										tituloEntity -> {
+											boolean ret = tituloEntity.getTituloConciliadoId().equals(tituloDTO.getTituloConciliadoId());
+											return ret;
+										}
+							)) // filter
+						.collect(Collectors.toList());
+				} catch(Exception e) {
+					log.error(MessageFormat.format("Erro ao fazer merge dos títulos da transação id: {0}", transacaoEntity.getId()), e);
+				}
+				
+				if (isNotEmpty(titulosDTO)) {
+					List<ConciliacaoTransacaoTituloEntity> entities = toEntity(titulosDTO);
+					transacaoEntity.getConciliacaoTransacaoTitulos().clear(); // Para não adicionar itens já adicionados.
+					entities.forEach(transacaoEntity::addConciliacaoTransacaoTitulo);
+				}
+			}
 		}
 		else {
 			log.warn("Transação de conciliação bancária retornada na resposta do módulo não encontrada na lista corrente:" + transacaoDTO);
@@ -340,8 +365,11 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 		ConciliacaoBancariaEntity conciliacaoBancariaEntity = contexto.getConciliacaoBancariaEntity(); 
 		List<ConciliacaoTransacaoEntity> transacoes = contexto.getTransacoes();
 		
+		Predicate<ConciliacaoTransacaoEntity> filter = trnEntity -> 
+			!SituacaoConciliacaoTrn.CONCILIADO_CONTAS_PAGAR.equals(trnEntity.getSituacaoConciliacaoTrn()) || 
+			!SituacaoConciliacaoTrn.CONCILIADO_CONTAS_RECEBER.equals(trnEntity.getSituacaoConciliacaoTrn());
 		
-		List<ConciliacaoTransacaoEntity> transacoesNaoBaixadas = transacoes.stream().filter(it -> it.getTituloConciliadoId() == null).collect(Collectors.toList());
+		List<ConciliacaoTransacaoEntity> transacoesNaoBaixadas = transacoes.stream().filter(filter).collect(Collectors.toList());
 		
 		ConciliacaoBancariaDTO conciliacaoBancariaDTO = toDTO(conciliacaoBancariaEntity, transacoesNaoBaixadas);
 		
@@ -356,11 +384,13 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
         
         ConciliacaoBancariaDTO serviceResponse = response.getBody();
 		
-        // Faz o match e atualiza as transações atuais com as retornadas, no caso se achou alguma que faz match no F.
+        // Faz o match e atualiza as transações atuais com as retornadas, no caso se achou alguma que faz match.
         if (isNotEmpty(serviceResponse) && isNotEmpty(serviceResponse.getTransacoes())) {
-        	List<ConciliacaoTransacaoDTO> transacoesMatched = serviceResponse.getTransacoes().stream().filter(it -> isNotEmpty(it.getTituloConciliadoId())).collect(Collectors.toList());
+			
+        	List<ConciliacaoTransacaoDTO> transacoesMatched = serviceResponse.getTransacoes().stream().filter(touchedByCaixa()).collect(Collectors.toList());
         	transacoesMatched.forEach(transacaoDTO -> {
         		ConciliacaoTransacaoEntity transacaoEntity = transacoesNaoBaixadas.stream().filter(it2 -> it2.getId().equals(transacaoDTO.getId())).findFirst().orElse(null);
+        		
         		updateTransacaoEntity(transacaoEntity, transacaoDTO);
         	});
         }
@@ -378,6 +408,15 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
         log.info("FIM verificarModuloCaixa.");
         
 		return contexto;
+	}
+	
+	// Item de transação encontrado no caixa e não encontrado no contas a pagar ou contas a receber, ou encontrado no caixa e em um dos módulos de contas. Pode estar na lista de títulos da transação.
+	private Predicate<ConciliacaoTransacaoDTO> touchedByCaixa() {
+		return dto -> ( SituacaoConciliacaoTrn.CONCILIADO_CAIXA.equals(dto.getSituacaoConciliacaoTrn()) || 
+				SituacaoConciliacaoTrn.CAIXA_BAIXADO_SEM_CONCILIACAO.equals(dto.getSituacaoConciliacaoTrn()) ) || 
+				isNotEmpty(dto.getConciliacaoTransacaoTitulosDTO()) && 
+				dto.getConciliacaoTransacaoTitulosDTO().stream().anyMatch(it -> SituacaoConciliacaoTrn.CONCILIADO_CAIXA.equals(it.getSituacaoConciliacaoTrn()) || 
+				SituacaoConciliacaoTrn.CAIXA_BAIXADO_SEM_CONCILIACAO.equals(it.getSituacaoConciliacaoTrn()));
 	}
 	
 	private PlanoContaEntity toEntity(PlanoContaDTO tituloPlanoContas) {
