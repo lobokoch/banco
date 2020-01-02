@@ -399,8 +399,10 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
         transacoesNaoBaixadas.stream().filter(it -> isEmpty(it.getTituloConciliadoId()))
 	        .forEach(it -> it.setSituacaoConciliacaoTrn(SituacaoConciliacaoTrn.CONCILIAR_CAIXA));
         
-        if (!transacoesNaoBaixadas.isEmpty()) {
-        	conciliacaoTransacaoService.salvarTransacoes(transacoesNaoBaixadas);
+        List<ConciliacaoTransacaoEntity> transacoesASalvar = transacoesNaoBaixadas.stream().filter(entityTouchedByCaixa()).collect(Collectors.toList());
+        
+        if (!transacoesASalvar.isEmpty()) {
+        	conciliacaoTransacaoService.salvarTransacoes(transacoesASalvar);
         }
         
         contexto.setTransacoes(transacoes);
@@ -417,6 +419,17 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 				isNotEmpty(dto.getConciliacaoTransacaoTitulosDTO()) && 
 				dto.getConciliacaoTransacaoTitulosDTO().stream().anyMatch(it -> SituacaoConciliacaoTrn.CONCILIADO_CAIXA.equals(it.getSituacaoConciliacaoTrn()) || 
 				SituacaoConciliacaoTrn.CAIXA_BAIXADO_SEM_CONCILIACAO.equals(it.getSituacaoConciliacaoTrn()));
+	}
+	
+	private Predicate<ConciliacaoTransacaoEntity> entityTouchedByCaixa() {
+		return entity -> ( 
+				SituacaoConciliacaoTrn.CONCILIAR_CAIXA.equals(entity.getSituacaoConciliacaoTrn()) || 
+				SituacaoConciliacaoTrn.CONCILIADO_CAIXA.equals(entity.getSituacaoConciliacaoTrn()) || 
+				SituacaoConciliacaoTrn.CAIXA_BAIXADO_SEM_CONCILIACAO.equals(entity.getSituacaoConciliacaoTrn()) ) || 
+				isNotEmpty(entity.getConciliacaoTransacaoTitulos()) && 
+				entity.getConciliacaoTransacaoTitulos().stream().anyMatch(it -> SituacaoConciliacaoTrn.CONCILIADO_CAIXA.equals(it.getSituacaoConciliacaoTrn()) || 
+						SituacaoConciliacaoTrn.CONCILIAR_CAIXA.equals(it.getSituacaoConciliacaoTrn()) ||
+						SituacaoConciliacaoTrn.CAIXA_BAIXADO_SEM_CONCILIACAO.equals(it.getSituacaoConciliacaoTrn()));
 	}
 	
 	private PlanoContaEntity toEntity(PlanoContaDTO tituloPlanoContas) {
