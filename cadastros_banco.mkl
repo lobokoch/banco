@@ -1,4 +1,4 @@
-@label("Cadastros") //xxx
+@label("Cadastros") //xxxx
 domain cadastros
 
 @label("Banco")
@@ -395,7 +395,7 @@ service banco {
 		
 		codigo: string
 		label: "Código"
-		autoComplete(data sort:asc)
+		autoComplete(data sort(order:asc))
 		
 		descricao: string
 		label: "Descrição"
