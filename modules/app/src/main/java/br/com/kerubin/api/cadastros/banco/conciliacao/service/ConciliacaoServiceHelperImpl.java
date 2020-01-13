@@ -4,6 +4,7 @@ import static br.com.kerubin.api.servicecore.util.CoreUtils.toLocalDate;
 import static br.com.kerubin.api.servicecore.util.CoreUtils.toPositive;
 
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -158,14 +159,46 @@ public class ConciliacaoServiceHelperImpl implements ConciliacaoServiceHelper {
 	@Transactional
 	@Override
 	public List<ConciliacaoTransacaoEntity> salvarTransacoes(List<ConciliacaoTransacaoEntity> transacoes) {
-		try {
-			transacoes = conciliacaoTransacaoRepository.saveAll(transacoes);
-			conciliacaoTransacaoRepository.flush();
-			return transacoes;
-		} catch (Exception e) {
-			log.error("Erro ao salvar lote de trandações de conciliação bancária. Erro: " + e.getMessage(), e);
-			throw e;
-		}
+		List<ConciliacaoTransacaoEntity> transacoesSalvas = new ArrayList<>(transacoes.size());
+		transacoes.forEach(transacao -> {
+			try {
+				ConciliacaoTransacaoEntity t = conciliacaoTransacaoRepository.save(transacao);
+				conciliacaoTransacaoRepository.flush();
+				transacoesSalvas.add(t);
+			} catch (Exception e) {
+				log.error(MessageFormat.format("Erro ao salvar trandação id: {0} de conciliação bancária. Erro: {1}", transacao.getId(), e.getMessage()), e);
+				
+				transacao.setConciliadoComErro(true);
+				transacao.setConciliadoMsg(e.getMessage());
+				//transacao.setSituacaoConciliacaoTrn(SituacaoConciliacaoTrn.ERRO);
+				transacoesSalvas.add(transacao);
+			}
+		});
+		
+		return transacoesSalvas;
+	}
+	
+	@Transactional
+	@Override
+	public ConciliacaoTransacaoEntity salvarTransacao(ConciliacaoTransacaoEntity transacao) {
+		
+			try {
+				return salvarTransacaoEx(transacao);
+			} catch (Exception e) {
+				log.error(MessageFormat.format("Erro ao salvar trandação id: {0} de conciliação bancária. Erro: {1}", transacao.getId(), e.getMessage()), e);
+				
+				transacao.setConciliadoComErro(true);
+				transacao.setConciliadoMsg(e.getMessage());
+				//transacao.setSituacaoConciliacaoTrn(SituacaoConciliacaoTrn.ERRO);
+			}
+		
+		return transacao;
+	}
+	
+	private ConciliacaoTransacaoEntity salvarTransacaoEx(ConciliacaoTransacaoEntity transacao) {
+		ConciliacaoTransacaoEntity transacaoSalva = conciliacaoTransacaoRepository.save(transacao);
+		conciliacaoTransacaoRepository.flush();
+		return transacaoSalva;
 	}
 	
 	@Transactional

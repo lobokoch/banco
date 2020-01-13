@@ -43,6 +43,7 @@ import br.com.kerubin.api.cadastros.banco.entity.conciliacaobancaria.Conciliacao
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacao.ConciliacaoTransacaoEntity;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacaotitulo.ConciliacaoTransacaoTituloEntity;
 import br.com.kerubin.api.cadastros.banco.entity.planoconta.PlanoContaEntity;
+import br.com.kerubin.api.cadastros.banco.entity.planoconta.PlanoContaRepository;
 import br.com.kerubin.api.database.core.ServiceContext;
 import br.com.kerubin.api.database.core.ServiceContextData;
 import lombok.extern.slf4j.Slf4j;
@@ -58,6 +59,9 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 	
 	@Inject
 	private ConciliacaoServiceHelper conciliacaoServiceHelper;
+	
+	@Inject
+	private PlanoContaRepository planoContaRepository;
 	
 	@Inject
 	private RestTemplate restTemplate;
@@ -278,10 +282,37 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
         
         List<ConciliacaoTransacaoEntity> transacoesAlteradas = transacoesDedito.stream().filter(it -> isNotEmpty(it.getTituloConciliadoId())).collect(Collectors.toList());
         if (!transacoesAlteradas.isEmpty()) {
-        	conciliacaoTransacaoService.salvarTransacoes(transacoesAlteradas);
+        	transacoesAlteradas.forEach(transacao -> {
+        		transacao = verificarPlanoDeContas(transacao);
+        		conciliacaoTransacaoService.salvarTransacao(transacao);
+        		
+        	});
         }
         
 		return transacoesDedito;
+	}
+	
+	private ConciliacaoTransacaoEntity verificarPlanoDeContas(ConciliacaoTransacaoEntity transacao) {
+		UUID planoContaId = isNotEmpty(transacao.getTituloPlanoContas()) ? transacao.getTituloPlanoContas().getId() : null;
+		if (isNotEmpty(planoContaId) && !planoContaRepository.existsById(planoContaId)) {
+			transacao.setTituloPlanoContas(null);
+			transacao.setConciliadoComErro(true);
+			transacao.setConciliadoMsg(MessageFormat.format("Plano de Contas com id: {0} não foi encontrado.", planoContaId));
+			//transacao.setSituacaoConciliacaoTrn(SituacaoConciliacaoTrn.ERRO);
+		}
+		
+		if (isNotEmpty(transacao.getConciliacaoTransacaoTitulos())) {
+			transacao.getConciliacaoTransacaoTitulos().forEach(titulo -> {
+				UUID tituloPlanoContaId = isNotEmpty(titulo.getTituloPlanoContas()) ? titulo.getTituloPlanoContas().getId() : null;
+				if (isNotEmpty(tituloPlanoContaId) && !planoContaRepository.existsById(tituloPlanoContaId)) {
+					titulo.setTituloPlanoContas(null);
+					transacao.setConciliadoComErro(true);
+					transacao.setConciliadoMsg(MessageFormat.format("Título com Plano de Contas de id: {0} não foi encontrado.", tituloPlanoContaId));
+					//transacao.setSituacaoConciliacaoTrn(SituacaoConciliacaoTrn.ERRO);
+				}
+			});
+		}
+		return transacao;
 	}
 
 	private void updateTransacaoEntity(ConciliacaoTransacaoEntity transacaoEntity, ConciliacaoTransacaoDTO transacaoDTO) {
@@ -402,7 +433,11 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
         List<ConciliacaoTransacaoEntity> transacoesASalvar = transacoesNaoBaixadas.stream().filter(entityTouchedByCaixa()).collect(Collectors.toList());
         
         if (!transacoesASalvar.isEmpty()) {
-        	conciliacaoTransacaoService.salvarTransacoes(transacoesASalvar);
+        	transacoesASalvar.forEach(transacao -> {
+        		transacao = verificarPlanoDeContas(transacao);
+        		conciliacaoTransacaoService.salvarTransacao(transacao);
+        		
+        	});
         }
         
         contexto.setTransacoes(transacoes);
