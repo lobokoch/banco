@@ -107,7 +107,7 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 		contaBancaria.setTipoContaBancaria(TipoContaBancaria.CONTA_CORRENTE);
 		contaBancaria.setNumeroConta(generateRandomString(30));
 		contaBancaria.setDigito(generateRandomString(10));
-		contaBancaria.setSaldo(new java.math.BigDecimal("29008.2099"));
+		contaBancaria.setSaldo(new java.math.BigDecimal("23527.28826"));
 		contaBancaria.setNumeroCartao(generateRandomString(50));
 		contaBancaria.setCodigoSeguranca(generateRandomString(10));
 		contaBancaria.setDataValidade(getNextDate());
@@ -305,7 +305,7 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 		contaBancaria.setTipoContaBancaria(TipoContaBancaria.CONTA_CORRENTE);
 		contaBancaria.setNumeroConta(generateRandomString(30));
 		contaBancaria.setDigito(generateRandomString(10));
-		contaBancaria.setSaldo(new java.math.BigDecimal("20885.1668"));
+		contaBancaria.setSaldo(new java.math.BigDecimal("17797.17017"));
 		contaBancaria.setNumeroCartao(generateRandomString(50));
 		contaBancaria.setCodigoSeguranca(generateRandomString(10));
 		contaBancaria.setDataValidade(getNextDate());
@@ -791,7 +791,7 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 		contaBancariaEntity.setTipoContaBancaria(TipoContaBancaria.CONTA_CORRENTE);
 		contaBancariaEntity.setNumeroConta(generateRandomString(30));
 		contaBancariaEntity.setDigito(generateRandomString(10));
-		contaBancariaEntity.setSaldo(new java.math.BigDecimal("22899.6801"));
+		contaBancariaEntity.setSaldo(new java.math.BigDecimal("6498.3188"));
 		contaBancariaEntity.setNumeroCartao(generateRandomString(50));
 		contaBancariaEntity.setCodigoSeguranca(generateRandomString(10));
 		contaBancariaEntity.setDataValidade(getNextDate());
