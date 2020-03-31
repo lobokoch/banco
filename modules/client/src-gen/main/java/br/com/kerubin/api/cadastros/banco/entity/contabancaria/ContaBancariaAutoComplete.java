@@ -15,6 +15,8 @@ public interface ContaBancariaAutoComplete {
 	
 	String getNomeTitular();
 	
+	String getCpfCnpjTitular();
+	
 	String getNumeroConta();
 	
 	String getDigito();
@@ -22,6 +24,8 @@ public interface ContaBancariaAutoComplete {
 	void setId(java.util.UUID id);
 	
 	void setNomeTitular(String nomeTitular);
+	
+	void setCpfCnpjTitular(String cpfCnpjTitular);
 	
 	void setNumeroConta(String numeroConta);
 	

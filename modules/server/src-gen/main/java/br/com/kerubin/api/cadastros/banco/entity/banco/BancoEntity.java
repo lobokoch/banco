@@ -27,8 +27,8 @@ public class BancoEntity extends AuditingEntity {
 	@Column(name="id")
 	private java.util.UUID id;
 	
-	@NotBlank(message="\"Número\" é obrigatório.")
-	@Size(max = 20, message = "\"Número\" pode ter no máximo 20 caracteres.")
+	@NotBlank(message="\"Código\" é obrigatório.")
+	@Size(max = 20, message = "\"Código\" pode ter no máximo 20 caracteres.")
 	@Column(name="numero")
 	private String numero;
 	

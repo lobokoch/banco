@@ -99,8 +99,8 @@ public class CartaoCreditoServiceImpl implements CartaoCreditoService {
 	
 	protected void publishEvent(CartaoCreditoEntity entity, String eventName) {
 		DomainEvent event = new CartaoCreditoEvent(entity.getId(), 
-			entity.getBanco() != null ? entity.getBanco().getId() : null, 
 			entity.getNomeTitular(), 
+			entity.getBanco() != null ? entity.getBanco().getId() : null, 
 			entity.getNumeroCartao(), 
 			entity.getValidade(), 
 			entity.getValorLimite(), 

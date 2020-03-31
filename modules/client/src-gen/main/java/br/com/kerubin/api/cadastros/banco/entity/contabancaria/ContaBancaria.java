@@ -9,9 +9,10 @@ package br.com.kerubin.api.cadastros.banco.entity.contabancaria;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import br.com.kerubin.api.servicecore.validator.constraint.CpfOrCnpj;
 import javax.validation.constraints.NotNull;
-import br.com.kerubin.api.cadastros.banco.entity.agenciabancaria.AgenciaBancariaLookupResult;
 import br.com.kerubin.api.cadastros.banco.TipoContaBancaria;
+import br.com.kerubin.api.cadastros.banco.entity.agenciabancaria.AgenciaBancariaLookupResult;
 import br.com.kerubin.api.cadastros.banco.entity.bandeiracartao.BandeiraCartaoLookupResult;
 
 public class ContaBancaria {
@@ -22,11 +23,15 @@ public class ContaBancaria {
 	@Size(max = 255, message = "\"Nome do títular da conta\" pode ter no máximo 255 caracteres.")
 	private String nomeTitular;
 	
-	@NotNull(message="\"Agência bancária\" é obrigatório.")
-	private AgenciaBancariaLookupResult agencia;
+	@Size(max = 20, message = "\"CPF/CNPJ do títular da conta\" pode ter no máximo 20 caracteres.")
+	@CpfOrCnpj(message="CPF/CNPJ inválido.")
+	private String cpfCnpjTitular;
 	
 	@NotNull(message="\"Tipo da conta\" é obrigatório.")
 	private TipoContaBancaria tipoContaBancaria;
+	
+	@NotNull(message="\"Agência bancária\" é obrigatório.")
+	private AgenciaBancariaLookupResult agencia;
 	
 	@NotBlank(message="\"Número da conta\" é obrigatório.")
 	@Size(max = 30, message = "\"Número da conta\" pode ter no máximo 30 caracteres.")
@@ -37,19 +42,20 @@ public class ContaBancaria {
 	
 	private java.math.BigDecimal saldo;
 	
+	private Boolean maisOpcoes = false;
+	
+	@NotNull(message="\"Conta ativa\" é obrigatório.")
+	private Boolean ativo = true;
+	
+	private java.time.LocalDate dataValidade;
+	
 	@Size(max = 50, message = "\"Número do cartão\" pode ter no máximo 50 caracteres.")
 	private String numeroCartao;
 	
 	@Size(max = 10, message = "\"Código de segurança\" pode ter no máximo 10 caracteres.")
 	private String codigoSeguranca;
 	
-	private java.time.LocalDate dataValidade;
-	
-	@NotNull(message="\"Bandeira do cartão\" é obrigatório.")
 	private BandeiraCartaoLookupResult bandeiraCartao;
-	
-	@NotNull(message="\"Conta ativa\" é obrigatório.")
-	private Boolean ativo = true;
 	
 	@Size(max = 255, message = "\"Criado por\" pode ter no máximo 255 caracteres.")
 	private String createdBy;
@@ -75,12 +81,16 @@ public class ContaBancaria {
 		return nomeTitular;
 	}
 	
-	public AgenciaBancariaLookupResult getAgencia() {
-		return agencia;
+	public String getCpfCnpjTitular() {
+		return cpfCnpjTitular;
 	}
 	
 	public TipoContaBancaria getTipoContaBancaria() {
 		return tipoContaBancaria;
+	}
+	
+	public AgenciaBancariaLookupResult getAgencia() {
+		return agencia;
 	}
 	
 	public String getNumeroConta() {
@@ -95,6 +105,18 @@ public class ContaBancaria {
 		return saldo;
 	}
 	
+	public Boolean getMaisOpcoes() {
+		return maisOpcoes;
+	}
+	
+	public Boolean getAtivo() {
+		return ativo;
+	}
+	
+	public java.time.LocalDate getDataValidade() {
+		return dataValidade;
+	}
+	
 	public String getNumeroCartao() {
 		return numeroCartao;
 	}
@@ -103,16 +125,8 @@ public class ContaBancaria {
 		return codigoSeguranca;
 	}
 	
-	public java.time.LocalDate getDataValidade() {
-		return dataValidade;
-	}
-	
 	public BandeiraCartaoLookupResult getBandeiraCartao() {
 		return bandeiraCartao;
-	}
-	
-	public Boolean getAtivo() {
-		return ativo;
 	}
 	
 	public String getCreatedBy() {
@@ -139,12 +153,16 @@ public class ContaBancaria {
 		this.nomeTitular = nomeTitular;
 	}
 	
-	public void setAgencia(AgenciaBancariaLookupResult agencia) {
-		this.agencia = agencia;
+	public void setCpfCnpjTitular(String cpfCnpjTitular) {
+		this.cpfCnpjTitular = cpfCnpjTitular;
 	}
 	
 	public void setTipoContaBancaria(TipoContaBancaria tipoContaBancaria) {
 		this.tipoContaBancaria = tipoContaBancaria;
+	}
+	
+	public void setAgencia(AgenciaBancariaLookupResult agencia) {
+		this.agencia = agencia;
 	}
 	
 	public void setNumeroConta(String numeroConta) {
@@ -159,6 +177,18 @@ public class ContaBancaria {
 		this.saldo = saldo;
 	}
 	
+	public void setMaisOpcoes(Boolean maisOpcoes) {
+		this.maisOpcoes = maisOpcoes;
+	}
+	
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
+	}
+	
+	public void setDataValidade(java.time.LocalDate dataValidade) {
+		this.dataValidade = dataValidade;
+	}
+	
 	public void setNumeroCartao(String numeroCartao) {
 		this.numeroCartao = numeroCartao;
 	}
@@ -167,16 +197,8 @@ public class ContaBancaria {
 		this.codigoSeguranca = codigoSeguranca;
 	}
 	
-	public void setDataValidade(java.time.LocalDate dataValidade) {
-		this.dataValidade = dataValidade;
-	}
-	
 	public void setBandeiraCartao(BandeiraCartaoLookupResult bandeiraCartao) {
 		this.bandeiraCartao = bandeiraCartao;
-	}
-	
-	public void setAtivo(Boolean ativo) {
-		this.ativo = ativo;
 	}
 	
 	public void setCreatedBy(String createdBy) {

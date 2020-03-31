@@ -16,9 +16,9 @@ public class CartaoCreditoEvent implements DomainEvent {
 	public static final String CARTAO_CREDITO_DELETED = "cartaoCreditoDeleted";
 	private java.util.UUID id;
 	
-	private java.util.UUID banco;
-	
 	private String nomeTitular;
+	
+	private java.util.UUID banco;
 	
 	private String numeroCartao;
 	
@@ -34,10 +34,10 @@ public class CartaoCreditoEvent implements DomainEvent {
 		// Contructor for reflexion, injection, Jackson, QueryDSL, etc proposal.
 	}
 	
-	public CartaoCreditoEvent(java.util.UUID id, java.util.UUID banco, String nomeTitular, String numeroCartao, java.time.LocalDate validade, java.math.BigDecimal valorLimite, java.util.UUID bandeiraCartao, Boolean ativo) {
+	public CartaoCreditoEvent(java.util.UUID id, String nomeTitular, java.util.UUID banco, String numeroCartao, java.time.LocalDate validade, java.math.BigDecimal valorLimite, java.util.UUID bandeiraCartao, Boolean ativo) {
 		this.id = id;
-		this.banco = banco;
 		this.nomeTitular = nomeTitular;
+		this.banco = banco;
 		this.numeroCartao = numeroCartao;
 		this.validade = validade;
 		this.valorLimite = valorLimite;
@@ -49,12 +49,12 @@ public class CartaoCreditoEvent implements DomainEvent {
 		return id;
 	}
 	
-	public java.util.UUID getBanco() {
-		return banco;
-	}
-	
 	public String getNomeTitular() {
 		return nomeTitular;
+	}
+	
+	public java.util.UUID getBanco() {
+		return banco;
 	}
 	
 	public String getNumeroCartao() {
@@ -81,12 +81,12 @@ public class CartaoCreditoEvent implements DomainEvent {
 		this.id = id;
 	}
 	
-	public void setBanco(java.util.UUID banco) {
-		this.banco = banco;
-	}
-	
 	public void setNomeTitular(String nomeTitular) {
 		this.nomeTitular = nomeTitular;
+	}
+	
+	public void setBanco(java.util.UUID banco) {
+		this.banco = banco;
 	}
 	
 	public void setNumeroCartao(String numeroCartao) {

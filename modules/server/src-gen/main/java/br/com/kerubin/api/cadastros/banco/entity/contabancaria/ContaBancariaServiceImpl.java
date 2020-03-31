@@ -115,13 +115,14 @@ public class ContaBancariaServiceImpl implements ContaBancariaService {
 	protected void publishEvent(ContaBancariaEntity entity, String eventName) {
 		DomainEvent event = new ContaBancariaEvent(entity.getId(), 
 			entity.getNomeTitular(), 
-			entity.getAgencia() != null ? entity.getAgencia().getId() : null, 
+			entity.getCpfCnpjTitular(), 
 			entity.getTipoContaBancaria(), 
+			entity.getAgencia() != null ? entity.getAgencia().getId() : null, 
 			entity.getNumeroConta(), 
 			entity.getDigito(), 
+			entity.getAtivo(), 
 			entity.getDataValidade(), 
-			entity.getBandeiraCartao() != null ? entity.getBandeiraCartao().getId() : null, 
-			entity.getAtivo());
+			entity.getBandeiraCartao() != null ? entity.getBandeiraCartao().getId() : null);
 		
 		DomainEventEnvelope<DomainEvent> envelope = DomainEventEnvelopeBuilder
 				.getBuilder(eventName, event)

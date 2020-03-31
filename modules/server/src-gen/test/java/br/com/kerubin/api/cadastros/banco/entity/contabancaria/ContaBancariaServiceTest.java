@@ -99,24 +99,26 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 		
 		contaBancaria.setId(java.util.UUID.randomUUID());
 		contaBancaria.setNomeTitular(generateRandomString(255));
+		contaBancaria.setCpfCnpjTitular("92020472007");
+		contaBancaria.setTipoContaBancaria(TipoContaBancaria.CONTA_CORRENTE);
 		
 		AgenciaBancariaEntity agenciaBancariaEntityParam = newAgenciaBancariaEntity();
 		AgenciaBancariaLookupResult agencia = newAgenciaBancariaLookupResult(agenciaBancariaEntityParam);
 		contaBancaria.setAgencia(agencia);
 		
-		contaBancaria.setTipoContaBancaria(TipoContaBancaria.CONTA_CORRENTE);
 		contaBancaria.setNumeroConta(generateRandomString(30));
 		contaBancaria.setDigito(generateRandomString(10));
-		contaBancaria.setSaldo(new java.math.BigDecimal("23527.28826"));
+		contaBancaria.setSaldo(new java.math.BigDecimal("516.17232"));
+		contaBancaria.setMaisOpcoes(false);
+		contaBancaria.setAtivo(true);
+		contaBancaria.setDataValidade(getNextDate());
 		contaBancaria.setNumeroCartao(generateRandomString(50));
 		contaBancaria.setCodigoSeguranca(generateRandomString(10));
-		contaBancaria.setDataValidade(getNextDate());
 		
 		BandeiraCartaoEntity bandeiraCartaoEntityParam = newBandeiraCartaoEntity();
 		BandeiraCartaoLookupResult bandeiraCartao = newBandeiraCartaoLookupResult(bandeiraCartaoEntityParam);
 		contaBancaria.setBandeiraCartao(bandeiraCartao);
 		
-		contaBancaria.setAtivo(true);
 		
 		// BEGIN check event created.
 		doAnswer(invocation -> {
@@ -128,6 +130,8 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 			ContaBancariaEvent event = (ContaBancariaEvent) envelope.getPayload();
 			assertThat(event.getId()).isNotNull();
 			assertThat(event.getNomeTitular()).isEqualTo(contaBancaria.getNomeTitular());
+			assertThat(event.getCpfCnpjTitular()).isEqualTo(contaBancaria.getCpfCnpjTitular());
+			assertThat(event.getTipoContaBancaria()).isEqualTo(contaBancaria.getTipoContaBancaria());
 			
 			if (contaBancaria.getAgencia() == null) {
 				assertThat(event.getAgencia()).isNull();
@@ -136,9 +140,9 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 				assertThat(event.getAgencia()).isEqualTo(contaBancaria.getAgencia().getId());
 			}
 			
-			assertThat(event.getTipoContaBancaria()).isEqualTo(contaBancaria.getTipoContaBancaria());
 			assertThat(event.getNumeroConta()).isEqualTo(contaBancaria.getNumeroConta());
 			assertThat(event.getDigito()).isEqualTo(contaBancaria.getDigito());
+			assertThat(event.getAtivo()).isEqualTo(contaBancaria.getAtivo());
 			assertThat(event.getDataValidade()).isEqualTo(contaBancaria.getDataValidade());
 			
 			if (contaBancaria.getBandeiraCartao() == null) {
@@ -148,7 +152,6 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 				assertThat(event.getBandeiraCartao()).isEqualTo(contaBancaria.getBandeiraCartao().getId());
 			}
 			
-			assertThat(event.getAtivo()).isEqualTo(contaBancaria.getAtivo());
 			
 			assertThat(CadastrosBancoConstants.DOMAIN).isEqualTo(envelope.getDomain());
 			assertThat(CadastrosBancoConstants.SERVICE).isEqualTo(envelope.getService());
@@ -190,18 +193,13 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 		
 		contaBancaria.setId(java.util.UUID.randomUUID());
 		contaBancaria.setNomeTitular(generateRandomString(255));
+		contaBancaria.setTipoContaBancaria(TipoContaBancaria.CONTA_CORRENTE);
 		
 		AgenciaBancariaEntity agenciaBancariaEntityParam = newAgenciaBancariaEntity();
 		AgenciaBancariaLookupResult agencia = newAgenciaBancariaLookupResult(agenciaBancariaEntityParam);
 		contaBancaria.setAgencia(agencia);
 		
-		contaBancaria.setTipoContaBancaria(TipoContaBancaria.CONTA_CORRENTE);
 		contaBancaria.setNumeroConta(generateRandomString(30));
-		
-		BandeiraCartaoEntity bandeiraCartaoEntityParam = newBandeiraCartaoEntity();
-		BandeiraCartaoLookupResult bandeiraCartao = newBandeiraCartaoLookupResult(bandeiraCartaoEntityParam);
-		contaBancaria.setBandeiraCartao(bandeiraCartao);
-		
 		contaBancaria.setAtivo(true);
 		
 		// BEGIN check event created.
@@ -214,6 +212,8 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 			ContaBancariaEvent event = (ContaBancariaEvent) envelope.getPayload();
 			assertThat(event.getId()).isNotNull();
 			assertThat(event.getNomeTitular()).isEqualTo(contaBancaria.getNomeTitular());
+			assertThat(event.getCpfCnpjTitular()).isEqualTo(contaBancaria.getCpfCnpjTitular());
+			assertThat(event.getTipoContaBancaria()).isEqualTo(contaBancaria.getTipoContaBancaria());
 			
 			if (contaBancaria.getAgencia() == null) {
 				assertThat(event.getAgencia()).isNull();
@@ -222,9 +222,9 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 				assertThat(event.getAgencia()).isEqualTo(contaBancaria.getAgencia().getId());
 			}
 			
-			assertThat(event.getTipoContaBancaria()).isEqualTo(contaBancaria.getTipoContaBancaria());
 			assertThat(event.getNumeroConta()).isEqualTo(contaBancaria.getNumeroConta());
 			assertThat(event.getDigito()).isEqualTo(contaBancaria.getDigito());
+			assertThat(event.getAtivo()).isEqualTo(contaBancaria.getAtivo());
 			assertThat(event.getDataValidade()).isEqualTo(contaBancaria.getDataValidade());
 			
 			if (contaBancaria.getBandeiraCartao() == null) {
@@ -234,7 +234,6 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 				assertThat(event.getBandeiraCartao()).isEqualTo(contaBancaria.getBandeiraCartao().getId());
 			}
 			
-			assertThat(event.getAtivo()).isEqualTo(contaBancaria.getAtivo());
 			
 			assertThat(CadastrosBancoConstants.DOMAIN).isEqualTo(envelope.getDomain());
 			assertThat(CadastrosBancoConstants.SERVICE).isEqualTo(envelope.getService());
@@ -263,10 +262,7 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 		assertThat(actual.getAgencia().getId()).isNotNull();
 		assertThat(actual.getAgencia()).isEqualToIgnoringGivenFields(contaBancaria.getAgencia(), IGNORED_FIELDS);
 		
-		
-		assertThat(actual.getBandeiraCartao().getId()).isNotNull();
-		assertThat(actual.getBandeiraCartao()).isEqualToIgnoringGivenFields(contaBancaria.getBandeiraCartao(), IGNORED_FIELDS);
-		
+		assertThat(actual.getBandeiraCartao()).isNull();
 		
 	}
 	// END CREATE TESTS
@@ -297,24 +293,26 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 		contaBancaria.setId(id);
 		
 		contaBancaria.setNomeTitular(generateRandomString(255));
+		contaBancaria.setCpfCnpjTitular("92020472007");
+		contaBancaria.setTipoContaBancaria(TipoContaBancaria.CONTA_CORRENTE);
 		
 		AgenciaBancariaEntity agenciaBancariaEntityParam = newAgenciaBancariaEntity();
 		AgenciaBancariaLookupResult agencia = newAgenciaBancariaLookupResult(agenciaBancariaEntityParam);
 		contaBancaria.setAgencia(agencia);
 		
-		contaBancaria.setTipoContaBancaria(TipoContaBancaria.CONTA_CORRENTE);
 		contaBancaria.setNumeroConta(generateRandomString(30));
 		contaBancaria.setDigito(generateRandomString(10));
-		contaBancaria.setSaldo(new java.math.BigDecimal("17797.17017"));
+		contaBancaria.setSaldo(new java.math.BigDecimal("30684.3256"));
+		contaBancaria.setMaisOpcoes(false);
+		contaBancaria.setAtivo(true);
+		contaBancaria.setDataValidade(getNextDate());
 		contaBancaria.setNumeroCartao(generateRandomString(50));
 		contaBancaria.setCodigoSeguranca(generateRandomString(10));
-		contaBancaria.setDataValidade(getNextDate());
 		
 		BandeiraCartaoEntity bandeiraCartaoEntityParam = newBandeiraCartaoEntity();
 		BandeiraCartaoLookupResult bandeiraCartao = newBandeiraCartaoLookupResult(bandeiraCartaoEntityParam);
 		contaBancaria.setBandeiraCartao(bandeiraCartao);
 		
-		contaBancaria.setAtivo(true);
 		
 		// BEGIN check event updated.
 		doAnswer(invocation -> {
@@ -326,6 +324,8 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 			ContaBancariaEvent event = (ContaBancariaEvent) envelope.getPayload();
 			assertThat(event.getId()).isEqualTo(contaBancaria.getId());
 			assertThat(event.getNomeTitular()).isEqualTo(contaBancaria.getNomeTitular());
+			assertThat(event.getCpfCnpjTitular()).isEqualTo(contaBancaria.getCpfCnpjTitular());
+			assertThat(event.getTipoContaBancaria()).isEqualTo(contaBancaria.getTipoContaBancaria());
 			
 			if (contaBancaria.getAgencia() == null) {
 				assertThat(event.getAgencia()).isNull();
@@ -334,9 +334,9 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 				assertThat(event.getAgencia()).isEqualTo(contaBancaria.getAgencia().getId());
 			}
 			
-			assertThat(event.getTipoContaBancaria()).isEqualTo(contaBancaria.getTipoContaBancaria());
 			assertThat(event.getNumeroConta()).isEqualTo(contaBancaria.getNumeroConta());
 			assertThat(event.getDigito()).isEqualTo(contaBancaria.getDigito());
+			assertThat(event.getAtivo()).isEqualTo(contaBancaria.getAtivo());
 			assertThat(event.getDataValidade()).isEqualTo(contaBancaria.getDataValidade());
 			
 			if (contaBancaria.getBandeiraCartao() == null) {
@@ -346,7 +346,6 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 				assertThat(event.getBandeiraCartao()).isEqualTo(contaBancaria.getBandeiraCartao().getId());
 			}
 			
-			assertThat(event.getAtivo()).isEqualTo(contaBancaria.getAtivo());
 			
 			assertThat(CadastrosBancoConstants.DOMAIN).isEqualTo(envelope.getDomain());
 			assertThat(CadastrosBancoConstants.SERVICE).isEqualTo(envelope.getService());
@@ -391,18 +390,13 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 		contaBancaria.setId(id);
 		
 		contaBancaria.setNomeTitular(generateRandomString(255));
+		contaBancaria.setTipoContaBancaria(TipoContaBancaria.CONTA_CORRENTE);
 		
 		AgenciaBancariaEntity agenciaBancariaEntityParam = newAgenciaBancariaEntity();
 		AgenciaBancariaLookupResult agencia = newAgenciaBancariaLookupResult(agenciaBancariaEntityParam);
 		contaBancaria.setAgencia(agencia);
 		
-		contaBancaria.setTipoContaBancaria(TipoContaBancaria.CONTA_CORRENTE);
 		contaBancaria.setNumeroConta(generateRandomString(30));
-		
-		BandeiraCartaoEntity bandeiraCartaoEntityParam = newBandeiraCartaoEntity();
-		BandeiraCartaoLookupResult bandeiraCartao = newBandeiraCartaoLookupResult(bandeiraCartaoEntityParam);
-		contaBancaria.setBandeiraCartao(bandeiraCartao);
-		
 		contaBancaria.setAtivo(true);
 		
 		// BEGIN check event updated.
@@ -415,6 +409,8 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 			ContaBancariaEvent event = (ContaBancariaEvent) envelope.getPayload();
 			assertThat(event.getId()).isEqualTo(contaBancaria.getId());
 			assertThat(event.getNomeTitular()).isEqualTo(contaBancaria.getNomeTitular());
+			assertThat(event.getCpfCnpjTitular()).isEqualTo(contaBancaria.getCpfCnpjTitular());
+			assertThat(event.getTipoContaBancaria()).isEqualTo(contaBancaria.getTipoContaBancaria());
 			
 			if (contaBancaria.getAgencia() == null) {
 				assertThat(event.getAgencia()).isNull();
@@ -423,9 +419,9 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 				assertThat(event.getAgencia()).isEqualTo(contaBancaria.getAgencia().getId());
 			}
 			
-			assertThat(event.getTipoContaBancaria()).isEqualTo(contaBancaria.getTipoContaBancaria());
 			assertThat(event.getNumeroConta()).isEqualTo(contaBancaria.getNumeroConta());
 			assertThat(event.getDigito()).isEqualTo(contaBancaria.getDigito());
+			assertThat(event.getAtivo()).isEqualTo(contaBancaria.getAtivo());
 			assertThat(event.getDataValidade()).isEqualTo(contaBancaria.getDataValidade());
 			
 			if (contaBancaria.getBandeiraCartao() == null) {
@@ -435,7 +431,6 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 				assertThat(event.getBandeiraCartao()).isEqualTo(contaBancaria.getBandeiraCartao().getId());
 			}
 			
-			assertThat(event.getAtivo()).isEqualTo(contaBancaria.getAtivo());
 			
 			assertThat(CadastrosBancoConstants.DOMAIN).isEqualTo(envelope.getDomain());
 			assertThat(CadastrosBancoConstants.SERVICE).isEqualTo(envelope.getService());
@@ -464,10 +459,7 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 		assertThat(actual.getAgencia().getId()).isNotNull();
 		assertThat(actual.getAgencia()).isEqualToIgnoringGivenFields(contaBancaria.getAgencia(), IGNORED_FIELDS);
 		
-		
-		assertThat(actual.getBandeiraCartao().getId()).isNotNull();
-		assertThat(actual.getBandeiraCartao()).isEqualToIgnoringGivenFields(contaBancaria.getBandeiraCartao(), IGNORED_FIELDS);
-		
+		assertThat(actual.getBandeiraCartao()).isNull();
 		
 	}
 	// END UPDATE TESTS
@@ -494,6 +486,8 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 			ContaBancariaEvent event = (ContaBancariaEvent) envelope.getPayload();
 			assertThat(event.getId()).isEqualTo(contaBancaria.getId());
 			assertThat(event.getNomeTitular()).isEqualTo(contaBancaria.getNomeTitular());
+			assertThat(event.getCpfCnpjTitular()).isEqualTo(contaBancaria.getCpfCnpjTitular());
+			assertThat(event.getTipoContaBancaria()).isEqualTo(contaBancaria.getTipoContaBancaria());
 			
 			if (contaBancaria.getAgencia() == null) {
 				assertThat(event.getAgencia()).isNull();
@@ -502,9 +496,9 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 				assertThat(event.getAgencia()).isEqualTo(contaBancaria.getAgencia().getId());
 			}
 			
-			assertThat(event.getTipoContaBancaria()).isEqualTo(contaBancaria.getTipoContaBancaria());
 			assertThat(event.getNumeroConta()).isEqualTo(contaBancaria.getNumeroConta());
 			assertThat(event.getDigito()).isEqualTo(contaBancaria.getDigito());
+			assertThat(event.getAtivo()).isEqualTo(contaBancaria.getAtivo());
 			assertThat(event.getDataValidade()).isEqualTo(contaBancaria.getDataValidade());
 			
 			if (contaBancaria.getBandeiraCartao() == null) {
@@ -514,7 +508,6 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 				assertThat(event.getBandeiraCartao()).isEqualTo(contaBancaria.getBandeiraCartao().getId());
 			}
 			
-			assertThat(event.getAtivo()).isEqualTo(contaBancaria.getAtivo());
 			
 			assertThat(CadastrosBancoConstants.DOMAIN).isEqualTo(envelope.getDomain());
 			assertThat(CadastrosBancoConstants.SERVICE).isEqualTo(envelope.getService());
@@ -787,16 +780,18 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 		ContaBancariaEntity contaBancariaEntity = new ContaBancariaEntity();
 		
 		contaBancariaEntity.setNomeTitular(generateRandomString(255));
-		contaBancariaEntity.setAgencia(newAgenciaBancariaEntity());
+		contaBancariaEntity.setCpfCnpjTitular("92020472007");
 		contaBancariaEntity.setTipoContaBancaria(TipoContaBancaria.CONTA_CORRENTE);
+		contaBancariaEntity.setAgencia(newAgenciaBancariaEntity());
 		contaBancariaEntity.setNumeroConta(generateRandomString(30));
 		contaBancariaEntity.setDigito(generateRandomString(10));
-		contaBancariaEntity.setSaldo(new java.math.BigDecimal("6498.3188"));
+		contaBancariaEntity.setSaldo(new java.math.BigDecimal("12810.6901"));
+		contaBancariaEntity.setMaisOpcoes(false);
+		contaBancariaEntity.setAtivo(true);
+		contaBancariaEntity.setDataValidade(getNextDate());
 		contaBancariaEntity.setNumeroCartao(generateRandomString(50));
 		contaBancariaEntity.setCodigoSeguranca(generateRandomString(10));
-		contaBancariaEntity.setDataValidade(getNextDate());
 		contaBancariaEntity.setBandeiraCartao(newBandeiraCartaoEntity());
-		contaBancariaEntity.setAtivo(true);
 		
 		contaBancariaEntity = em.persistAndFlush(contaBancariaEntity);
 		return contaBancariaEntity;
@@ -808,6 +803,7 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 		
 		contaBancaria.setId(contaBancariaEntity.getId());
 		contaBancaria.setNomeTitular(contaBancariaEntity.getNomeTitular());
+		contaBancaria.setCpfCnpjTitular(contaBancariaEntity.getCpfCnpjTitular());
 		contaBancaria.setNumeroConta(contaBancariaEntity.getNumeroConta());
 		contaBancaria.setDigito(contaBancariaEntity.getDigito());
 		
@@ -821,6 +817,7 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 		agenciaBancariaEntity.setBanco(newBancoEntity());
 		agenciaBancariaEntity.setNumeroAgencia(generateRandomString(50));
 		agenciaBancariaEntity.setDigitoAgencia(generateRandomString(10));
+		agenciaBancariaEntity.setMaisOpcoes(false);
 		agenciaBancariaEntity.setEndereco(generateRandomString(255));
 		agenciaBancariaEntity.setNomeGerente(generateRandomString(255));
 		agenciaBancariaEntity.setFone(generateRandomString(50));

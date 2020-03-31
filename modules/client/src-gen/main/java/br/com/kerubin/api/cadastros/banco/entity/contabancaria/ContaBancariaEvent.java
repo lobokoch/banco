@@ -19,34 +19,37 @@ public class ContaBancariaEvent implements DomainEvent {
 	
 	private String nomeTitular;
 	
-	private java.util.UUID agencia;
+	private String cpfCnpjTitular;
 	
 	private TipoContaBancaria tipoContaBancaria;
+	
+	private java.util.UUID agencia;
 	
 	private String numeroConta;
 	
 	private String digito;
 	
+	private Boolean ativo;
+	
 	private java.time.LocalDate dataValidade;
 	
 	private java.util.UUID bandeiraCartao;
-	
-	private Boolean ativo;
 	
 	public ContaBancariaEvent() {
 		// Contructor for reflexion, injection, Jackson, QueryDSL, etc proposal.
 	}
 	
-	public ContaBancariaEvent(java.util.UUID id, String nomeTitular, java.util.UUID agencia, TipoContaBancaria tipoContaBancaria, String numeroConta, String digito, java.time.LocalDate dataValidade, java.util.UUID bandeiraCartao, Boolean ativo) {
+	public ContaBancariaEvent(java.util.UUID id, String nomeTitular, String cpfCnpjTitular, TipoContaBancaria tipoContaBancaria, java.util.UUID agencia, String numeroConta, String digito, Boolean ativo, java.time.LocalDate dataValidade, java.util.UUID bandeiraCartao) {
 		this.id = id;
 		this.nomeTitular = nomeTitular;
-		this.agencia = agencia;
+		this.cpfCnpjTitular = cpfCnpjTitular;
 		this.tipoContaBancaria = tipoContaBancaria;
+		this.agencia = agencia;
 		this.numeroConta = numeroConta;
 		this.digito = digito;
+		this.ativo = ativo;
 		this.dataValidade = dataValidade;
 		this.bandeiraCartao = bandeiraCartao;
-		this.ativo = ativo;
 	}
 	
 	public java.util.UUID getId() {
@@ -57,12 +60,16 @@ public class ContaBancariaEvent implements DomainEvent {
 		return nomeTitular;
 	}
 	
-	public java.util.UUID getAgencia() {
-		return agencia;
+	public String getCpfCnpjTitular() {
+		return cpfCnpjTitular;
 	}
 	
 	public TipoContaBancaria getTipoContaBancaria() {
 		return tipoContaBancaria;
+	}
+	
+	public java.util.UUID getAgencia() {
+		return agencia;
 	}
 	
 	public String getNumeroConta() {
@@ -73,16 +80,16 @@ public class ContaBancariaEvent implements DomainEvent {
 		return digito;
 	}
 	
+	public Boolean getAtivo() {
+		return ativo;
+	}
+	
 	public java.time.LocalDate getDataValidade() {
 		return dataValidade;
 	}
 	
 	public java.util.UUID getBandeiraCartao() {
 		return bandeiraCartao;
-	}
-	
-	public Boolean getAtivo() {
-		return ativo;
 	}
 	
 	public void setId(java.util.UUID id) {
@@ -93,12 +100,16 @@ public class ContaBancariaEvent implements DomainEvent {
 		this.nomeTitular = nomeTitular;
 	}
 	
-	public void setAgencia(java.util.UUID agencia) {
-		this.agencia = agencia;
+	public void setCpfCnpjTitular(String cpfCnpjTitular) {
+		this.cpfCnpjTitular = cpfCnpjTitular;
 	}
 	
 	public void setTipoContaBancaria(TipoContaBancaria tipoContaBancaria) {
 		this.tipoContaBancaria = tipoContaBancaria;
+	}
+	
+	public void setAgencia(java.util.UUID agencia) {
+		this.agencia = agencia;
 	}
 	
 	public void setNumeroConta(String numeroConta) {
@@ -109,16 +120,16 @@ public class ContaBancariaEvent implements DomainEvent {
 		this.digito = digito;
 	}
 	
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
+	}
+	
 	public void setDataValidade(java.time.LocalDate dataValidade) {
 		this.dataValidade = dataValidade;
 	}
 	
 	public void setBandeiraCartao(java.util.UUID bandeiraCartao) {
 		this.bandeiraCartao = bandeiraCartao;
-	}
-	
-	public void setAtivo(Boolean ativo) {
-		this.ativo = ativo;
 	}
 	
 	@Override

@@ -12,15 +12,16 @@ import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.Column;
 import br.com.kerubin.api.database.entity.AuditingEntity;
+import javax.persistence.Transient;
 import javax.persistence.GeneratedValue;
 import org.hibernate.annotations.GenericGenerator;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import javax.validation.constraints.NotNull;
 import br.com.kerubin.api.cadastros.banco.entity.banco.BancoEntity;
 import javax.persistence.ManyToOne;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import br.com.kerubin.api.cadastros.banco.entity.bandeiracartao.BandeiraCartaoEntity;
 
 @Entity
@@ -33,15 +34,15 @@ public class CartaoCreditoEntity extends AuditingEntity {
 	@Column(name="id")
 	private java.util.UUID id;
 	
-	@NotNull(message="\"Banco\" é obrigatório.")
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "banco")
-	private BancoEntity banco;
-	
 	@NotBlank(message="\"Nome do títular do cartão\" é obrigatório.")
 	@Size(max = 255, message = "\"Nome do títular do cartão\" pode ter no máximo 255 caracteres.")
 	@Column(name="nome_titular")
 	private String nomeTitular;
+	
+	@NotNull(message="\"Banco\" é obrigatório.")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "banco")
+	private BancoEntity banco;
 	
 	@NotBlank(message="\"Número do cartão\" é obrigatório.")
 	@Size(max = 50, message = "\"Número do cartão\" pode ter no máximo 50 caracteres.")
@@ -58,7 +59,9 @@ public class CartaoCreditoEntity extends AuditingEntity {
 	@Column(name="valor_limite")
 	private java.math.BigDecimal valorLimite;
 	
-	@NotNull(message="\"Bandeira do cartão\" é obrigatório.")
+	@Transient
+	private Boolean maisOpcoes = false;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "bandeira_cartao")
 	private BandeiraCartaoEntity bandeiraCartao;
@@ -71,12 +74,12 @@ public class CartaoCreditoEntity extends AuditingEntity {
 		return id;
 	}
 	
-	public BancoEntity getBanco() {
-		return banco;
-	}
-	
 	public String getNomeTitular() {
 		return nomeTitular;
+	}
+	
+	public BancoEntity getBanco() {
+		return banco;
 	}
 	
 	public String getNumeroCartao() {
@@ -95,6 +98,10 @@ public class CartaoCreditoEntity extends AuditingEntity {
 		return valorLimite;
 	}
 	
+	public Boolean getMaisOpcoes() {
+		return maisOpcoes;
+	}
+	
 	public BandeiraCartaoEntity getBandeiraCartao() {
 		return bandeiraCartao;
 	}
@@ -107,12 +114,12 @@ public class CartaoCreditoEntity extends AuditingEntity {
 		this.id = id;
 	}
 	
-	public void setBanco(BancoEntity banco) {
-		this.banco = banco;
-	}
-	
 	public void setNomeTitular(String nomeTitular) {
 		this.nomeTitular = nomeTitular != null ? nomeTitular.trim() : nomeTitular; // Chamadas REST fazem trim.
+	}
+	
+	public void setBanco(BancoEntity banco) {
+		this.banco = banco;
 	}
 	
 	public void setNumeroCartao(String numeroCartao) {
@@ -131,6 +138,10 @@ public class CartaoCreditoEntity extends AuditingEntity {
 		this.valorLimite = valorLimite;
 	}
 	
+	public void setMaisOpcoes(Boolean maisOpcoes) {
+		this.maisOpcoes = maisOpcoes;
+	}
+	
 	public void setBandeiraCartao(BandeiraCartaoEntity bandeiraCartao) {
 		this.bandeiraCartao = bandeiraCartao;
 	}
@@ -142,12 +153,13 @@ public class CartaoCreditoEntity extends AuditingEntity {
 	public void assign(CartaoCreditoEntity source) {
 		if (source != null) {
 			this.setId(source.getId());
-			this.setBanco(source.getBanco());
 			this.setNomeTitular(source.getNomeTitular());
+			this.setBanco(source.getBanco());
 			this.setNumeroCartao(source.getNumeroCartao());
 			this.setValidade(source.getValidade());
 			this.setCodigoSeguranca(source.getCodigoSeguranca());
 			this.setValorLimite(source.getValorLimite());
+			this.setMaisOpcoes(source.getMaisOpcoes());
 			this.setBandeiraCartao(source.getBandeiraCartao());
 			this.setAtivo(source.getAtivo());
 			this.setCreatedBy(source.getCreatedBy());
@@ -170,12 +182,13 @@ public class CartaoCreditoEntity extends AuditingEntity {
 		visited.put(this, theClone);
 		
 		theClone.setId(this.getId());
-		theClone.setBanco(this.getBanco() != null ? this.getBanco().clone(visited) : null);
 		theClone.setNomeTitular(this.getNomeTitular());
+		theClone.setBanco(this.getBanco() != null ? this.getBanco().clone(visited) : null);
 		theClone.setNumeroCartao(this.getNumeroCartao());
 		theClone.setValidade(this.getValidade());
 		theClone.setCodigoSeguranca(this.getCodigoSeguranca());
 		theClone.setValorLimite(this.getValorLimite());
+		theClone.setMaisOpcoes(this.getMaisOpcoes());
 		theClone.setBandeiraCartao(this.getBandeiraCartao() != null ? this.getBandeiraCartao().clone(visited) : null);
 		theClone.setAtivo(this.getAtivo());
 		theClone.setCreatedBy(this.getCreatedBy());

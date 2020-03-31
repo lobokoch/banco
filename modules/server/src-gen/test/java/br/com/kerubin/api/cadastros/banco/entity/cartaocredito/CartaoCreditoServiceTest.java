@@ -90,16 +90,17 @@ public class CartaoCreditoServiceTest extends CadastrosBancoBaseEntityTest {
 		CartaoCredito cartaoCredito = new CartaoCredito();
 		
 		cartaoCredito.setId(java.util.UUID.randomUUID());
+		cartaoCredito.setNomeTitular(generateRandomString(255));
 		
 		BancoEntity bancoEntityParam = newBancoEntity();
 		BancoLookupResult banco = newBancoLookupResult(bancoEntityParam);
 		cartaoCredito.setBanco(banco);
 		
-		cartaoCredito.setNomeTitular(generateRandomString(255));
 		cartaoCredito.setNumeroCartao(generateRandomString(50));
 		cartaoCredito.setValidade(getNextDate());
 		cartaoCredito.setCodigoSeguranca(generateRandomString(10));
-		cartaoCredito.setValorLimite(new java.math.BigDecimal("32635.16423"));
+		cartaoCredito.setValorLimite(new java.math.BigDecimal("11556.12878"));
+		cartaoCredito.setMaisOpcoes(false);
 		
 		BandeiraCartaoEntity bandeiraCartaoEntityParam = newBandeiraCartaoEntity();
 		BandeiraCartaoLookupResult bandeiraCartao = newBandeiraCartaoLookupResult(bandeiraCartaoEntityParam);
@@ -116,6 +117,7 @@ public class CartaoCreditoServiceTest extends CadastrosBancoBaseEntityTest {
 			
 			CartaoCreditoEvent event = (CartaoCreditoEvent) envelope.getPayload();
 			assertThat(event.getId()).isNotNull();
+			assertThat(event.getNomeTitular()).isEqualTo(cartaoCredito.getNomeTitular());
 			
 			if (cartaoCredito.getBanco() == null) {
 				assertThat(event.getBanco()).isNull();
@@ -124,7 +126,6 @@ public class CartaoCreditoServiceTest extends CadastrosBancoBaseEntityTest {
 				assertThat(event.getBanco()).isEqualTo(cartaoCredito.getBanco().getId());
 			}
 			
-			assertThat(event.getNomeTitular()).isEqualTo(cartaoCredito.getNomeTitular());
 			assertThat(event.getNumeroCartao()).isEqualTo(cartaoCredito.getNumeroCartao());
 			assertThat(event.getValidade()).isEqualTo(cartaoCredito.getValidade());
 			assertThat(event.getValorLimite()).isEqualTo(cartaoCredito.getValorLimite());
@@ -177,18 +178,13 @@ public class CartaoCreditoServiceTest extends CadastrosBancoBaseEntityTest {
 		CartaoCredito cartaoCredito = new CartaoCredito();
 		
 		cartaoCredito.setId(java.util.UUID.randomUUID());
+		cartaoCredito.setNomeTitular(generateRandomString(255));
 		
 		BancoEntity bancoEntityParam = newBancoEntity();
 		BancoLookupResult banco = newBancoLookupResult(bancoEntityParam);
 		cartaoCredito.setBanco(banco);
 		
-		cartaoCredito.setNomeTitular(generateRandomString(255));
 		cartaoCredito.setNumeroCartao(generateRandomString(50));
-		
-		BandeiraCartaoEntity bandeiraCartaoEntityParam = newBandeiraCartaoEntity();
-		BandeiraCartaoLookupResult bandeiraCartao = newBandeiraCartaoLookupResult(bandeiraCartaoEntityParam);
-		cartaoCredito.setBandeiraCartao(bandeiraCartao);
-		
 		cartaoCredito.setAtivo(true);
 		
 		// BEGIN check event created.
@@ -200,6 +196,7 @@ public class CartaoCreditoServiceTest extends CadastrosBancoBaseEntityTest {
 			
 			CartaoCreditoEvent event = (CartaoCreditoEvent) envelope.getPayload();
 			assertThat(event.getId()).isNotNull();
+			assertThat(event.getNomeTitular()).isEqualTo(cartaoCredito.getNomeTitular());
 			
 			if (cartaoCredito.getBanco() == null) {
 				assertThat(event.getBanco()).isNull();
@@ -208,7 +205,6 @@ public class CartaoCreditoServiceTest extends CadastrosBancoBaseEntityTest {
 				assertThat(event.getBanco()).isEqualTo(cartaoCredito.getBanco().getId());
 			}
 			
-			assertThat(event.getNomeTitular()).isEqualTo(cartaoCredito.getNomeTitular());
 			assertThat(event.getNumeroCartao()).isEqualTo(cartaoCredito.getNumeroCartao());
 			assertThat(event.getValidade()).isEqualTo(cartaoCredito.getValidade());
 			assertThat(event.getValorLimite()).isEqualTo(cartaoCredito.getValorLimite());
@@ -249,10 +245,7 @@ public class CartaoCreditoServiceTest extends CadastrosBancoBaseEntityTest {
 		assertThat(actual.getBanco().getId()).isNotNull();
 		assertThat(actual.getBanco()).isEqualToIgnoringGivenFields(cartaoCredito.getBanco(), IGNORED_FIELDS);
 		
-		
-		assertThat(actual.getBandeiraCartao().getId()).isNotNull();
-		assertThat(actual.getBandeiraCartao()).isEqualToIgnoringGivenFields(cartaoCredito.getBandeiraCartao(), IGNORED_FIELDS);
-		
+		assertThat(actual.getBandeiraCartao()).isNull();
 		
 	}
 	// END CREATE TESTS
@@ -282,16 +275,17 @@ public class CartaoCreditoServiceTest extends CadastrosBancoBaseEntityTest {
 		CartaoCredito cartaoCredito = new CartaoCredito();
 		cartaoCredito.setId(id);
 		
+		cartaoCredito.setNomeTitular(generateRandomString(255));
 		
 		BancoEntity bancoEntityParam = newBancoEntity();
 		BancoLookupResult banco = newBancoLookupResult(bancoEntityParam);
 		cartaoCredito.setBanco(banco);
 		
-		cartaoCredito.setNomeTitular(generateRandomString(255));
 		cartaoCredito.setNumeroCartao(generateRandomString(50));
 		cartaoCredito.setValidade(getNextDate());
 		cartaoCredito.setCodigoSeguranca(generateRandomString(10));
-		cartaoCredito.setValorLimite(new java.math.BigDecimal("27257.9816"));
+		cartaoCredito.setValorLimite(new java.math.BigDecimal("26627.7558"));
+		cartaoCredito.setMaisOpcoes(false);
 		
 		BandeiraCartaoEntity bandeiraCartaoEntityParam = newBandeiraCartaoEntity();
 		BandeiraCartaoLookupResult bandeiraCartao = newBandeiraCartaoLookupResult(bandeiraCartaoEntityParam);
@@ -308,6 +302,7 @@ public class CartaoCreditoServiceTest extends CadastrosBancoBaseEntityTest {
 			
 			CartaoCreditoEvent event = (CartaoCreditoEvent) envelope.getPayload();
 			assertThat(event.getId()).isEqualTo(cartaoCredito.getId());
+			assertThat(event.getNomeTitular()).isEqualTo(cartaoCredito.getNomeTitular());
 			
 			if (cartaoCredito.getBanco() == null) {
 				assertThat(event.getBanco()).isNull();
@@ -316,7 +311,6 @@ public class CartaoCreditoServiceTest extends CadastrosBancoBaseEntityTest {
 				assertThat(event.getBanco()).isEqualTo(cartaoCredito.getBanco().getId());
 			}
 			
-			assertThat(event.getNomeTitular()).isEqualTo(cartaoCredito.getNomeTitular());
 			assertThat(event.getNumeroCartao()).isEqualTo(cartaoCredito.getNumeroCartao());
 			assertThat(event.getValidade()).isEqualTo(cartaoCredito.getValidade());
 			assertThat(event.getValorLimite()).isEqualTo(cartaoCredito.getValorLimite());
@@ -372,18 +366,13 @@ public class CartaoCreditoServiceTest extends CadastrosBancoBaseEntityTest {
 		CartaoCredito cartaoCredito = new CartaoCredito();
 		cartaoCredito.setId(id);
 		
+		cartaoCredito.setNomeTitular(generateRandomString(255));
 		
 		BancoEntity bancoEntityParam = newBancoEntity();
 		BancoLookupResult banco = newBancoLookupResult(bancoEntityParam);
 		cartaoCredito.setBanco(banco);
 		
-		cartaoCredito.setNomeTitular(generateRandomString(255));
 		cartaoCredito.setNumeroCartao(generateRandomString(50));
-		
-		BandeiraCartaoEntity bandeiraCartaoEntityParam = newBandeiraCartaoEntity();
-		BandeiraCartaoLookupResult bandeiraCartao = newBandeiraCartaoLookupResult(bandeiraCartaoEntityParam);
-		cartaoCredito.setBandeiraCartao(bandeiraCartao);
-		
 		cartaoCredito.setAtivo(true);
 		
 		// BEGIN check event updated.
@@ -395,6 +384,7 @@ public class CartaoCreditoServiceTest extends CadastrosBancoBaseEntityTest {
 			
 			CartaoCreditoEvent event = (CartaoCreditoEvent) envelope.getPayload();
 			assertThat(event.getId()).isEqualTo(cartaoCredito.getId());
+			assertThat(event.getNomeTitular()).isEqualTo(cartaoCredito.getNomeTitular());
 			
 			if (cartaoCredito.getBanco() == null) {
 				assertThat(event.getBanco()).isNull();
@@ -403,7 +393,6 @@ public class CartaoCreditoServiceTest extends CadastrosBancoBaseEntityTest {
 				assertThat(event.getBanco()).isEqualTo(cartaoCredito.getBanco().getId());
 			}
 			
-			assertThat(event.getNomeTitular()).isEqualTo(cartaoCredito.getNomeTitular());
 			assertThat(event.getNumeroCartao()).isEqualTo(cartaoCredito.getNumeroCartao());
 			assertThat(event.getValidade()).isEqualTo(cartaoCredito.getValidade());
 			assertThat(event.getValorLimite()).isEqualTo(cartaoCredito.getValorLimite());
@@ -444,10 +433,7 @@ public class CartaoCreditoServiceTest extends CadastrosBancoBaseEntityTest {
 		assertThat(actual.getBanco().getId()).isNotNull();
 		assertThat(actual.getBanco()).isEqualToIgnoringGivenFields(cartaoCredito.getBanco(), IGNORED_FIELDS);
 		
-		
-		assertThat(actual.getBandeiraCartao().getId()).isNotNull();
-		assertThat(actual.getBandeiraCartao()).isEqualToIgnoringGivenFields(cartaoCredito.getBandeiraCartao(), IGNORED_FIELDS);
-		
+		assertThat(actual.getBandeiraCartao()).isNull();
 		
 	}
 	// END UPDATE TESTS
@@ -473,6 +459,7 @@ public class CartaoCreditoServiceTest extends CadastrosBancoBaseEntityTest {
 			
 			CartaoCreditoEvent event = (CartaoCreditoEvent) envelope.getPayload();
 			assertThat(event.getId()).isEqualTo(cartaoCredito.getId());
+			assertThat(event.getNomeTitular()).isEqualTo(cartaoCredito.getNomeTitular());
 			
 			if (cartaoCredito.getBanco() == null) {
 				assertThat(event.getBanco()).isNull();
@@ -481,7 +468,6 @@ public class CartaoCreditoServiceTest extends CadastrosBancoBaseEntityTest {
 				assertThat(event.getBanco()).isEqualTo(cartaoCredito.getBanco().getId());
 			}
 			
-			assertThat(event.getNomeTitular()).isEqualTo(cartaoCredito.getNomeTitular());
 			assertThat(event.getNumeroCartao()).isEqualTo(cartaoCredito.getNumeroCartao());
 			assertThat(event.getValidade()).isEqualTo(cartaoCredito.getValidade());
 			assertThat(event.getValorLimite()).isEqualTo(cartaoCredito.getValorLimite());
@@ -637,12 +623,13 @@ public class CartaoCreditoServiceTest extends CadastrosBancoBaseEntityTest {
 	protected CartaoCreditoEntity newCartaoCreditoEntity() {
 		CartaoCreditoEntity cartaoCreditoEntity = new CartaoCreditoEntity();
 		
-		cartaoCreditoEntity.setBanco(newBancoEntity());
 		cartaoCreditoEntity.setNomeTitular(generateRandomString(255));
+		cartaoCreditoEntity.setBanco(newBancoEntity());
 		cartaoCreditoEntity.setNumeroCartao(generateRandomString(50));
 		cartaoCreditoEntity.setValidade(getNextDate());
 		cartaoCreditoEntity.setCodigoSeguranca(generateRandomString(10));
-		cartaoCreditoEntity.setValorLimite(new java.math.BigDecimal("30631.16581"));
+		cartaoCreditoEntity.setValorLimite(new java.math.BigDecimal("15810.45"));
+		cartaoCreditoEntity.setMaisOpcoes(false);
 		cartaoCreditoEntity.setBandeiraCartao(newBandeiraCartaoEntity());
 		cartaoCreditoEntity.setAtivo(true);
 		

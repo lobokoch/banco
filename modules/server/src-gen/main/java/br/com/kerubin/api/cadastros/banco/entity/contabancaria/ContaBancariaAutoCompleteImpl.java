@@ -17,6 +17,8 @@ public class ContaBancariaAutoCompleteImpl implements ContaBancariaAutoComplete 
 	
 	private String nomeTitular;
 	
+	private String cpfCnpjTitular;
+	
 	private String numeroConta;
 	
 	private String digito;

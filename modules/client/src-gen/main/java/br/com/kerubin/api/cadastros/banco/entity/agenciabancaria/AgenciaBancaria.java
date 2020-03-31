@@ -19,13 +19,15 @@ public class AgenciaBancaria {
 	@NotNull(message="\"Banco\" é obrigatório.")
 	private BancoLookupResult banco;
 	
-	@NotBlank(message="\"Número da agência\" é obrigatório.")
-	@Size(max = 50, message = "\"Número da agência\" pode ter no máximo 50 caracteres.")
+	@NotBlank(message="\"Agência\" é obrigatório.")
+	@Size(max = 50, message = "\"Agência\" pode ter no máximo 50 caracteres.")
 	private String numeroAgencia;
 	
 	@NotBlank(message="\"Dígito\" é obrigatório.")
 	@Size(max = 10, message = "\"Dígito\" pode ter no máximo 10 caracteres.")
 	private String digitoAgencia;
+	
+	private Boolean maisOpcoes = false;
 	
 	@Size(max = 255, message = "\"Endereço/localização da agência\" pode ter no máximo 255 caracteres.")
 	private String endereco;
@@ -66,6 +68,10 @@ public class AgenciaBancaria {
 	
 	public String getDigitoAgencia() {
 		return digitoAgencia;
+	}
+	
+	public Boolean getMaisOpcoes() {
+		return maisOpcoes;
 	}
 	
 	public String getEndereco() {
@@ -110,6 +116,10 @@ public class AgenciaBancaria {
 	
 	public void setDigitoAgencia(String digitoAgencia) {
 		this.digitoAgencia = digitoAgencia;
+	}
+	
+	public void setMaisOpcoes(Boolean maisOpcoes) {
+		this.maisOpcoes = maisOpcoes;
 	}
 	
 	public void setEndereco(String endereco) {

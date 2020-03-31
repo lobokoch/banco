@@ -1,7 +1,7 @@
 @label("Cadastros") //xxx
 domain cadastros
 
-@webAnalitycs(tagId: "UA-157001792-1" onlyInProduction: false)
+@webAnalitycs(tagId: "UA-157001792-1" onlyInProduction: true)
 @label("Banco")
 service banco {
 	
@@ -23,14 +23,15 @@ service banco {
 	
 	@publishEvents// (events=[created, updated, deleted]) 
 	@auditing
-	@label("Banco")
+	@label(title: "Banco")
 	entity Banco {
 		
 		numero: string[20] 
-		label: "Número"
+		label: "Código"
 		autoComplete
 		publishedInEvents
 		web(styleClass: "ui-md-4")
+		help(text: "Informe o código do banco. Por exemplo, o Banco do Brasil é código: 001.")
 		
 		nome: string
 		label: "Nome"
@@ -38,6 +39,7 @@ service banco {
 		publishedInEvents
 		listFilter(many: "Nome do(s) banco(s)")
 		web(styleClass: "ui-md-8")
+		help(text: "Informe o nome do banco. Por exemplo, Banco do Brasil S.A.")
 		
 		rules {
 			with(numero).apply(trimLeft("0"))
@@ -46,39 +48,57 @@ service banco {
 	
 	@publishEvents
 	@auditing
-	@label("Agência bancária")
+	@label(title: "Agência bancária")
 	entity AgenciaBancaria {
 		
 		banco: refers Banco manyToOne
 		publishedInEvents
 		web(styleClass: "ui-md-6")
+		help(text: "Escolha o banco da agência bancária.")
 		
 		numeroAgencia: string[50] 
 		autoComplete
-		label: "Número da agência"
+		label: "Agência"
 		publishedInEvents
 		web(styleClass: "ui-md-5")
+		help(text: "Informe a agência (sem o dígito). Por exemplo: 9999")
 		
 		digitoAgencia: string[10] 
 		autoComplete(result)
 		label: "Dígito"
 		publishedInEvents
 		web(styleClass: "ui-md-1")
+		help(text: "Informe o dígito da agência. Por exemplo: 9")
+		
+		//////////////////////////
+		separator
+		maisOpcoes: boolean? transient
+		label: "Mostrar mais opções"
+		help(text: "Mostra ou oculta opções extras para a conta")
+		web(styleClass: "ui-md-12")
+		grid(hidden)
 		
 		endereco: string? 
 		autoComplete
 		label: "Endereço/localização da agência"
 		web(styleClass: "ui-md-6")
+		help(text: "Informe o endereço ou localização da agência. Exemplo: Agência do centro.")
 		
 		nomeGerente: string?
 		label: "Nome do gerente"
 		web(styleClass: "ui-md-4")
+		help(text: "Caso saiba, informe o nome do gerente da agência.")
 		
 		fone: string[50]?
 		label: "Telefone da agência"
 		web(styleClass: "ui-md-2")
+		help(text: "Caso saiba, informe o telefone da agência.")
 		
 		rules {
+			with(endereco).apply(hiddeComponent).when(maisOpcoes.isFalse)
+			with(nomeGerente).apply(hiddeComponent).when(maisOpcoes.isFalse)
+			with(fone).apply(hiddeComponent).when(maisOpcoes.isFalse)
+			
 			with(numeroAgencia).apply(trimLeft("0"))
 		}
 		
@@ -86,20 +106,21 @@ service banco {
 	
 	@auditing
 	@publishEvents
-	@label("Bandeira de cartão")
+	@label(title: "Bandeira de cartão")
 	entity BandeiraCartao {
 		
 		nomeBandeira: string
+		label: "Bandeira do cartão"
 		autoComplete
 		publishedInEvents
-		label: "Bandeira do cartão"
 		listFilter(many: "Bandeira(s)")
 		web(styleClass: "ui-md-12")
+		help(text: "Informe a bandeira do cartão. Por exemplo: Mastercad.")
 	}
 	
 	@auditing
 	@publishEvents
-	@label("Conta bancária")
+	@label(title: "Conta bancária")
 	entity ContaBancaria {
 		//--
 		nomeTitular: string
@@ -107,62 +128,104 @@ service banco {
 		publishedInEvents
 		autoComplete
 		web(styleClass: "ui-md-6")
+		help(text: "Informe o nome do títular da conta bancária.")
 		
-		agencia: refers AgenciaBancaria manyToOne
+		////
+		cpfCnpjTitular: string[20]?
+		label: "CPF/CNPJ do títular da conta"
+		validation(name: CpfOrCnpj 	message: "CPF/CNPJ inválido.")
 		publishedInEvents
+		autoComplete
 		web(styleClass: "ui-md-4")
+		help(text: "Caso queira, informe o CPF/CNPJ do títular da conta bancária.")
+		grid(hidden)
 		
 		tipoContaBancaria: TipoContaBancaria
 		label: "Tipo da conta"
 		publishedInEvents
 		web(styleClass: "ui-md-2")
-		//--
+		help(text: "Selecione o tipo da conta bancária.")
+		
+		////////////
+		separator
+		agencia: refers AgenciaBancaria manyToOne
+		publishedInEvents
+		web(styleClass: "ui-md-6")
+		help(text: "Selecione a agência bancária desta conta.")
 		
 		numeroConta: string[30] 
 		autoComplete(result)
 		label: "Número da conta"
 		publishedInEvents
 		listFilter(many: "Número da(s) conta(s)")
-		web(styleClass: "ui-md-6")
+		web(styleClass: "ui-md-2")
+		help(text: "Informe o número da conta bancária (sem o dígito).")
 		
 		digito: string[10]? 
 		autoComplete(result)
 		label: "Dígito"
 		publishedInEvents
-		web(styleClass: "ui-md-2")
+		web(styleClass: "ui-md-1")
+		help(text: "Caso queira, informe o dígito verificador da conta bancária.")
 		
 		saldo: money?
 		label: "Saldo"
-		web(styleClass: "ui-md-4")
+		web(styleClass: "ui-md-3")
+		help(text: "Caso queira, informe o saldo da conta bancária.")
+		grid(hidden)
 		//--
 		
-		numeroCartao: string[50]?
-		label: "Número do cartão"
-		web(styleClass: "ui-md-8")
+		/////////////////////////////
+		separator
+		maisOpcoes: boolean? transient
+		label: "Mostrar mais opções"
+		help(text: "Mostra ou oculta opções extras para a conta")
+		web(styleClass: "ui-md-12")
+		grid(hidden)
 		
-		codigoSeguranca: string[10]?
-		label: "Código de segurança"
+		//////
+		separator
+		ativo: boolean
+		label: "Conta ativa"
+		publishedInEvents
 		web(styleClass: "ui-md-2")
+		help(text: "Marca a conta bancária como Ativa ou Inativa. Apenas contas Ativas podem ser usadas para recebimentos e/ou pagamentos nos cadastros das contas.")
 		
 		dataValidade: date?
 		mask:"MM/yyyy"
 		publishedInEvents
-		label: "Validade"
+		label: "Validade do cartão"
 		web(styleClass: "ui-md-2")
-		//--
+		help(text: "Caso queira, informe a data de validade do cartão desta conta.")
 		
-		bandeiraCartao: refers BandeiraCartao manyToOne
+		numeroCartao: string[50]?
+		label: "Número do cartão"
+		web(styleClass: "ui-md-6")
+		help(text: "Caso queira, informe o número do cartão da conta bancária.")
+		grid(hidden)
+		
+		codigoSeguranca: string[10]?
+		label: "Código de segurança"
+		web(styleClass: "ui-md-2")
+		help(text: "Caso queira, informe o código de segurança do cartão.")
+		grid(hidden)
+		////
+		
+		bandeiraCartao: refers BandeiraCartao? manyToOne
 		label: "Bandeira do cartão"
 		publishedInEvents
-		web(styleClass: "ui-md-8")
-		
-		ativo: boolean
-		label: "Conta ativa"
-		publishedInEvents
-		web(styleClass: "ui-md-4")
-		//--
+		web(styleClass: "ui-md-12")
+		help(text: "Caso queira, informe a bandeira do cartão da conta bancária. Por exemplo: Mastercard.")
+		grid(hidden)
 		
 		rules {
+			
+			with(ativo).apply(hiddeComponent).when(maisOpcoes.isFalse)
+			with(dataValidade).apply(hiddeComponent).when(maisOpcoes.isFalse)
+			with(numeroCartao).apply(hiddeComponent).when(maisOpcoes.isFalse)
+			with(codigoSeguranca).apply(hiddeComponent).when(maisOpcoes.isFalse)
+			with(bandeiraCartao).apply(hiddeComponent).when(maisOpcoes.isFalse)
+			
 			with(numeroConta).apply(trimLeft("0"))
 		}
 		
@@ -170,19 +233,21 @@ service banco {
 	
 	@publishEvents
 	@auditing
-	@label("Cartão de crédito")
+	@label(title: "Cartão de crédito")
 	entity CartaoCredito {
 		
 		//--
-		banco: refers Banco manyToOne
-		publishedInEvents
-		web(styleClass: "ui-md-6")
-		
 		nomeTitular: string
 		autoComplete
 		label: "Nome do títular do cartão"
 		publishedInEvents
 		web(styleClass: "ui-md-6")
+		help(text: "Informe o nome do títular do cartão.")
+		
+		banco: refers Banco manyToOne
+		publishedInEvents
+		web(styleClass: "ui-md-6")
+		help(text: "Informe o banco que provê este cartão. Exemplo: Nu bank.")
 		
 		//--
 		numeroCartao: string[50] 
@@ -190,36 +255,61 @@ service banco {
 		label: "Número do cartão"
 		publishedInEvents
 		web(styleClass: "ui-md-6")
+		help(text: "Informe o número do cartão.")
 		
 		validade: date?
 		label: "Validade"
 		mask:"mm/yy"
 		publishedInEvents
 		web(styleClass: "ui-md-2")
+		help(text: "Caso queira, informe a data de validade do cartão.")
+		grid(hidden)
 		
 		codigoSeguranca: string[10]?
 		label: "Código de segurança"
 		web(styleClass: "ui-md-2")
+		help(text: "Caso queira, informe o código de segurança do cartão.")
+		grid(hidden)
 		
 		valorLimite: money?
 		label: "Limite de crédito"
 		publishedInEvents
 		web(styleClass: "ui-md-2")
+		help(text: "Caso queira, informe o limite do cartão.")
+		grid(hidden)
+		
+		//////////////////////////
+		separator
+		maisOpcoes: boolean? transient
+		label: "Mostrar mais opções"
+		web(styleClass: "ui-md-12")
+		grid(hidden)
+		help(text: "Mostra ou oculta opções extras para o cartão.")
 		
 		//--
-		bandeiraCartao: refers BandeiraCartao manyToOne
+		bandeiraCartao: refers BandeiraCartao? manyToOne
 		label: "Bandeira do cartão"
 		publishedInEvents
 		web(styleClass: "ui-md-6")
+		help(text: "Caso queira, informe a bandeira do cartão.")
 		
 		ativo: boolean
 		label: "Cartão ativo"
 		publishedInEvents
 		web(styleClass: "ui-md-2")
+		help(text: "Marca o cartão como Ativo ou Inativo. Apenas cartões Ativos podem ser usados nos cadastros das contas.")
+		
+		rules {
+			
+			with(bandeiraCartao).apply(hiddeComponent).when(maisOpcoes.isFalse)
+			with(ativo).apply(hiddeComponent).when(maisOpcoes.isFalse)
+			
+			with(bandeiraCartao).apply()
+		}
 		
 	}
 	
-	@label("Conciliação bancária")
+	@label(title: "Conciliação bancária")
 	@auditing
 	entity ConciliacaoBancaria {
 		
@@ -269,7 +359,7 @@ service banco {
 	}
 	//
 	
-	@label("Transações")
+	@label(title: "Transações")
 	//@labelMenu(")
 	@auditing
 	entity ConciliacaoTransacao {
@@ -361,7 +451,7 @@ service banco {
 		}
 	}
 	
-	@label("Títulos da transação de conciliação")
+	@label(title: "Títulos da transação de conciliação")
 	entity ConciliacaoTransacaoTitulo {
 		conciliacaoTransacao: refers ConciliacaoTransacao manyToOne
 		
@@ -391,7 +481,7 @@ service banco {
 	
 	@externalEntity
 	@subscribe(domain= financeiro, service=plano_contas, events=[cud])
-	@label("Plano de contas")
+	@label(title: "Plano de contas")
 	entity PlanoConta {
 		
 		codigo: string

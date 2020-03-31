@@ -90,6 +90,7 @@ public class AgenciaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 		
 		agenciaBancaria.setNumeroAgencia(generateRandomString(50));
 		agenciaBancaria.setDigitoAgencia(generateRandomString(10));
+		agenciaBancaria.setMaisOpcoes(false);
 		agenciaBancaria.setEndereco(generateRandomString(255));
 		agenciaBancaria.setNomeGerente(generateRandomString(255));
 		agenciaBancaria.setFone(generateRandomString(50));
@@ -240,6 +241,7 @@ public class AgenciaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 		
 		agenciaBancaria.setNumeroAgencia(generateRandomString(50));
 		agenciaBancaria.setDigitoAgencia(generateRandomString(10));
+		agenciaBancaria.setMaisOpcoes(false);
 		agenciaBancaria.setEndereco(generateRandomString(255));
 		agenciaBancaria.setNomeGerente(generateRandomString(255));
 		agenciaBancaria.setFone(generateRandomString(50));
@@ -505,6 +507,7 @@ public class AgenciaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 		agenciaBancariaEntity.setBanco(newBancoEntity());
 		agenciaBancariaEntity.setNumeroAgencia(generateRandomString(50));
 		agenciaBancariaEntity.setDigitoAgencia(generateRandomString(10));
+		agenciaBancariaEntity.setMaisOpcoes(false);
 		agenciaBancariaEntity.setEndereco(generateRandomString(255));
 		agenciaBancariaEntity.setNomeGerente(generateRandomString(255));
 		agenciaBancariaEntity.setFone(generateRandomString(50));

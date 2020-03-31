@@ -13,6 +13,8 @@ public class ContaBancariaLookupResult {
 	
 	private String nomeTitular;
 	
+	private String cpfCnpjTitular;
+	
 	private String numeroConta;
 	
 	private String digito;
@@ -31,6 +33,10 @@ public class ContaBancariaLookupResult {
 		return nomeTitular;
 	}
 	
+	public String getCpfCnpjTitular() {
+		return cpfCnpjTitular;
+	}
+	
 	public String getNumeroConta() {
 		return numeroConta;
 	}
@@ -45,6 +51,10 @@ public class ContaBancariaLookupResult {
 	
 	public void setNomeTitular(String nomeTitular) {
 		this.nomeTitular = nomeTitular;
+	}
+	
+	public void setCpfCnpjTitular(String cpfCnpjTitular) {
+		this.cpfCnpjTitular = cpfCnpjTitular;
 	}
 	
 	public void setNumeroConta(String numeroConta) {

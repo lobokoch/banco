@@ -12,18 +12,20 @@ import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.Column;
 import br.com.kerubin.api.database.entity.AuditingEntity;
+import javax.persistence.Transient;
 import javax.persistence.GeneratedValue;
 import org.hibernate.annotations.GenericGenerator;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import br.com.kerubin.api.servicecore.validator.constraint.CpfOrCnpj;
 import javax.validation.constraints.NotNull;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import br.com.kerubin.api.cadastros.banco.TipoContaBancaria;
 import br.com.kerubin.api.cadastros.banco.entity.agenciabancaria.AgenciaBancariaEntity;
 import javax.persistence.ManyToOne;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import br.com.kerubin.api.cadastros.banco.TipoContaBancaria;
 import br.com.kerubin.api.cadastros.banco.entity.bandeiracartao.BandeiraCartaoEntity;
 
 @Entity
@@ -41,15 +43,20 @@ public class ContaBancariaEntity extends AuditingEntity {
 	@Column(name="nome_titular")
 	private String nomeTitular;
 	
-	@NotNull(message="\"Agência bancária\" é obrigatório.")
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "agencia")
-	private AgenciaBancariaEntity agencia;
+	@Size(max = 20, message = "\"CPF/CNPJ do títular da conta\" pode ter no máximo 20 caracteres.")
+	@CpfOrCnpj(message="CPF/CNPJ inválido.")
+	@Column(name="cpf_cnpj_titular")
+	private String cpfCnpjTitular;
 	
 	@NotNull(message="\"Tipo da conta\" é obrigatório.")
 	@Enumerated(EnumType.STRING)
 	@Column(name="tipo_conta_bancaria")
 	private TipoContaBancaria tipoContaBancaria;
+	
+	@NotNull(message="\"Agência bancária\" é obrigatório.")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "agencia")
+	private AgenciaBancariaEntity agencia;
 	
 	@NotBlank(message="\"Número da conta\" é obrigatório.")
 	@Size(max = 30, message = "\"Número da conta\" pode ter no máximo 30 caracteres.")
@@ -63,6 +70,16 @@ public class ContaBancariaEntity extends AuditingEntity {
 	@Column(name="saldo")
 	private java.math.BigDecimal saldo;
 	
+	@Transient
+	private Boolean maisOpcoes = false;
+	
+	@NotNull(message="\"Conta ativa\" é obrigatório.")
+	@Column(name="ativo")
+	private Boolean ativo = true;
+	
+	@Column(name="data_validade")
+	private java.time.LocalDate dataValidade;
+	
 	@Size(max = 50, message = "\"Número do cartão\" pode ter no máximo 50 caracteres.")
 	@Column(name="numero_cartao")
 	private String numeroCartao;
@@ -71,17 +88,9 @@ public class ContaBancariaEntity extends AuditingEntity {
 	@Column(name="codigo_seguranca")
 	private String codigoSeguranca;
 	
-	@Column(name="data_validade")
-	private java.time.LocalDate dataValidade;
-	
-	@NotNull(message="\"Bandeira do cartão\" é obrigatório.")
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "bandeira_cartao")
 	private BandeiraCartaoEntity bandeiraCartao;
-	
-	@NotNull(message="\"Conta ativa\" é obrigatório.")
-	@Column(name="ativo")
-	private Boolean ativo = true;
 	
 	public java.util.UUID getId() {
 		return id;
@@ -91,12 +100,16 @@ public class ContaBancariaEntity extends AuditingEntity {
 		return nomeTitular;
 	}
 	
-	public AgenciaBancariaEntity getAgencia() {
-		return agencia;
+	public String getCpfCnpjTitular() {
+		return cpfCnpjTitular;
 	}
 	
 	public TipoContaBancaria getTipoContaBancaria() {
 		return tipoContaBancaria;
+	}
+	
+	public AgenciaBancariaEntity getAgencia() {
+		return agencia;
 	}
 	
 	public String getNumeroConta() {
@@ -111,6 +124,18 @@ public class ContaBancariaEntity extends AuditingEntity {
 		return saldo;
 	}
 	
+	public Boolean getMaisOpcoes() {
+		return maisOpcoes;
+	}
+	
+	public Boolean getAtivo() {
+		return ativo;
+	}
+	
+	public java.time.LocalDate getDataValidade() {
+		return dataValidade;
+	}
+	
 	public String getNumeroCartao() {
 		return numeroCartao;
 	}
@@ -119,16 +144,8 @@ public class ContaBancariaEntity extends AuditingEntity {
 		return codigoSeguranca;
 	}
 	
-	public java.time.LocalDate getDataValidade() {
-		return dataValidade;
-	}
-	
 	public BandeiraCartaoEntity getBandeiraCartao() {
 		return bandeiraCartao;
-	}
-	
-	public Boolean getAtivo() {
-		return ativo;
 	}
 	
 	public void setId(java.util.UUID id) {
@@ -139,12 +156,16 @@ public class ContaBancariaEntity extends AuditingEntity {
 		this.nomeTitular = nomeTitular != null ? nomeTitular.trim() : nomeTitular; // Chamadas REST fazem trim.
 	}
 	
-	public void setAgencia(AgenciaBancariaEntity agencia) {
-		this.agencia = agencia;
+	public void setCpfCnpjTitular(String cpfCnpjTitular) {
+		this.cpfCnpjTitular = cpfCnpjTitular != null ? cpfCnpjTitular.trim() : cpfCnpjTitular; // Chamadas REST fazem trim.
 	}
 	
 	public void setTipoContaBancaria(TipoContaBancaria tipoContaBancaria) {
 		this.tipoContaBancaria = tipoContaBancaria;
+	}
+	
+	public void setAgencia(AgenciaBancariaEntity agencia) {
+		this.agencia = agencia;
 	}
 	
 	public void setNumeroConta(String numeroConta) {
@@ -159,6 +180,18 @@ public class ContaBancariaEntity extends AuditingEntity {
 		this.saldo = saldo;
 	}
 	
+	public void setMaisOpcoes(Boolean maisOpcoes) {
+		this.maisOpcoes = maisOpcoes;
+	}
+	
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
+	}
+	
+	public void setDataValidade(java.time.LocalDate dataValidade) {
+		this.dataValidade = dataValidade;
+	}
+	
 	public void setNumeroCartao(String numeroCartao) {
 		this.numeroCartao = numeroCartao != null ? numeroCartao.trim() : numeroCartao; // Chamadas REST fazem trim.
 	}
@@ -167,32 +200,26 @@ public class ContaBancariaEntity extends AuditingEntity {
 		this.codigoSeguranca = codigoSeguranca != null ? codigoSeguranca.trim() : codigoSeguranca; // Chamadas REST fazem trim.
 	}
 	
-	public void setDataValidade(java.time.LocalDate dataValidade) {
-		this.dataValidade = dataValidade;
-	}
-	
 	public void setBandeiraCartao(BandeiraCartaoEntity bandeiraCartao) {
 		this.bandeiraCartao = bandeiraCartao;
-	}
-	
-	public void setAtivo(Boolean ativo) {
-		this.ativo = ativo;
 	}
 	
 	public void assign(ContaBancariaEntity source) {
 		if (source != null) {
 			this.setId(source.getId());
 			this.setNomeTitular(source.getNomeTitular());
-			this.setAgencia(source.getAgencia());
+			this.setCpfCnpjTitular(source.getCpfCnpjTitular());
 			this.setTipoContaBancaria(source.getTipoContaBancaria());
+			this.setAgencia(source.getAgencia());
 			this.setNumeroConta(source.getNumeroConta());
 			this.setDigito(source.getDigito());
 			this.setSaldo(source.getSaldo());
+			this.setMaisOpcoes(source.getMaisOpcoes());
+			this.setAtivo(source.getAtivo());
+			this.setDataValidade(source.getDataValidade());
 			this.setNumeroCartao(source.getNumeroCartao());
 			this.setCodigoSeguranca(source.getCodigoSeguranca());
-			this.setDataValidade(source.getDataValidade());
 			this.setBandeiraCartao(source.getBandeiraCartao());
-			this.setAtivo(source.getAtivo());
 			this.setCreatedBy(source.getCreatedBy());
 			this.setCreatedDate(source.getCreatedDate());
 			this.setLastModifiedBy(source.getLastModifiedBy());
@@ -214,16 +241,18 @@ public class ContaBancariaEntity extends AuditingEntity {
 		
 		theClone.setId(this.getId());
 		theClone.setNomeTitular(this.getNomeTitular());
-		theClone.setAgencia(this.getAgencia() != null ? this.getAgencia().clone(visited) : null);
+		theClone.setCpfCnpjTitular(this.getCpfCnpjTitular());
 		theClone.setTipoContaBancaria(this.getTipoContaBancaria());
+		theClone.setAgencia(this.getAgencia() != null ? this.getAgencia().clone(visited) : null);
 		theClone.setNumeroConta(this.getNumeroConta());
 		theClone.setDigito(this.getDigito());
 		theClone.setSaldo(this.getSaldo());
+		theClone.setMaisOpcoes(this.getMaisOpcoes());
+		theClone.setAtivo(this.getAtivo());
+		theClone.setDataValidade(this.getDataValidade());
 		theClone.setNumeroCartao(this.getNumeroCartao());
 		theClone.setCodigoSeguranca(this.getCodigoSeguranca());
-		theClone.setDataValidade(this.getDataValidade());
 		theClone.setBandeiraCartao(this.getBandeiraCartao() != null ? this.getBandeiraCartao().clone(visited) : null);
-		theClone.setAtivo(this.getAtivo());
 		theClone.setCreatedBy(this.getCreatedBy());
 		theClone.setCreatedDate(this.getCreatedDate());
 		theClone.setLastModifiedBy(this.getLastModifiedBy());

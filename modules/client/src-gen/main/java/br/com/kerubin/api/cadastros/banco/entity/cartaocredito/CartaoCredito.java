@@ -7,22 +7,22 @@ WARNING: DO NOT CHANGE THIS CODE BECAUSE THE CHANGES WILL BE LOST IN THE NEXT CO
 
 package br.com.kerubin.api.cadastros.banco.entity.cartaocredito;
 
-import javax.validation.constraints.NotNull;
-import br.com.kerubin.api.cadastros.banco.entity.banco.BancoLookupResult;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import javax.validation.constraints.NotNull;
+import br.com.kerubin.api.cadastros.banco.entity.banco.BancoLookupResult;
 import br.com.kerubin.api.cadastros.banco.entity.bandeiracartao.BandeiraCartaoLookupResult;
 
 public class CartaoCredito {
 
 	private java.util.UUID id;
 	
-	@NotNull(message="\"Banco\" é obrigatório.")
-	private BancoLookupResult banco;
-	
 	@NotBlank(message="\"Nome do títular do cartão\" é obrigatório.")
 	@Size(max = 255, message = "\"Nome do títular do cartão\" pode ter no máximo 255 caracteres.")
 	private String nomeTitular;
+	
+	@NotNull(message="\"Banco\" é obrigatório.")
+	private BancoLookupResult banco;
 	
 	@NotBlank(message="\"Número do cartão\" é obrigatório.")
 	@Size(max = 50, message = "\"Número do cartão\" pode ter no máximo 50 caracteres.")
@@ -35,7 +35,8 @@ public class CartaoCredito {
 	
 	private java.math.BigDecimal valorLimite;
 	
-	@NotNull(message="\"Bandeira do cartão\" é obrigatório.")
+	private Boolean maisOpcoes = false;
+	
 	private BandeiraCartaoLookupResult bandeiraCartao;
 	
 	@NotNull(message="\"Cartão ativo\" é obrigatório.")
@@ -61,12 +62,12 @@ public class CartaoCredito {
 		return id;
 	}
 	
-	public BancoLookupResult getBanco() {
-		return banco;
-	}
-	
 	public String getNomeTitular() {
 		return nomeTitular;
+	}
+	
+	public BancoLookupResult getBanco() {
+		return banco;
 	}
 	
 	public String getNumeroCartao() {
@@ -83,6 +84,10 @@ public class CartaoCredito {
 	
 	public java.math.BigDecimal getValorLimite() {
 		return valorLimite;
+	}
+	
+	public Boolean getMaisOpcoes() {
+		return maisOpcoes;
 	}
 	
 	public BandeiraCartaoLookupResult getBandeiraCartao() {
@@ -113,12 +118,12 @@ public class CartaoCredito {
 		this.id = id;
 	}
 	
-	public void setBanco(BancoLookupResult banco) {
-		this.banco = banco;
-	}
-	
 	public void setNomeTitular(String nomeTitular) {
 		this.nomeTitular = nomeTitular;
+	}
+	
+	public void setBanco(BancoLookupResult banco) {
+		this.banco = banco;
 	}
 	
 	public void setNumeroCartao(String numeroCartao) {
@@ -135,6 +140,10 @@ public class CartaoCredito {
 	
 	public void setValorLimite(java.math.BigDecimal valorLimite) {
 		this.valorLimite = valorLimite;
+	}
+	
+	public void setMaisOpcoes(Boolean maisOpcoes) {
+		this.maisOpcoes = maisOpcoes;
 	}
 	
 	public void setBandeiraCartao(BandeiraCartaoLookupResult bandeiraCartao) {

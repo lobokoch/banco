@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.Column;
 import br.com.kerubin.api.database.entity.AuditingEntity;
+import javax.persistence.Transient;
 import javax.persistence.GeneratedValue;
 import org.hibernate.annotations.GenericGenerator;
 import javax.validation.constraints.NotNull;
@@ -37,8 +38,8 @@ public class AgenciaBancariaEntity extends AuditingEntity {
 	@JoinColumn(name = "banco")
 	private BancoEntity banco;
 	
-	@NotBlank(message="\"Número da agência\" é obrigatório.")
-	@Size(max = 50, message = "\"Número da agência\" pode ter no máximo 50 caracteres.")
+	@NotBlank(message="\"Agência\" é obrigatório.")
+	@Size(max = 50, message = "\"Agência\" pode ter no máximo 50 caracteres.")
 	@Column(name="numero_agencia")
 	private String numeroAgencia;
 	
@@ -46,6 +47,9 @@ public class AgenciaBancariaEntity extends AuditingEntity {
 	@Size(max = 10, message = "\"Dígito\" pode ter no máximo 10 caracteres.")
 	@Column(name="digito_agencia")
 	private String digitoAgencia;
+	
+	@Transient
+	private Boolean maisOpcoes = false;
 	
 	@Size(max = 255, message = "\"Endereço/localização da agência\" pode ter no máximo 255 caracteres.")
 	@Column(name="endereco")
@@ -73,6 +77,10 @@ public class AgenciaBancariaEntity extends AuditingEntity {
 	
 	public String getDigitoAgencia() {
 		return digitoAgencia;
+	}
+	
+	public Boolean getMaisOpcoes() {
+		return maisOpcoes;
 	}
 	
 	public String getEndereco() {
@@ -103,6 +111,10 @@ public class AgenciaBancariaEntity extends AuditingEntity {
 		this.digitoAgencia = digitoAgencia != null ? digitoAgencia.trim() : digitoAgencia; // Chamadas REST fazem trim.
 	}
 	
+	public void setMaisOpcoes(Boolean maisOpcoes) {
+		this.maisOpcoes = maisOpcoes;
+	}
+	
 	public void setEndereco(String endereco) {
 		this.endereco = endereco != null ? endereco.trim() : endereco; // Chamadas REST fazem trim.
 	}
@@ -121,6 +133,7 @@ public class AgenciaBancariaEntity extends AuditingEntity {
 			this.setBanco(source.getBanco());
 			this.setNumeroAgencia(source.getNumeroAgencia());
 			this.setDigitoAgencia(source.getDigitoAgencia());
+			this.setMaisOpcoes(source.getMaisOpcoes());
 			this.setEndereco(source.getEndereco());
 			this.setNomeGerente(source.getNomeGerente());
 			this.setFone(source.getFone());
@@ -147,6 +160,7 @@ public class AgenciaBancariaEntity extends AuditingEntity {
 		theClone.setBanco(this.getBanco() != null ? this.getBanco().clone(visited) : null);
 		theClone.setNumeroAgencia(this.getNumeroAgencia());
 		theClone.setDigitoAgencia(this.getDigitoAgencia());
+		theClone.setMaisOpcoes(this.getMaisOpcoes());
 		theClone.setEndereco(this.getEndereco());
 		theClone.setNomeGerente(this.getNomeGerente());
 		theClone.setFone(this.getFone());
