@@ -63,6 +63,9 @@ public class ConciliacaoTransacaoTituloEntity  {
 	@JoinColumn(name = "titulo_plano_contas")
 	private PlanoContaEntity tituloPlanoContas;
 	
+	@Column(name="titulo_conciliado_multiple")
+	private Boolean tituloConciliadoMultiple = false;
+	
 	@Column(name="data_conciliacao")
 	private java.time.LocalDate dataConciliacao;
 	
@@ -101,6 +104,10 @@ public class ConciliacaoTransacaoTituloEntity  {
 	
 	public PlanoContaEntity getTituloPlanoContas() {
 		return tituloPlanoContas;
+	}
+	
+	public Boolean getTituloConciliadoMultiple() {
+		return tituloConciliadoMultiple;
 	}
 	
 	public java.time.LocalDate getDataConciliacao() {
@@ -143,6 +150,10 @@ public class ConciliacaoTransacaoTituloEntity  {
 		this.tituloPlanoContas = tituloPlanoContas;
 	}
 	
+	public void setTituloConciliadoMultiple(Boolean tituloConciliadoMultiple) {
+		this.tituloConciliadoMultiple = tituloConciliadoMultiple;
+	}
+	
 	public void setDataConciliacao(java.time.LocalDate dataConciliacao) {
 		this.dataConciliacao = dataConciliacao;
 	}
@@ -161,6 +172,7 @@ public class ConciliacaoTransacaoTituloEntity  {
 			this.setTituloConciliadoDataVen(source.getTituloConciliadoDataVen());
 			this.setTituloConciliadoDataPag(source.getTituloConciliadoDataPag());
 			this.setTituloPlanoContas(source.getTituloPlanoContas());
+			this.setTituloConciliadoMultiple(source.getTituloConciliadoMultiple());
 			this.setDataConciliacao(source.getDataConciliacao());
 			this.setSituacaoConciliacaoTrn(source.getSituacaoConciliacaoTrn());
 		}
@@ -186,6 +198,7 @@ public class ConciliacaoTransacaoTituloEntity  {
 		theClone.setTituloConciliadoDataVen(this.getTituloConciliadoDataVen());
 		theClone.setTituloConciliadoDataPag(this.getTituloConciliadoDataPag());
 		theClone.setTituloPlanoContas(this.getTituloPlanoContas() != null ? this.getTituloPlanoContas().clone(visited) : null);
+		theClone.setTituloConciliadoMultiple(this.getTituloConciliadoMultiple());
 		theClone.setDataConciliacao(this.getDataConciliacao());
 		theClone.setSituacaoConciliacaoTrn(this.getSituacaoConciliacaoTrn());
 		

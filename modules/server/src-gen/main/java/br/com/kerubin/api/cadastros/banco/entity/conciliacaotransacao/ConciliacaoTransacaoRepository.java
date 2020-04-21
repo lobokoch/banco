@@ -12,11 +12,18 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import java.util.Collection;
 import java.util.List;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.repository.query.Param;
 
 @Transactional(readOnly = true)
 public interface ConciliacaoTransacaoRepository extends JpaRepository<ConciliacaoTransacaoEntity, java.util.UUID>, QuerydslPredicateExecutor<ConciliacaoTransacaoEntity> {
+	
+	@Transactional
+	@Modifying
+	@Query("delete from ConciliacaoTransacaoEntity cte where cte.id in ?1")
+	void deleteInBulk(java.util.List<java.util.UUID> idList);
+	
 	
 	// WARNING: supports only where clause with like for STRING fields. For relationships entities will get the first string autocomplete key field name.
 	@Query("select distinct ac.id as id, ac.trnId as trnId from ConciliacaoTransacaoEntity ac where ( upper(ac.trnId) like upper(concat('%', :query, '%')) ) order by 1 asc")

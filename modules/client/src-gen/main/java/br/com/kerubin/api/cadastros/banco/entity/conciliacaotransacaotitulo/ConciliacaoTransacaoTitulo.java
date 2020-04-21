@@ -37,6 +37,8 @@ public class ConciliacaoTransacaoTitulo {
 	
 	private PlanoContaLookupResult tituloPlanoContas;
 	
+	private Boolean tituloConciliadoMultiple = false;
+	
 	private java.time.LocalDate dataConciliacao;
 	
 	@NotNull(message="\"situacaoConciliacaoTrn\" é obrigatório.")
@@ -80,6 +82,10 @@ public class ConciliacaoTransacaoTitulo {
 		return tituloPlanoContas;
 	}
 	
+	public Boolean getTituloConciliadoMultiple() {
+		return tituloConciliadoMultiple;
+	}
+	
 	public java.time.LocalDate getDataConciliacao() {
 		return dataConciliacao;
 	}
@@ -118,6 +124,10 @@ public class ConciliacaoTransacaoTitulo {
 	
 	public void setTituloPlanoContas(PlanoContaLookupResult tituloPlanoContas) {
 		this.tituloPlanoContas = tituloPlanoContas;
+	}
+	
+	public void setTituloConciliadoMultiple(Boolean tituloConciliadoMultiple) {
+		this.tituloConciliadoMultiple = tituloConciliadoMultiple;
 	}
 	
 	public void setDataConciliacao(java.time.LocalDate dataConciliacao) {

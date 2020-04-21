@@ -80,6 +80,12 @@ public class PlanoContaController {
 		planoContaService.delete(id);
 	}
 	
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PostMapping("/deleteInBulk")
+	public void deleteInBulk(@RequestBody java.util.List<java.util.UUID> idList) {
+		planoContaService.deleteInBulk(idList);
+	}
+	
 	@Transactional(readOnly = true)
 	@GetMapping
 	public PageResult<PlanoConta> list(PlanoContaListFilter planoContaListFilter, Pageable pageable) {

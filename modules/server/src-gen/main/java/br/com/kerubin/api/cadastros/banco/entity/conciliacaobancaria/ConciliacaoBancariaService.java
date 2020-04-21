@@ -22,6 +22,8 @@ public interface ConciliacaoBancariaService {
 	
 	public void delete(java.util.UUID id);
 	
+	public void deleteInBulk(java.util.List<java.util.UUID> idList);
+	
 	public Page<ConciliacaoBancariaEntity> list(ConciliacaoBancariaListFilter conciliacaoBancariaListFilter, Pageable pageable);
 	
 	public Collection<ConciliacaoBancariaAutoComplete> autoComplete(String query);

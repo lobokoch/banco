@@ -1,4 +1,4 @@
-@label("Cadastros") //xxx
+@label("Cadastros") //xxxx
 domain cadastros
 
 @webAnalitycs(tagId: "UA-157001792-1" onlyInProduction: true)
@@ -429,6 +429,10 @@ service banco {
 		tituloPlanoContas: refers PlanoConta? manyToOne(/*fetch: eager*/)
 		autoCompleteWithOwnerParams
 		
+		tituloConciliadoMultiple: boolean default: false optional
+		label: "Múltiplos"
+		help (text:"Recebe pagamentos/recebimentos múltiplos.")
+		
 		dataConciliacao: date?
 		label: "Data da conciliação"
 		
@@ -471,6 +475,10 @@ service banco {
 		label: "Data pagamento"
 		
 		tituloPlanoContas: refers PlanoConta? manyToOne(/*fetch: eager*/)
+		
+		tituloConciliadoMultiple: boolean default: false optional
+		label: "Múltiplos"
+		help (text:"Recebe pagamentos/recebimentos múltiplos.")
 		
 		dataConciliacao: date?
 		label: "Data da conciliação"

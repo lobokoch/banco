@@ -109,6 +109,7 @@ CREATE TABLE conciliacao_transacao /* ConciliacaoTransacao */  (
 	titulo_conciliado_data_ven DATE /* tituloConciliadoDataVen */,
 	titulo_conciliado_data_pag DATE /* tituloConciliadoDataPag */,
 	titulo_plano_contas UUID /* tituloPlanoContas */,
+	titulo_conciliado_multiple BOOLEAN DEFAULT false /* tituloConciliadoMultiple */,
 	data_conciliacao DATE /* dataConciliacao */,
 	conciliado_com_erro BOOLEAN DEFAULT false /* conciliadoComErro */,
 	conciliado_msg VARCHAR(255) /* conciliadoMsg */,
@@ -127,6 +128,7 @@ CREATE TABLE conciliacao_transacao_titulo /* ConciliacaoTransacaoTitulo */  (
 	titulo_conciliado_data_ven DATE NOT NULL /* tituloConciliadoDataVen */,
 	titulo_conciliado_data_pag DATE /* tituloConciliadoDataPag */,
 	titulo_plano_contas UUID /* tituloPlanoContas */,
+	titulo_conciliado_multiple BOOLEAN DEFAULT false /* tituloConciliadoMultiple */,
 	data_conciliacao DATE /* dataConciliacao */,
 	situacao_conciliacao_trn VARCHAR(255) NOT NULL /* situacaoConciliacaoTrn */
 );

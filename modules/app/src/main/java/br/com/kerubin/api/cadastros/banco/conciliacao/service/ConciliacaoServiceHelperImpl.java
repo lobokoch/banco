@@ -89,7 +89,8 @@ public class ConciliacaoServiceHelperImpl implements ConciliacaoServiceHelper {
 		List<Integer> resut = query
 			.selectOne()
 			.from(qConciliacaoTransacao)
-			.where(qConciliacaoTransacao.conciliacaoBancaria.id.eq(conciliacaoBancariaId))
+			.where(qConciliacaoTransacao.conciliacaoBancaria.id.eq(conciliacaoBancariaId)
+					.and(qConciliacaoTransacao.tituloConciliadoMultiple.isFalse()))
 			.groupBy(qConciliacaoTransacao.tituloConciliadoId)
 			.having(qConciliacaoTransacao.tituloConciliadoId.count().gt(1L))
 			.fetch();

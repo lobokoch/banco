@@ -83,6 +83,16 @@ public class BandeiraCartaoServiceImpl implements BandeiraCartaoService {
 		publishEvent(entity, BandeiraCartaoEvent.BANDEIRA_CARTAO_DELETED);
 	}
 	
+	@Transactional
+	@Override
+	public void deleteInBulk(java.util.List<java.util.UUID> idList) {
+		// Delete it.
+		bandeiraCartaoRepository.deleteInBulk(idList);
+		
+		// Force flush to the database, for relationship validation and must throw exception because of this here.
+		bandeiraCartaoRepository.flush();
+	}
+	
 	protected void publishEvent(BandeiraCartaoEntity entity, String eventName) {
 		DomainEvent event = new BandeiraCartaoEvent(entity.getId(), 
 			entity.getNomeBandeira());

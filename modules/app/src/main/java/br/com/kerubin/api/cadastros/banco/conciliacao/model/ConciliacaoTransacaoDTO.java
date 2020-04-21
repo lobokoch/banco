@@ -49,6 +49,9 @@ public class ConciliacaoTransacaoDTO {
     private SituacaoConciliacaoTrn situacaoConciliacaoTrn;
     private LocalDate dataConciliacao;
     
+    @Builder.Default
+    private Boolean tituloConciliadoMultiple = false;
+    
     /////
     private List<ConciliacaoTransacaoTituloDTO> conciliacaoTransacaoTitulosDTO;
 	

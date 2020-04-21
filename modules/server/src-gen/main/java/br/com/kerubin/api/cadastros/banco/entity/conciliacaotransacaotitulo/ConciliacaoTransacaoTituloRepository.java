@@ -9,13 +9,20 @@ package br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacaotitulo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
-import java.util.Collection;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.Collection;
 import org.springframework.data.repository.query.Param;
 
 @Transactional(readOnly = true)
 public interface ConciliacaoTransacaoTituloRepository extends JpaRepository<ConciliacaoTransacaoTituloEntity, java.util.UUID>, QuerydslPredicateExecutor<ConciliacaoTransacaoTituloEntity> {
+	
+	@Transactional
+	@Modifying
+	@Query("delete from ConciliacaoTransacaoTituloEntity ctte where ctte.id in ?1")
+	void deleteInBulk(java.util.List<java.util.UUID> idList);
+	
 	
 	// WARNING: supports only where clause with like for STRING fields. For relationships entities will get the first string autocomplete key field name.
 	@Query("select distinct ac.id as id, ac.tituloConciliadoDesc as tituloConciliadoDesc from ConciliacaoTransacaoTituloEntity ac where ( upper(ac.tituloConciliadoDesc) like upper(concat('%', :query, '%')) ) order by 1 asc")

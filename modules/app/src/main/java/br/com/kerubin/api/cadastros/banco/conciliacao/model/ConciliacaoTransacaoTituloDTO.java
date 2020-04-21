@@ -34,7 +34,10 @@ public class ConciliacaoTransacaoTituloDTO {
 	private java.time.LocalDate tituloConciliadoDataPag;
 	private PlanoContaDTO tituloPlanoContas;
 	private SituacaoConciliacaoTrn situacaoConciliacaoTrn;
-	private java.time.LocalDate dataConciliacao;	
+	private java.time.LocalDate dataConciliacao;
+	
+	@Builder.Default
+    private Boolean tituloConciliadoMultiple = false;
 	
 	
 }

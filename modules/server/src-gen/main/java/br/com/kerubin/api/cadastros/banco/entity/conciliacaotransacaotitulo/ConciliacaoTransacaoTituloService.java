@@ -24,6 +24,8 @@ public interface ConciliacaoTransacaoTituloService {
 	
 	public void delete(java.util.UUID id);
 	
+	public void deleteInBulk(java.util.List<java.util.UUID> idList);
+	
 	public Page<ConciliacaoTransacaoTituloEntity> list(ConciliacaoTransacaoTituloListFilter conciliacaoTransacaoTituloListFilter, Pageable pageable);
 	
 	public Collection<ConciliacaoTransacaoTituloAutoComplete> autoComplete(String query);

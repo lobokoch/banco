@@ -107,6 +107,16 @@ public class AgenciaBancariaServiceImpl implements AgenciaBancariaService {
 		publishEvent(entity, AgenciaBancariaEvent.AGENCIA_BANCARIA_DELETED);
 	}
 	
+	@Transactional
+	@Override
+	public void deleteInBulk(java.util.List<java.util.UUID> idList) {
+		// Delete it.
+		agenciaBancariaRepository.deleteInBulk(idList);
+		
+		// Force flush to the database, for relationship validation and must throw exception because of this here.
+		agenciaBancariaRepository.flush();
+	}
+	
 	protected void publishEvent(AgenciaBancariaEntity entity, String eventName) {
 		DomainEvent event = new AgenciaBancariaEvent(entity.getId(), 
 			entity.getBanco() != null ? entity.getBanco().getId() : null, 

@@ -97,6 +97,16 @@ public class CartaoCreditoServiceImpl implements CartaoCreditoService {
 		publishEvent(entity, CartaoCreditoEvent.CARTAO_CREDITO_DELETED);
 	}
 	
+	@Transactional
+	@Override
+	public void deleteInBulk(java.util.List<java.util.UUID> idList) {
+		// Delete it.
+		cartaoCreditoRepository.deleteInBulk(idList);
+		
+		// Force flush to the database, for relationship validation and must throw exception because of this here.
+		cartaoCreditoRepository.flush();
+	}
+	
 	protected void publishEvent(CartaoCreditoEntity entity, String eventName) {
 		DomainEvent event = new CartaoCreditoEvent(entity.getId(), 
 			entity.getNomeTitular(), 

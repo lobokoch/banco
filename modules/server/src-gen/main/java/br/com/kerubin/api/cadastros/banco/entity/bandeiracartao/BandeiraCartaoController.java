@@ -80,6 +80,12 @@ public class BandeiraCartaoController {
 		bandeiraCartaoService.delete(id);
 	}
 	
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PostMapping("/deleteInBulk")
+	public void deleteInBulk(@RequestBody java.util.List<java.util.UUID> idList) {
+		bandeiraCartaoService.deleteInBulk(idList);
+	}
+	
 	@Transactional(readOnly = true)
 	@GetMapping
 	public PageResult<BandeiraCartao> list(BandeiraCartaoListFilter bandeiraCartaoListFilter, Pageable pageable) {

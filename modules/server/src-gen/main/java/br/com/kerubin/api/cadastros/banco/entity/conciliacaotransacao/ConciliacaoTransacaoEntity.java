@@ -100,6 +100,9 @@ public class ConciliacaoTransacaoEntity extends AuditingEntity {
 	@JoinColumn(name = "titulo_plano_contas")
 	private PlanoContaEntity tituloPlanoContas;
 	
+	@Column(name="titulo_conciliado_multiple")
+	private Boolean tituloConciliadoMultiple = false;
+	
 	@Column(name="data_conciliacao")
 	private java.time.LocalDate dataConciliacao;
 	
@@ -171,6 +174,10 @@ public class ConciliacaoTransacaoEntity extends AuditingEntity {
 	
 	public PlanoContaEntity getTituloPlanoContas() {
 		return tituloPlanoContas;
+	}
+	
+	public Boolean getTituloConciliadoMultiple() {
+		return tituloConciliadoMultiple;
 	}
 	
 	public java.time.LocalDate getDataConciliacao() {
@@ -249,6 +256,10 @@ public class ConciliacaoTransacaoEntity extends AuditingEntity {
 		this.tituloPlanoContas = tituloPlanoContas;
 	}
 	
+	public void setTituloConciliadoMultiple(Boolean tituloConciliadoMultiple) {
+		this.tituloConciliadoMultiple = tituloConciliadoMultiple;
+	}
+	
 	public void setDataConciliacao(java.time.LocalDate dataConciliacao) {
 		this.dataConciliacao = dataConciliacao;
 	}
@@ -299,6 +310,7 @@ public class ConciliacaoTransacaoEntity extends AuditingEntity {
 			this.setTituloConciliadoDataVen(source.getTituloConciliadoDataVen());
 			this.setTituloConciliadoDataPag(source.getTituloConciliadoDataPag());
 			this.setTituloPlanoContas(source.getTituloPlanoContas());
+			this.setTituloConciliadoMultiple(source.getTituloConciliadoMultiple());
 			this.setDataConciliacao(source.getDataConciliacao());
 			this.setConciliacaoTransacaoTitulos(source.getConciliacaoTransacaoTitulos());
 			this.setConciliadoComErro(source.getConciliadoComErro());
@@ -337,6 +349,7 @@ public class ConciliacaoTransacaoEntity extends AuditingEntity {
 		theClone.setTituloConciliadoDataVen(this.getTituloConciliadoDataVen());
 		theClone.setTituloConciliadoDataPag(this.getTituloConciliadoDataPag());
 		theClone.setTituloPlanoContas(this.getTituloPlanoContas() != null ? this.getTituloPlanoContas().clone(visited) : null);
+		theClone.setTituloConciliadoMultiple(this.getTituloConciliadoMultiple());
 		theClone.setDataConciliacao(this.getDataConciliacao());
 		theClone.setConciliacaoTransacaoTitulos(this.getConciliacaoTransacaoTitulos() != null ? this.getConciliacaoTransacaoTitulos().stream().map(it -> it.clone(visited)).collect(java.util.stream.Collectors.toList()) : null);
 		theClone.setConciliadoComErro(this.getConciliadoComErro());

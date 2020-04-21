@@ -112,6 +112,16 @@ public class ContaBancariaServiceImpl implements ContaBancariaService {
 		publishEvent(entity, ContaBancariaEvent.CONTA_BANCARIA_DELETED);
 	}
 	
+	@Transactional
+	@Override
+	public void deleteInBulk(java.util.List<java.util.UUID> idList) {
+		// Delete it.
+		contaBancariaRepository.deleteInBulk(idList);
+		
+		// Force flush to the database, for relationship validation and must throw exception because of this here.
+		contaBancariaRepository.flush();
+	}
+	
 	protected void publishEvent(ContaBancariaEntity entity, String eventName) {
 		DomainEvent event = new ContaBancariaEvent(entity.getId(), 
 			entity.getNomeTitular(), 

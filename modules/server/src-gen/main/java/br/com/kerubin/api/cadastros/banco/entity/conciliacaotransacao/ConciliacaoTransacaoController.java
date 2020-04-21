@@ -85,6 +85,12 @@ public class ConciliacaoTransacaoController {
 		conciliacaoTransacaoService.delete(id);
 	}
 	
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PostMapping("/deleteInBulk")
+	public void deleteInBulk(@RequestBody java.util.List<java.util.UUID> idList) {
+		conciliacaoTransacaoService.deleteInBulk(idList);
+	}
+	
 	@Transactional(readOnly = true)
 	@GetMapping
 	public PageResult<ConciliacaoTransacao> list(ConciliacaoTransacaoListFilter conciliacaoTransacaoListFilter, Pageable pageable) {

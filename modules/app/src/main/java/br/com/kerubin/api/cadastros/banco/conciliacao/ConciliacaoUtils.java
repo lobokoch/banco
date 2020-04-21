@@ -53,6 +53,7 @@ public class ConciliacaoUtils {
 					////
                     .tituloConciliadoId(it.getTituloConciliadoId())
                     .tituloConciliadoDesc(it.getTituloConciliadoDesc())
+                    .tituloConciliadoMultiple(it.getTituloConciliadoMultiple())
                     .tituloConciliadoValor(it.getTituloConciliadoValor())
                     .tituloConciliadoDataVen(it.getTituloConciliadoDataVen())
                     .tituloConciliadoDataPag(it.getTituloConciliadoDataPag())
@@ -106,6 +107,7 @@ public class ConciliacaoUtils {
 						.tituloConciliadoValor(transacaoEntity.getTituloConciliadoValor())
 						.tituloConciliadoDataVen(transacaoEntity.getTituloConciliadoDataVen())
 						.tituloConciliadoDataPag(transacaoEntity.getTituloConciliadoDataPag())
+						.tituloConciliadoMultiple(transacaoEntity.getTituloConciliadoMultiple())
 						.dataConciliacao(transacaoEntity.getDataConciliacao())
 						.situacaoConciliacaoTrn(transacaoEntity.getSituacaoConciliacaoTrn())
 						.tituloPlanoContas(toDTO(transacaoEntity.getTituloPlanoContas()))

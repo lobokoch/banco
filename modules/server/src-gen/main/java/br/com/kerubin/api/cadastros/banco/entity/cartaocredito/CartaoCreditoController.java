@@ -84,6 +84,12 @@ public class CartaoCreditoController {
 		cartaoCreditoService.delete(id);
 	}
 	
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PostMapping("/deleteInBulk")
+	public void deleteInBulk(@RequestBody java.util.List<java.util.UUID> idList) {
+		cartaoCreditoService.deleteInBulk(idList);
+	}
+	
 	@Transactional(readOnly = true)
 	@GetMapping
 	public PageResult<CartaoCredito> list(CartaoCreditoListFilter cartaoCreditoListFilter, Pageable pageable) {

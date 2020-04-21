@@ -60,6 +60,8 @@ public class ConciliacaoTransacao {
 	
 	private PlanoContaLookupResult tituloPlanoContas;
 	
+	private Boolean tituloConciliadoMultiple = false;
+	
 	private java.time.LocalDate dataConciliacao;
 	
 	private java.util.List<ConciliacaoTransacaoTitulo> conciliacaoTransacaoTitulos;
@@ -143,6 +145,10 @@ public class ConciliacaoTransacao {
 	
 	public PlanoContaLookupResult getTituloPlanoContas() {
 		return tituloPlanoContas;
+	}
+	
+	public Boolean getTituloConciliadoMultiple() {
+		return tituloConciliadoMultiple;
 	}
 	
 	public java.time.LocalDate getDataConciliacao() {
@@ -235,6 +241,10 @@ public class ConciliacaoTransacao {
 	
 	public void setTituloPlanoContas(PlanoContaLookupResult tituloPlanoContas) {
 		this.tituloPlanoContas = tituloPlanoContas;
+	}
+	
+	public void setTituloConciliadoMultiple(Boolean tituloConciliadoMultiple) {
+		this.tituloConciliadoMultiple = tituloConciliadoMultiple;
 	}
 	
 	public void setDataConciliacao(java.time.LocalDate dataConciliacao) {

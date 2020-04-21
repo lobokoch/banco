@@ -322,6 +322,7 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 			transacaoEntity.setTituloConciliadoValor(transacaoDTO.getTituloConciliadoValor());
 			transacaoEntity.setTituloConciliadoDataVen(transacaoDTO.getTituloConciliadoDataVen());
 			transacaoEntity.setTituloConciliadoDataPag(transacaoDTO.getTituloConciliadoDataPag());
+			transacaoEntity.setTituloConciliadoMultiple(transacaoDTO.getTituloConciliadoMultiple());
 			transacaoEntity.setTituloPlanoContas(toEntity(transacaoDTO.getTituloPlanoContas()));
 			transacaoEntity.setSituacaoConciliacaoTrn(transacaoDTO.getSituacaoConciliacaoTrn());
 			transacaoEntity.setDataConciliacao(transacaoDTO.getDataConciliacao());
@@ -360,19 +361,20 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 	
 	
 	
-	private List<ConciliacaoTransacaoTituloEntity> toEntity(List<ConciliacaoTransacaoTituloDTO> dto) {
-		if (isNotEmpty(dto)) {
-			List<ConciliacaoTransacaoTituloEntity> titulos = dto.stream().map(it -> { 
+	private List<ConciliacaoTransacaoTituloEntity> toEntity(List<ConciliacaoTransacaoTituloDTO> dtoList) {
+		if (isNotEmpty(dtoList)) {
+			List<ConciliacaoTransacaoTituloEntity> titulos = dtoList.stream().map(dto -> { 
 				ConciliacaoTransacaoTituloEntity tituloEntity = new ConciliacaoTransacaoTituloEntity(); 
-				tituloEntity.setId(it.getId());
-				tituloEntity.setTituloConciliadoId(it.getTituloConciliadoId());
-				tituloEntity.setTituloConciliadoDesc(it.getTituloConciliadoDesc());
-				tituloEntity.setTituloConciliadoValor(it.getTituloConciliadoValor());
-				tituloEntity.setTituloConciliadoDataVen(it.getTituloConciliadoDataVen());
-				tituloEntity.setTituloConciliadoDataPag(it.getTituloConciliadoDataPag());
-				tituloEntity.setTituloPlanoContas(toEntity(it.getTituloPlanoContas()));
-				tituloEntity.setDataConciliacao(it.getDataConciliacao());
-				tituloEntity.setSituacaoConciliacaoTrn(it.getSituacaoConciliacaoTrn());
+				tituloEntity.setId(dto.getId());
+				tituloEntity.setTituloConciliadoId(dto.getTituloConciliadoId());
+				tituloEntity.setTituloConciliadoDesc(dto.getTituloConciliadoDesc());
+				tituloEntity.setTituloConciliadoValor(dto.getTituloConciliadoValor());
+				tituloEntity.setTituloConciliadoDataVen(dto.getTituloConciliadoDataVen());
+				tituloEntity.setTituloConciliadoDataPag(dto.getTituloConciliadoDataPag());
+				tituloEntity.setTituloConciliadoMultiple(dto.getTituloConciliadoMultiple());
+				tituloEntity.setTituloPlanoContas(toEntity(dto.getTituloPlanoContas()));
+				tituloEntity.setDataConciliacao(dto.getDataConciliacao());
+				tituloEntity.setSituacaoConciliacaoTrn(dto.getSituacaoConciliacaoTrn());
 				
 				return tituloEntity;
 			}).collect(Collectors.toList());
@@ -447,7 +449,8 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 		return contexto;
 	}
 	
-	// Item de transação encontrado no caixa e não encontrado no contas a pagar ou contas a receber, ou encontrado no caixa e em um dos módulos de contas. Pode estar na lista de títulos da transação.
+	// Item de transação encontrado no caixa e não encontrado no contas a pagar ou contas a receber, 
+	// ou encontrado no caixa e em um dos módulos de contas. Pode estar na lista de títulos da transação.
 	private Predicate<ConciliacaoTransacaoDTO> touchedByCaixa() {
 		return dto -> ( SituacaoConciliacaoTrn.CONCILIADO_CAIXA.equals(dto.getSituacaoConciliacaoTrn()) || 
 				SituacaoConciliacaoTrn.CAIXA_BAIXADO_SEM_CONCILIACAO.equals(dto.getSituacaoConciliacaoTrn()) ) || 

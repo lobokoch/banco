@@ -92,6 +92,16 @@ public class ConciliacaoBancariaServiceImpl implements ConciliacaoBancariaServic
 		
 	}
 	
+	@Transactional
+	@Override
+	public void deleteInBulk(java.util.List<java.util.UUID> idList) {
+		// Delete it.
+		conciliacaoBancariaRepository.deleteInBulk(idList);
+		
+		// Force flush to the database, for relationship validation and must throw exception because of this here.
+		conciliacaoBancariaRepository.flush();
+	}
+	
 	
 	@Transactional(readOnly = true)
 	@Override

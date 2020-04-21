@@ -98,6 +98,16 @@ public class BancoServiceImpl implements BancoService {
 		publishEvent(entity, BancoEvent.BANCO_DELETED);
 	}
 	
+	@Transactional
+	@Override
+	public void deleteInBulk(java.util.List<java.util.UUID> idList) {
+		// Delete it.
+		bancoRepository.deleteInBulk(idList);
+		
+		// Force flush to the database, for relationship validation and must throw exception because of this here.
+		bancoRepository.flush();
+	}
+	
 	protected void publishEvent(BancoEntity entity, String eventName) {
 		DomainEvent event = new BancoEvent(entity.getId(), 
 			entity.getNumero(), 
