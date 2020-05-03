@@ -40,6 +40,7 @@ service banco {
 		listFilter(many: "Nome do(s) banco(s)")
 		web(styleClass: "ui-md-8")
 		help(text: "Informe o nome do banco. Por exemplo, Banco do Brasil S.A.")
+		unaccent
 		
 		rules {
 			with(numero).apply(trimLeft("0"))
@@ -83,6 +84,7 @@ service banco {
 		label: "Endereço/localização da agência"
 		web(styleClass: "ui-md-6")
 		help(text: "Informe o endereço ou localização da agência. Exemplo: Agência do centro.")
+		unaccent
 		
 		nomeGerente: string?
 		label: "Nome do gerente"
@@ -116,6 +118,7 @@ service banco {
 		listFilter(many: "Bandeira(s)")
 		web(styleClass: "ui-md-12")
 		help(text: "Informe a bandeira do cartão. Por exemplo: Mastercad.")
+		unaccent
 	}
 	
 	@auditing
@@ -129,6 +132,7 @@ service banco {
 		autoComplete
 		web(styleClass: "ui-md-6")
 		help(text: "Informe o nome do títular da conta bancária.")
+		unaccent
 		
 		////
 		cpfCnpjTitular: string[20]?
@@ -243,6 +247,7 @@ service banco {
 		publishedInEvents
 		web(styleClass: "ui-md-6")
 		help(text: "Informe o nome do títular do cartão.")
+		unaccent
 		
 		banco: refers Banco manyToOne
 		publishedInEvents
@@ -499,6 +504,7 @@ service banco {
 		descricao: string
 		label: "Descrição"
 		autoComplete
+		unaccent
 		
 		tipoFinanceiro: TipoPlanoContaFinanceiro
 		

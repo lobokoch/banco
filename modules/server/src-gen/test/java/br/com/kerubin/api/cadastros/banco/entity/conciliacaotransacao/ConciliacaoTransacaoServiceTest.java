@@ -109,7 +109,7 @@ public class ConciliacaoTransacaoServiceTest extends CadastrosBancoBaseEntityTes
 		conciliacaoTransacao.setTrnHistorico(generateRandomString(255));
 		conciliacaoTransacao.setTrnDocumento(generateRandomString(255));
 		conciliacaoTransacao.setTrnTipo(TipoTransacao.CREDITO);
-		conciliacaoTransacao.setTrnValor(new java.math.BigDecimal("7125.12401"));
+		conciliacaoTransacao.setTrnValor(new java.math.BigDecimal("22158.580"));
 		
 		ConciliacaoBancariaEntity conciliacaoBancariaEntityParam = newConciliacaoBancariaEntity();
 		conciliacaoTransacao.setConciliacaoBancaria(conciliacaoBancariaEntityParam);
@@ -117,7 +117,7 @@ public class ConciliacaoTransacaoServiceTest extends CadastrosBancoBaseEntityTes
 		conciliacaoTransacao.setSituacaoConciliacaoTrn(SituacaoConciliacaoTrn.NAO_CONCILIADO);
 		conciliacaoTransacao.setTituloConciliadoId(java.util.UUID.randomUUID());
 		conciliacaoTransacao.setTituloConciliadoDesc(generateRandomString(255));
-		conciliacaoTransacao.setTituloConciliadoValor(new java.math.BigDecimal("9987.16311"));
+		conciliacaoTransacao.setTituloConciliadoValor(new java.math.BigDecimal("29757.17585"));
 		conciliacaoTransacao.setTituloConciliadoDataVen(getNextDate());
 		conciliacaoTransacao.setTituloConciliadoDataPag(getNextDate());
 		
@@ -168,7 +168,7 @@ public class ConciliacaoTransacaoServiceTest extends CadastrosBancoBaseEntityTes
 		conciliacaoTransacao.setTrnHistorico(generateRandomString(255));
 		conciliacaoTransacao.setTrnDocumento(generateRandomString(255));
 		conciliacaoTransacao.setTrnTipo(TipoTransacao.CREDITO);
-		conciliacaoTransacao.setTrnValor(new java.math.BigDecimal("5529.20308"));
+		conciliacaoTransacao.setTrnValor(new java.math.BigDecimal("20235.8850"));
 		
 		ConciliacaoBancariaEntity conciliacaoBancariaEntityParam = newConciliacaoBancariaEntity();
 		conciliacaoTransacao.setConciliacaoBancaria(conciliacaoBancariaEntityParam);
@@ -224,7 +224,7 @@ public class ConciliacaoTransacaoServiceTest extends CadastrosBancoBaseEntityTes
 		conciliacaoTransacao.setTrnHistorico(generateRandomString(255));
 		conciliacaoTransacao.setTrnDocumento(generateRandomString(255));
 		conciliacaoTransacao.setTrnTipo(TipoTransacao.CREDITO);
-		conciliacaoTransacao.setTrnValor(new java.math.BigDecimal("15547.7666"));
+		conciliacaoTransacao.setTrnValor(new java.math.BigDecimal("6661.15233"));
 		
 		ConciliacaoBancariaEntity conciliacaoBancariaEntityParam = newConciliacaoBancariaEntity();
 		conciliacaoTransacao.setConciliacaoBancaria(conciliacaoBancariaEntityParam);
@@ -232,7 +232,7 @@ public class ConciliacaoTransacaoServiceTest extends CadastrosBancoBaseEntityTes
 		conciliacaoTransacao.setSituacaoConciliacaoTrn(SituacaoConciliacaoTrn.NAO_CONCILIADO);
 		conciliacaoTransacao.setTituloConciliadoId(java.util.UUID.randomUUID());
 		conciliacaoTransacao.setTituloConciliadoDesc(generateRandomString(255));
-		conciliacaoTransacao.setTituloConciliadoValor(new java.math.BigDecimal("7458.27216"));
+		conciliacaoTransacao.setTituloConciliadoValor(new java.math.BigDecimal("6777.15595"));
 		conciliacaoTransacao.setTituloConciliadoDataVen(getNextDate());
 		conciliacaoTransacao.setTituloConciliadoDataPag(getNextDate());
 		
@@ -287,7 +287,7 @@ public class ConciliacaoTransacaoServiceTest extends CadastrosBancoBaseEntityTes
 		conciliacaoTransacao.setTrnHistorico(generateRandomString(255));
 		conciliacaoTransacao.setTrnDocumento(generateRandomString(255));
 		conciliacaoTransacao.setTrnTipo(TipoTransacao.CREDITO);
-		conciliacaoTransacao.setTrnValor(new java.math.BigDecimal("24679.14105"));
+		conciliacaoTransacao.setTrnValor(new java.math.BigDecimal("15789.26532"));
 		
 		ConciliacaoBancariaEntity conciliacaoBancariaEntityParam = newConciliacaoBancariaEntity();
 		conciliacaoTransacao.setConciliacaoBancaria(conciliacaoBancariaEntityParam);
@@ -656,12 +656,12 @@ public class ConciliacaoTransacaoServiceTest extends CadastrosBancoBaseEntityTes
 		conciliacaoTransacaoEntity.setTrnHistorico(generateRandomString(255));
 		conciliacaoTransacaoEntity.setTrnDocumento(generateRandomString(255));
 		conciliacaoTransacaoEntity.setTrnTipo(TipoTransacao.CREDITO);
-		conciliacaoTransacaoEntity.setTrnValor(new java.math.BigDecimal("2019.15168"));
+		conciliacaoTransacaoEntity.setTrnValor(new java.math.BigDecimal("162.14538"));
 		conciliacaoTransacaoEntity.setConciliacaoBancaria(newConciliacaoBancariaEntity());
 		conciliacaoTransacaoEntity.setSituacaoConciliacaoTrn(SituacaoConciliacaoTrn.NAO_CONCILIADO);
 		conciliacaoTransacaoEntity.setTituloConciliadoId(java.util.UUID.randomUUID());
 		conciliacaoTransacaoEntity.setTituloConciliadoDesc(generateRandomString(255));
-		conciliacaoTransacaoEntity.setTituloConciliadoValor(new java.math.BigDecimal("15378.30520"));
+		conciliacaoTransacaoEntity.setTituloConciliadoValor(new java.math.BigDecimal("16120.30240"));
 		conciliacaoTransacaoEntity.setTituloConciliadoDataVen(getNextDate());
 		conciliacaoTransacaoEntity.setTituloConciliadoDataPag(getNextDate());
 		conciliacaoTransacaoEntity.setTituloPlanoContas(newPlanoContaEntity());
@@ -753,7 +753,7 @@ public class ConciliacaoTransacaoServiceTest extends CadastrosBancoBaseEntityTes
 		conciliacaoTransacaoTituloEntity.setConciliacaoTransacao(conciliacaoTransacao);
 		conciliacaoTransacaoTituloEntity.setTituloConciliadoId(java.util.UUID.randomUUID());
 		conciliacaoTransacaoTituloEntity.setTituloConciliadoDesc(generateRandomString(255));
-		conciliacaoTransacaoTituloEntity.setTituloConciliadoValor(new java.math.BigDecimal("3036.8393"));
+		conciliacaoTransacaoTituloEntity.setTituloConciliadoValor(new java.math.BigDecimal("17336.1121"));
 		conciliacaoTransacaoTituloEntity.setTituloConciliadoDataVen(getNextDate());
 		conciliacaoTransacaoTituloEntity.setTituloConciliadoDataPag(getNextDate());
 		conciliacaoTransacaoTituloEntity.setTituloPlanoContas(newPlanoContaEntity());

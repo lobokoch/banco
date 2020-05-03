@@ -79,7 +79,7 @@ public class PlanoContaServiceTest extends CadastrosBancoBaseEntityTest {
 		planoConta.setId(java.util.UUID.randomUUID());
 		planoConta.setCodigo(generateRandomString(255));
 		planoConta.setDescricao(generateRandomString(255));
-		planoConta.setTipoFinanceiro(TipoPlanoContaFinanceiro.RECEITA);
+		planoConta.setTipoFinanceiro(TipoPlanoContaFinanceiro.DESPESA);
 		planoConta.setTipoReceitaDespesa(TipoReceitaDespesa.VARIAVEL);
 		
 		PlanoContaEntity planoContaEntityParam = newPlanoContaEntity();
@@ -112,7 +112,7 @@ public class PlanoContaServiceTest extends CadastrosBancoBaseEntityTest {
 		planoConta.setId(java.util.UUID.randomUUID());
 		planoConta.setCodigo(generateRandomString(255));
 		planoConta.setDescricao(generateRandomString(255));
-		planoConta.setTipoFinanceiro(TipoPlanoContaFinanceiro.DESPESA);
+		planoConta.setTipoFinanceiro(TipoPlanoContaFinanceiro.RECEITA);
 		planoConta.setAtivo(true);
 		PlanoContaEntity planoContaEntity = planoContaService.create(planoContaDTOConverter.convertDtoToEntity(planoConta));
 		em.flush();
@@ -318,7 +318,7 @@ public class PlanoContaServiceTest extends CadastrosBancoBaseEntityTest {
 		planoContaEntity.setId(java.util.UUID.randomUUID());
 		planoContaEntity.setCodigo(generateRandomString(255));
 		planoContaEntity.setDescricao(generateRandomString(255));
-		planoContaEntity.setTipoFinanceiro(TipoPlanoContaFinanceiro.DESPESA);
+		planoContaEntity.setTipoFinanceiro(TipoPlanoContaFinanceiro.RECEITA);
 		planoContaEntity.setTipoReceitaDespesa(TipoReceitaDespesa.VARIAVEL);
 		planoContaEntity.setPlanoContaPai(null);
 		planoContaEntity.setAtivo(true);

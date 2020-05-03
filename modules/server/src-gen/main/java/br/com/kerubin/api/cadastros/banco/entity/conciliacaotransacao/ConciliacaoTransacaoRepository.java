@@ -28,9 +28,11 @@ public interface ConciliacaoTransacaoRepository extends JpaRepository<Conciliaca
 	// WARNING: supports only where clause with like for STRING fields. For relationships entities will get the first string autocomplete key field name.
 	@Query("select distinct ac.id as id, ac.trnId as trnId from ConciliacaoTransacaoEntity ac where ( upper(ac.trnId) like upper(concat('%', :query, '%')) ) order by 1 asc")
 	Collection<ConciliacaoTransacaoAutoComplete> autoComplete(@Param("query") String query);
+	
 	// WARNING: supports only where clause with like for STRING fields. For relationships entities will get the first string autocomplete key field name.
 	@Query("select distinct ac.trnHistorico as trnHistorico from ConciliacaoTransacaoEntity ac where ( upper(ac.trnHistorico) like upper(concat('%', :query, '%')) ) order by 1 asc")
 	Collection<ConciliacaoTransacaoTrnHistoricoAutoComplete> conciliacaoTransacaoTrnHistoricoAutoComplete(@Param("query") String query);
+	
 	// WARNING: supports only where clause with like for STRING fields. For relationships entities will get the first string autocomplete key field name.
 	@Query("select distinct ac.trnDocumento as trnDocumento from ConciliacaoTransacaoEntity ac where ( upper(ac.trnDocumento) like upper(concat('%', :query, '%')) ) order by 1 asc")
 	Collection<ConciliacaoTransacaoTrnDocumentoAutoComplete> conciliacaoTransacaoTrnDocumentoAutoComplete(@Param("query") String query);
