@@ -1,4 +1,4 @@
-@label("Cadastros") //xxxx
+@label("Cadastros") //xxx
 domain cadastros
 
 @webAnalitycs(tagId: "UA-157001792-1" onlyInProduction: true)
