@@ -102,7 +102,6 @@ public class PlanoContaServiceTest extends CadastrosBancoBaseEntityTest {
 		assertThat(actual.getPlanoContaPai().getId()).isNotNull();
 		assertThat(actual.getPlanoContaPai()).isEqualToIgnoringGivenFields(planoConta.getPlanoContaPai(), IGNORED_FIELDS);
 		
-		
 	}
 	
 	@Test
@@ -112,7 +111,7 @@ public class PlanoContaServiceTest extends CadastrosBancoBaseEntityTest {
 		planoConta.setId(java.util.UUID.randomUUID());
 		planoConta.setCodigo(generateRandomString(255));
 		planoConta.setDescricao(generateRandomString(255));
-		planoConta.setTipoFinanceiro(TipoPlanoContaFinanceiro.DESPESA);
+		planoConta.setTipoFinanceiro(TipoPlanoContaFinanceiro.RECEITA);
 		planoConta.setAtivo(true);
 		PlanoContaEntity planoContaEntity = planoContaService.create(planoContaDTOConverter.convertDtoToEntity(planoConta));
 		em.flush();
@@ -125,7 +124,6 @@ public class PlanoContaServiceTest extends CadastrosBancoBaseEntityTest {
 		assertThat(actual).isEqualToIgnoringGivenFields(planoConta, IGNORED_FIELDS);
 		
 		assertThat(actual.getPlanoContaPai()).isNull();
-		
 	}
 	// END CREATE TESTS
 	
@@ -179,7 +177,6 @@ public class PlanoContaServiceTest extends CadastrosBancoBaseEntityTest {
 		assertThat(actual.getPlanoContaPai().getId()).isNotNull();
 		assertThat(actual.getPlanoContaPai()).isEqualToIgnoringGivenFields(planoConta.getPlanoContaPai(), IGNORED_FIELDS);
 		
-		
 	}
 	
 	@Test
@@ -205,7 +202,6 @@ public class PlanoContaServiceTest extends CadastrosBancoBaseEntityTest {
 		assertThat(actual).isEqualToIgnoringGivenFields(planoConta, IGNORED_FIELDS);
 		
 		assertThat(actual.getPlanoContaPai()).isNull();
-		
 	}
 	// END UPDATE TESTS
 	
@@ -274,15 +270,15 @@ public class PlanoContaServiceTest extends CadastrosBancoBaseEntityTest {
 		// Reset lastDate field to start LocalDate fields with today in this test. 
 		resetNextDate();
 					
-		// Generate 33 records of data for PlanoContaEntity for this test.
+		// Generate 3 records of data for PlanoContaEntity for this test.
 		List<PlanoContaEntity> testData = new ArrayList<>();
-		final int lastRecord = 33;
+		final int lastRecord = 3;
 		final int firstRecord = 1;
 		for (int i = firstRecord; i <= lastRecord; i++) {
 			testData.add(newPlanoContaEntity());
 		}
 		
-		// Check if 33 records of PlanoContaEntity was generated.
+		// Check if 3 records of PlanoContaEntity was generated.
 		long count = planoContaRepository.count();
 		assertThat(count).isEqualTo(lastRecord);
 		
@@ -318,7 +314,7 @@ public class PlanoContaServiceTest extends CadastrosBancoBaseEntityTest {
 		planoContaEntity.setId(java.util.UUID.randomUUID());
 		planoContaEntity.setCodigo(generateRandomString(255));
 		planoContaEntity.setDescricao(generateRandomString(255));
-		planoContaEntity.setTipoFinanceiro(TipoPlanoContaFinanceiro.RECEITA);
+		planoContaEntity.setTipoFinanceiro(TipoPlanoContaFinanceiro.DESPESA);
 		planoContaEntity.setTipoReceitaDespesa(TipoReceitaDespesa.VARIAVEL);
 		planoContaEntity.setPlanoContaPai(null);
 		planoContaEntity.setAtivo(true);

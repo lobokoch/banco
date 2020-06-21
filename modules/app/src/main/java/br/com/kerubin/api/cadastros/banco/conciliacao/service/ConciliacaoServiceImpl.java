@@ -67,6 +67,73 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 	private RestTemplate restTemplate;
 	
 	@Override
+	public void reprocessar(List<UUID> ids) {
+		// Carregar do banco de dados as ConciliacaoTransacaoEntity
+		// Atualizar seus atributos, como status, remover os títulos,etc
+		// Revisitar os módulos das contas
+		// Atualziar títulos etc
+		// Finalizar.
+		// Polling vai ficar ouvindo isso.
+		List<ConciliacaoTransacaoEntity> transacoes = iniciarReprocessarTransacoes(ids);
+		if (!transacoes.isEmpty()) {
+			reprocessarConciliacaoTransacaoAsync(transacoes);			
+		} else {
+			log.warn("Lista de transações vazia para reprocessamento.");
+		}
+	}
+	
+	private void reprocessarConciliacaoTransacaoAsync(List<ConciliacaoTransacaoEntity> transacoes) {
+		
+		ConciliacaoContext contextoInicial = ConciliacaoContext.builder()
+				.serviceContextData(ServiceContext.getServiceContextData())
+				.build();
+		
+		CompletableFuture
+			.supplyAsync(() -> reprocessarTransacoes(contextoInicial, transacoes))
+			.thenApply(contexto -> verificarModulosDeContas(contexto)) //
+			.thenApply(contexto -> verificarModuloCaixa(contexto)) //
+			.thenAccept(contexto -> finalizarReprocessamentoDasTransacoes(contexto)); //
+		
+	}
+	
+	private void finalizarReprocessamentoDasTransacoes(ConciliacaoContext contexto) {
+		log.info("FIM do reprocessamento da conciliação id: {}", contexto.getConciliacaoBancariaEntity().getId());		
+	}
+
+	private List<ConciliacaoTransacaoEntity> iniciarReprocessarTransacoes(List<UUID> ids) {
+		
+		log.info("INICIO reprocessarTransacoes...");
+		
+		List<ConciliacaoTransacaoEntity> transacoes = Collections.emptyList();
+		try {
+			transacoes = conciliacaoTransacaoService.iniciarReprocessarTransacoes(ids);
+		} catch(Exception e) {
+			log.error("Erro ao reprocessar transações:" + e.getMessage(), e);
+			transacoes = Collections.emptyList();
+		}
+		
+		log.info("FIM reprocessarTransacoes.");
+		return transacoes;
+	}
+	
+	private ConciliacaoContext reprocessarTransacoes(ConciliacaoContext contexto, List<ConciliacaoTransacaoEntity> transacoes) {
+		
+		log.info("INICIO reprocessarTransacoes...");
+		
+		ServiceContext.applyServiceContextData(contexto.getServiceContextData());
+		
+		try {
+			contexto.setConciliacaoBancariaEntity(conciliacaoTransacaoService.getConciliacaoBancaria(transacoes.get(0)));
+		} catch(Exception e) {
+			log.error("Erro ao reprocessar transações:" + e.getMessage(), e);
+		}
+		contexto.setTransacoes(transacoes);
+		
+		log.info("FIM reprocessarTransacoes.");
+		return contexto;
+	}
+
+	@Override
 	public ConciliacaoBancariaAsyncExecution processarArquivo(InputStream stream) {
 		ConciliacaoOFXReader reader = new ConciliacaoOFXReader();
 		reader.readOFXStream(stream);
@@ -331,7 +398,7 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 			
 			if (isNotEmpty(transacaoDTO.getConciliacaoTransacaoTitulosDTO())) {
 				List<ConciliacaoTransacaoTituloDTO> titulosDTO = toSafeList(transacaoDTO.getConciliacaoTransacaoTitulosDTO());
-				List<ConciliacaoTransacaoTituloEntity> titulosEntity = toSafeList(transacaoEntity.getConciliacaoTransacaoTitulos());
+				List<ConciliacaoTransacaoTituloEntity> titulosEntity = toSafeSet(transacaoEntity.getConciliacaoTransacaoTitulos()).stream().collect(Collectors.toList());
 				try {
 					titulosDTO = titulosDTO.stream()
 							.filter(tituloDTO -> titulosEntity
@@ -533,9 +600,5 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 		
 		return count;
 	}
-	
-	
-	
-	
 
 }

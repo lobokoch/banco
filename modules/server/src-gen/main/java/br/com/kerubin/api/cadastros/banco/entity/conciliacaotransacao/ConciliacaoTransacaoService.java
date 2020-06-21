@@ -7,6 +7,7 @@ WARNING: DO NOT CHANGE THIS CODE BECAUSE THE CHANGES WILL BE LOST IN THE NEXT CO
 
 package br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacao;
 
+import java.util.List;
 import java.util.Collection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,6 +42,9 @@ public interface ConciliacaoTransacaoService {
 	public Collection<ConciliacaoTransacaoTrnHistoricoAutoComplete> conciliacaoTransacaoTrnHistoricoAutoComplete(String query);
 	
 	public Collection<ConciliacaoTransacaoTrnDocumentoAutoComplete> conciliacaoTransacaoTrnDocumentoAutoComplete(String query);
-	// findBy methods
-	public Collection<ConciliacaoTransacaoEntity> findConciliacaoTransacaoByConciliacaoBancaria(java.util.UUID id);
+	// Begin findBy methods
+	List<ConciliacaoTransacaoEntity> findByIdIn(List<java.util.UUID> ids);
+	Collection<ConciliacaoTransacaoEntity> findConciliacaoTransacaoByConciliacaoBancaria(java.util.UUID id);
+	List<ConciliacaoTransacaoEntity> findByIdIsNotAndTituloConciliadoIdIs(java.util.UUID id, java.util.UUID tituloConciliadoId);
+	// End findBy methods
 }

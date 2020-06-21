@@ -110,6 +110,10 @@ public class ConciliacaoTransacaoTituloEntity  {
 		return tituloConciliadoMultiple;
 	}
 	
+	public boolean isTituloConciliadoMultiple() {
+		return Boolean.TRUE.equals(tituloConciliadoMultiple);
+	}
+	
 	public java.time.LocalDate getDataConciliacao() {
 		return dataConciliacao;
 	}
@@ -214,10 +218,100 @@ public class ConciliacaoTransacaoTituloEntity  {
 		if (getClass() != obj.getClass())
 			return false;
 		ConciliacaoTransacaoTituloEntity other = (ConciliacaoTransacaoTituloEntity) obj;
+			
+		
+		// Field: id
 		if (id == null) {
-			if (other.id != null)
+			if (other.id != null) {
 				return false;
+			}
 		} else if (!id.equals(other.id))
+			return false;
+		
+		// Field: conciliacaoTransacao
+		if (conciliacaoTransacao == null) {
+			if (other.conciliacaoTransacao != null) {
+				return false;
+			}
+		} else if (conciliacaoTransacao.getId() == null) {
+			if (other.conciliacaoTransacao.getId() != null)
+				return false;
+		} else if (!conciliacaoTransacao.getId().equals(other.conciliacaoTransacao.getId())) 
+			return false;
+		
+		// Field: tituloConciliadoId
+		if (tituloConciliadoId == null) {
+			if (other.tituloConciliadoId != null) {
+				return false;
+			}
+		} else if (!tituloConciliadoId.equals(other.tituloConciliadoId))
+			return false;
+		
+		// Field: tituloConciliadoDesc
+		if (tituloConciliadoDesc == null) {
+			if (other.tituloConciliadoDesc != null) {
+				return false;
+			}
+		} else if (!tituloConciliadoDesc.equals(other.tituloConciliadoDesc))
+			return false;
+		
+		// Field: tituloConciliadoValor
+		if (tituloConciliadoValor == null) {
+			if (other.tituloConciliadoValor != null) {
+				return false;
+			}
+		} else if (!tituloConciliadoValor.equals(other.tituloConciliadoValor))
+			return false;
+		
+		// Field: tituloConciliadoDataVen
+		if (tituloConciliadoDataVen == null) {
+			if (other.tituloConciliadoDataVen != null) {
+				return false;
+			}
+		} else if (!tituloConciliadoDataVen.equals(other.tituloConciliadoDataVen))
+			return false;
+		
+		// Field: tituloConciliadoDataPag
+		if (tituloConciliadoDataPag == null) {
+			if (other.tituloConciliadoDataPag != null) {
+				return false;
+			}
+		} else if (!tituloConciliadoDataPag.equals(other.tituloConciliadoDataPag))
+			return false;
+		
+		// Field: tituloPlanoContas
+		if (tituloPlanoContas == null) {
+			if (other.tituloPlanoContas != null) {
+				return false;
+			}
+		} else if (tituloPlanoContas.getId() == null) {
+			if (other.tituloPlanoContas.getId() != null)
+				return false;
+		} else if (!tituloPlanoContas.getId().equals(other.tituloPlanoContas.getId())) 
+			return false;
+		
+		// Field: tituloConciliadoMultiple
+		if (tituloConciliadoMultiple == null) {
+			if (other.tituloConciliadoMultiple != null) {
+				return false;
+			}
+		} else if (!tituloConciliadoMultiple.equals(other.tituloConciliadoMultiple))
+			return false;
+		
+		// Field: dataConciliacao
+		if (dataConciliacao == null) {
+			if (other.dataConciliacao != null) {
+				return false;
+			}
+		} else if (!dataConciliacao.equals(other.dataConciliacao))
+			return false;
+		
+		// Field: situacaoConciliacaoTrn
+		if (situacaoConciliacaoTrn == null) {
+			if (other.situacaoConciliacaoTrn != null) {
+				return false;
+			}
+		} else if (!situacaoConciliacaoTrn.equals(other.situacaoConciliacaoTrn))
 			return false;
 		
 		return true;

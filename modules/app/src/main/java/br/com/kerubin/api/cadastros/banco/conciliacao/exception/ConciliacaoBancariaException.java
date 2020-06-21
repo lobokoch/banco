@@ -11,5 +11,9 @@ public class ConciliacaoBancariaException extends RuntimeException {
 	public ConciliacaoBancariaException(String message, Throwable cause) {
         super(message, cause);
     }
+	
+	public ConciliacaoBancariaException(Throwable cause) {
+        super(cause);
+    }
 
 }

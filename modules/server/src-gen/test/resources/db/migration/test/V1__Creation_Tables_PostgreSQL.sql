@@ -94,7 +94,7 @@ CREATE TABLE conciliacao_bancaria /* ConciliacaoBancaria */  (
 );
 
 CREATE TABLE conciliacao_transacao /* ConciliacaoTransacao */  (
-	id UUID NOT NULL,
+	id UUID,
 	trn_id VARCHAR(255) NOT NULL /* trnId */,
 	trn_data DATE NOT NULL /* trnData */,
 	trn_historico VARCHAR(255) NOT NULL /* trnHistorico */,

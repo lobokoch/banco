@@ -99,7 +99,7 @@ public class CartaoCreditoServiceTest extends CadastrosBancoBaseEntityTest {
 		cartaoCredito.setNumeroCartao(generateRandomString(50));
 		cartaoCredito.setValidade(getNextDate());
 		cartaoCredito.setCodigoSeguranca(generateRandomString(10));
-		cartaoCredito.setValorLimite(new java.math.BigDecimal("6289.16732"));
+		cartaoCredito.setValorLimite(new java.math.BigDecimal("7737.18434"));
 		cartaoCredito.setMaisOpcoes(false);
 		
 		BandeiraCartaoEntity bandeiraCartaoEntityParam = newBandeiraCartaoEntity();
@@ -166,10 +166,8 @@ public class CartaoCreditoServiceTest extends CadastrosBancoBaseEntityTest {
 		assertThat(actual.getBanco().getId()).isNotNull();
 		assertThat(actual.getBanco()).isEqualToIgnoringGivenFields(cartaoCredito.getBanco(), IGNORED_FIELDS);
 		
-		
 		assertThat(actual.getBandeiraCartao().getId()).isNotNull();
 		assertThat(actual.getBandeiraCartao()).isEqualToIgnoringGivenFields(cartaoCredito.getBandeiraCartao(), IGNORED_FIELDS);
-		
 		
 	}
 	
@@ -244,9 +242,7 @@ public class CartaoCreditoServiceTest extends CadastrosBancoBaseEntityTest {
 		
 		assertThat(actual.getBanco().getId()).isNotNull();
 		assertThat(actual.getBanco()).isEqualToIgnoringGivenFields(cartaoCredito.getBanco(), IGNORED_FIELDS);
-		
 		assertThat(actual.getBandeiraCartao()).isNull();
-		
 	}
 	// END CREATE TESTS
 	
@@ -284,7 +280,7 @@ public class CartaoCreditoServiceTest extends CadastrosBancoBaseEntityTest {
 		cartaoCredito.setNumeroCartao(generateRandomString(50));
 		cartaoCredito.setValidade(getNextDate());
 		cartaoCredito.setCodigoSeguranca(generateRandomString(10));
-		cartaoCredito.setValorLimite(new java.math.BigDecimal("30584.15229"));
+		cartaoCredito.setValorLimite(new java.math.BigDecimal("15405.24471"));
 		cartaoCredito.setMaisOpcoes(false);
 		
 		BandeiraCartaoEntity bandeiraCartaoEntityParam = newBandeiraCartaoEntity();
@@ -351,10 +347,8 @@ public class CartaoCreditoServiceTest extends CadastrosBancoBaseEntityTest {
 		assertThat(actual.getBanco().getId()).isNotNull();
 		assertThat(actual.getBanco()).isEqualToIgnoringGivenFields(cartaoCredito.getBanco(), IGNORED_FIELDS);
 		
-		
 		assertThat(actual.getBandeiraCartao().getId()).isNotNull();
 		assertThat(actual.getBandeiraCartao()).isEqualToIgnoringGivenFields(cartaoCredito.getBandeiraCartao(), IGNORED_FIELDS);
-		
 		
 	}
 	
@@ -432,9 +426,7 @@ public class CartaoCreditoServiceTest extends CadastrosBancoBaseEntityTest {
 		
 		assertThat(actual.getBanco().getId()).isNotNull();
 		assertThat(actual.getBanco()).isEqualToIgnoringGivenFields(cartaoCredito.getBanco(), IGNORED_FIELDS);
-		
 		assertThat(actual.getBandeiraCartao()).isNull();
-		
 	}
 	// END UPDATE TESTS
 	
@@ -549,15 +541,15 @@ public class CartaoCreditoServiceTest extends CadastrosBancoBaseEntityTest {
 		// Reset lastDate field to start LocalDate fields with today in this test. 
 		resetNextDate();
 					
-		// Generate 33 records of data for BancoEntity for this test.
+		// Generate 3 records of data for BancoEntity for this test.
 		List<BancoEntity> testData = new ArrayList<>();
-		final int lastRecord = 33;
+		final int lastRecord = 3;
 		final int firstRecord = 1;
 		for (int i = firstRecord; i <= lastRecord; i++) {
 			testData.add(newBancoEntity());
 		}
 		
-		// Check if 33 records of BancoEntity was generated.
+		// Check if 3 records of BancoEntity was generated.
 		long count = bancoRepository.count();
 		assertThat(count).isEqualTo(lastRecord);
 		
@@ -582,15 +574,15 @@ public class CartaoCreditoServiceTest extends CadastrosBancoBaseEntityTest {
 		// Reset lastDate field to start LocalDate fields with today in this test. 
 		resetNextDate();
 					
-		// Generate 33 records of data for BandeiraCartaoEntity for this test.
+		// Generate 3 records of data for BandeiraCartaoEntity for this test.
 		List<BandeiraCartaoEntity> testData = new ArrayList<>();
-		final int lastRecord = 33;
+		final int lastRecord = 3;
 		final int firstRecord = 1;
 		for (int i = firstRecord; i <= lastRecord; i++) {
 			testData.add(newBandeiraCartaoEntity());
 		}
 		
-		// Check if 33 records of BandeiraCartaoEntity was generated.
+		// Check if 3 records of BandeiraCartaoEntity was generated.
 		long count = bandeiraCartaoRepository.count();
 		assertThat(count).isEqualTo(lastRecord);
 		
@@ -628,7 +620,7 @@ public class CartaoCreditoServiceTest extends CadastrosBancoBaseEntityTest {
 		cartaoCreditoEntity.setNumeroCartao(generateRandomString(50));
 		cartaoCreditoEntity.setValidade(getNextDate());
 		cartaoCreditoEntity.setCodigoSeguranca(generateRandomString(10));
-		cartaoCreditoEntity.setValorLimite(new java.math.BigDecimal("12049.4448"));
+		cartaoCreditoEntity.setValorLimite(new java.math.BigDecimal("21914.31246"));
 		cartaoCreditoEntity.setMaisOpcoes(false);
 		cartaoCreditoEntity.setBandeiraCartao(newBandeiraCartaoEntity());
 		cartaoCreditoEntity.setAtivo(true);

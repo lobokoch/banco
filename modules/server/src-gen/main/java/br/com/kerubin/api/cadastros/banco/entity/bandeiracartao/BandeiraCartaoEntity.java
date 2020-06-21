@@ -90,10 +90,54 @@ public class BandeiraCartaoEntity extends AuditingEntity {
 		if (getClass() != obj.getClass())
 			return false;
 		BandeiraCartaoEntity other = (BandeiraCartaoEntity) obj;
+			
+		
+		// Field: id
 		if (id == null) {
-			if (other.id != null)
+			if (other.id != null) {
 				return false;
+			}
 		} else if (!id.equals(other.id))
+			return false;
+		
+		// Field: nomeBandeira
+		if (nomeBandeira == null) {
+			if (other.nomeBandeira != null) {
+				return false;
+			}
+		} else if (!nomeBandeira.equals(other.nomeBandeira))
+			return false;
+		
+		// Field: createdBy
+		if (createdBy == null) {
+			if (other.createdBy != null) {
+				return false;
+			}
+		} else if (!createdBy.equals(other.createdBy))
+			return false;
+		
+		// Field: createdDate
+		if (createdDate == null) {
+			if (other.createdDate != null) {
+				return false;
+			}
+		} else if (!createdDate.equals(other.createdDate))
+			return false;
+		
+		// Field: lastModifiedBy
+		if (lastModifiedBy == null) {
+			if (other.lastModifiedBy != null) {
+				return false;
+			}
+		} else if (!lastModifiedBy.equals(other.lastModifiedBy))
+			return false;
+		
+		// Field: lastModifiedDate
+		if (lastModifiedDate == null) {
+			if (other.lastModifiedDate != null) {
+				return false;
+			}
+		} else if (!lastModifiedDate.equals(other.lastModifiedDate))
 			return false;
 		
 		return true;

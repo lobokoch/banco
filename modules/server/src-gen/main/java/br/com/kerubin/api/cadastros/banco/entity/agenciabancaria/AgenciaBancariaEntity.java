@@ -83,6 +83,10 @@ public class AgenciaBancariaEntity extends AuditingEntity {
 		return maisOpcoes;
 	}
 	
+	public boolean isMaisOpcoes() {
+		return Boolean.TRUE.equals(maisOpcoes);
+	}
+	
 	public String getEndereco() {
 		return endereco;
 	}
@@ -181,10 +185,105 @@ public class AgenciaBancariaEntity extends AuditingEntity {
 		if (getClass() != obj.getClass())
 			return false;
 		AgenciaBancariaEntity other = (AgenciaBancariaEntity) obj;
+			
+		
+		// Field: id
 		if (id == null) {
-			if (other.id != null)
+			if (other.id != null) {
 				return false;
+			}
 		} else if (!id.equals(other.id))
+			return false;
+		
+		// Field: banco
+		if (banco == null) {
+			if (other.banco != null) {
+				return false;
+			}
+		} else if (banco.getId() == null) {
+			if (other.banco.getId() != null)
+				return false;
+		} else if (!banco.getId().equals(other.banco.getId())) 
+			return false;
+		
+		// Field: numeroAgencia
+		if (numeroAgencia == null) {
+			if (other.numeroAgencia != null) {
+				return false;
+			}
+		} else if (!numeroAgencia.equals(other.numeroAgencia))
+			return false;
+		
+		// Field: digitoAgencia
+		if (digitoAgencia == null) {
+			if (other.digitoAgencia != null) {
+				return false;
+			}
+		} else if (!digitoAgencia.equals(other.digitoAgencia))
+			return false;
+		
+		// Field: maisOpcoes
+		if (maisOpcoes == null) {
+			if (other.maisOpcoes != null) {
+				return false;
+			}
+		} else if (!maisOpcoes.equals(other.maisOpcoes))
+			return false;
+		
+		// Field: endereco
+		if (endereco == null) {
+			if (other.endereco != null) {
+				return false;
+			}
+		} else if (!endereco.equals(other.endereco))
+			return false;
+		
+		// Field: nomeGerente
+		if (nomeGerente == null) {
+			if (other.nomeGerente != null) {
+				return false;
+			}
+		} else if (!nomeGerente.equals(other.nomeGerente))
+			return false;
+		
+		// Field: fone
+		if (fone == null) {
+			if (other.fone != null) {
+				return false;
+			}
+		} else if (!fone.equals(other.fone))
+			return false;
+		
+		// Field: createdBy
+		if (createdBy == null) {
+			if (other.createdBy != null) {
+				return false;
+			}
+		} else if (!createdBy.equals(other.createdBy))
+			return false;
+		
+		// Field: createdDate
+		if (createdDate == null) {
+			if (other.createdDate != null) {
+				return false;
+			}
+		} else if (!createdDate.equals(other.createdDate))
+			return false;
+		
+		// Field: lastModifiedBy
+		if (lastModifiedBy == null) {
+			if (other.lastModifiedBy != null) {
+				return false;
+			}
+		} else if (!lastModifiedBy.equals(other.lastModifiedBy))
+			return false;
+		
+		// Field: lastModifiedDate
+		if (lastModifiedDate == null) {
+			if (other.lastModifiedDate != null) {
+				return false;
+			}
+		} else if (!lastModifiedDate.equals(other.lastModifiedDate))
 			return false;
 		
 		return true;

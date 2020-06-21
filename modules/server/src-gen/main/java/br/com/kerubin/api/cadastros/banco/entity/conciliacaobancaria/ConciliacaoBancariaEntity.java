@@ -167,10 +167,94 @@ public class ConciliacaoBancariaEntity extends AuditingEntity {
 		if (getClass() != obj.getClass())
 			return false;
 		ConciliacaoBancariaEntity other = (ConciliacaoBancariaEntity) obj;
+			
+		
+		// Field: id
 		if (id == null) {
-			if (other.id != null)
+			if (other.id != null) {
 				return false;
+			}
 		} else if (!id.equals(other.id))
+			return false;
+		
+		// Field: bancoId
+		if (bancoId == null) {
+			if (other.bancoId != null) {
+				return false;
+			}
+		} else if (!bancoId.equals(other.bancoId))
+			return false;
+		
+		// Field: agenciaId
+		if (agenciaId == null) {
+			if (other.agenciaId != null) {
+				return false;
+			}
+		} else if (!agenciaId.equals(other.agenciaId))
+			return false;
+		
+		// Field: contaId
+		if (contaId == null) {
+			if (other.contaId != null) {
+				return false;
+			}
+		} else if (!contaId.equals(other.contaId))
+			return false;
+		
+		// Field: dataIni
+		if (dataIni == null) {
+			if (other.dataIni != null) {
+				return false;
+			}
+		} else if (!dataIni.equals(other.dataIni))
+			return false;
+		
+		// Field: dataFim
+		if (dataFim == null) {
+			if (other.dataFim != null) {
+				return false;
+			}
+		} else if (!dataFim.equals(other.dataFim))
+			return false;
+		
+		// Field: situacaoConciliacao
+		if (situacaoConciliacao == null) {
+			if (other.situacaoConciliacao != null) {
+				return false;
+			}
+		} else if (!situacaoConciliacao.equals(other.situacaoConciliacao))
+			return false;
+		
+		// Field: createdBy
+		if (createdBy == null) {
+			if (other.createdBy != null) {
+				return false;
+			}
+		} else if (!createdBy.equals(other.createdBy))
+			return false;
+		
+		// Field: createdDate
+		if (createdDate == null) {
+			if (other.createdDate != null) {
+				return false;
+			}
+		} else if (!createdDate.equals(other.createdDate))
+			return false;
+		
+		// Field: lastModifiedBy
+		if (lastModifiedBy == null) {
+			if (other.lastModifiedBy != null) {
+				return false;
+			}
+		} else if (!lastModifiedBy.equals(other.lastModifiedBy))
+			return false;
+		
+		// Field: lastModifiedDate
+		if (lastModifiedDate == null) {
+			if (other.lastModifiedDate != null) {
+				return false;
+			}
+		} else if (!lastModifiedDate.equals(other.lastModifiedDate))
 			return false;
 		
 		return true;

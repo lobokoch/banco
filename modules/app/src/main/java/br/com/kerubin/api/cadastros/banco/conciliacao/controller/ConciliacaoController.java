@@ -5,14 +5,16 @@ import java.util.UUID;
 
 import javax.inject.Inject;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,8 +22,10 @@ import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBancariaA
 import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoFileUploadResult;
 import br.com.kerubin.api.cadastros.banco.conciliacao.model.CountConciliacaoTransacaoComMaisDeUmTituloDTO;
 import br.com.kerubin.api.cadastros.banco.conciliacao.model.CountDTO;
+import br.com.kerubin.api.cadastros.banco.conciliacao.model.ParametrosReprocessarDTO;
 import br.com.kerubin.api.cadastros.banco.conciliacao.service.ConciliacaoService;
 import br.com.kerubin.api.cadastros.banco.conciliacao.service.ConciliacaoServiceHelper;
+import br.com.kerubin.api.cadastros.banco.entity.conciliacaobancaria.ConciliacaoBancariaDTOConverter;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacao.ConciliacaoTransacaoDTOConverter;
 
 @RestController
@@ -34,8 +38,17 @@ public class ConciliacaoController {
 	@Inject
 	private ConciliacaoServiceHelper conciliacaoServiceHelper;
 	
-	@Autowired
+	@Inject
 	ConciliacaoTransacaoDTOConverter conciliacaoTransacaoDTOConverter;
+	
+	@Inject
+	ConciliacaoBancariaDTOConverter conciliacaoBancariaDTOConverter;
+	
+	@PutMapping("/reprocessar")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void reprocessar(@RequestBody ParametrosReprocessarDTO parametros) {
+		conciliacaoService.reprocessar(parametros.getIds());
+	}
 	
 	@PostMapping("/uploadArquivoConciliacao")
 	public ResponseEntity<ConciliacaoFileUploadResult> uploadArquivoConciliacao(@RequestParam MultipartFile arquivoConciliacao) throws IOException {
@@ -65,8 +78,5 @@ public class ConciliacaoController {
 		CountDTO result = new CountDTO(count);
 		return ResponseEntity.ok(result);
 	}
-	
-	
-	
 
 }

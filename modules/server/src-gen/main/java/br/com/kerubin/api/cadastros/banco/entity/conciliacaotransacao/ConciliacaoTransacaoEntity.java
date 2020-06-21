@@ -29,8 +29,8 @@ import br.com.kerubin.api.cadastros.banco.entity.planoconta.PlanoContaEntity;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacaotitulo.ConciliacaoTransacaoTituloEntity;
 import javax.persistence.OneToMany;
 import javax.persistence.CascadeType;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 
 @Entity
 @Table(name = "conciliacao_transacao")
@@ -107,7 +107,7 @@ public class ConciliacaoTransacaoEntity extends AuditingEntity {
 	private java.time.LocalDate dataConciliacao;
 	
 	@OneToMany(mappedBy = "conciliacaoTransacao", fetch = FetchType.EAGER, cascade = CascadeType.ALL , orphanRemoval = true)
-	private List<ConciliacaoTransacaoTituloEntity> conciliacaoTransacaoTitulos = new ArrayList<>();
+	private Set<ConciliacaoTransacaoTituloEntity> conciliacaoTransacaoTitulos = new HashSet<>();
 	
 	@Column(name="conciliado_com_erro")
 	private Boolean conciliadoComErro = false;
@@ -180,16 +180,24 @@ public class ConciliacaoTransacaoEntity extends AuditingEntity {
 		return tituloConciliadoMultiple;
 	}
 	
+	public boolean isTituloConciliadoMultiple() {
+		return Boolean.TRUE.equals(tituloConciliadoMultiple);
+	}
+	
 	public java.time.LocalDate getDataConciliacao() {
 		return dataConciliacao;
 	}
 	
-	public java.util.List<ConciliacaoTransacaoTituloEntity> getConciliacaoTransacaoTitulos() {
+	public java.util.Set<ConciliacaoTransacaoTituloEntity> getConciliacaoTransacaoTitulos() {
 		return conciliacaoTransacaoTitulos;
 	}
 	
 	public Boolean getConciliadoComErro() {
 		return conciliadoComErro;
+	}
+	
+	public boolean isConciliadoComErro() {
+		return Boolean.TRUE.equals(conciliadoComErro);
 	}
 	
 	public String getConciliadoMsg() {
@@ -264,10 +272,10 @@ public class ConciliacaoTransacaoEntity extends AuditingEntity {
 		this.dataConciliacao = dataConciliacao;
 	}
 	
-	public void setConciliacaoTransacaoTitulos(java.util.List<ConciliacaoTransacaoTituloEntity> conciliacaoTransacaoTitulos) {
+	public void setConciliacaoTransacaoTitulos(java.util.Set<ConciliacaoTransacaoTituloEntity> conciliacaoTransacaoTitulos) {
 		// First remove existing items.
 		if (this.conciliacaoTransacaoTitulos != null) {
-			this.conciliacaoTransacaoTitulos.forEach(this::removeConciliacaoTransacaoTitulo);
+			this.conciliacaoTransacaoTitulos.clear();
 		}
 		
 		if (conciliacaoTransacaoTitulos != null) {
@@ -351,7 +359,7 @@ public class ConciliacaoTransacaoEntity extends AuditingEntity {
 		theClone.setTituloPlanoContas(this.getTituloPlanoContas() != null ? this.getTituloPlanoContas().clone(visited) : null);
 		theClone.setTituloConciliadoMultiple(this.getTituloConciliadoMultiple());
 		theClone.setDataConciliacao(this.getDataConciliacao());
-		theClone.setConciliacaoTransacaoTitulos(this.getConciliacaoTransacaoTitulos() != null ? this.getConciliacaoTransacaoTitulos().stream().map(it -> it.clone(visited)).collect(java.util.stream.Collectors.toList()) : null);
+		theClone.setConciliacaoTransacaoTitulos(this.getConciliacaoTransacaoTitulos() != null ? this.getConciliacaoTransacaoTitulos().stream().map(it -> it.clone(visited)).collect(java.util.stream.Collectors.toSet()) : null);
 		theClone.setConciliadoComErro(this.getConciliadoComErro());
 		theClone.setConciliadoMsg(this.getConciliadoMsg());
 		theClone.setCreatedBy(this.getCreatedBy());
@@ -371,10 +379,207 @@ public class ConciliacaoTransacaoEntity extends AuditingEntity {
 		if (getClass() != obj.getClass())
 			return false;
 		ConciliacaoTransacaoEntity other = (ConciliacaoTransacaoEntity) obj;
+			
+		
+		// Field: id
 		if (id == null) {
-			if (other.id != null)
+			if (other.id != null) {
 				return false;
+			}
 		} else if (!id.equals(other.id))
+			return false;
+		
+		// Field: trnId
+		if (trnId == null) {
+			if (other.trnId != null) {
+				return false;
+			}
+		} else if (!trnId.equals(other.trnId))
+			return false;
+		
+		// Field: trnData
+		if (trnData == null) {
+			if (other.trnData != null) {
+				return false;
+			}
+		} else if (!trnData.equals(other.trnData))
+			return false;
+		
+		// Field: trnHistorico
+		if (trnHistorico == null) {
+			if (other.trnHistorico != null) {
+				return false;
+			}
+		} else if (!trnHistorico.equals(other.trnHistorico))
+			return false;
+		
+		// Field: trnDocumento
+		if (trnDocumento == null) {
+			if (other.trnDocumento != null) {
+				return false;
+			}
+		} else if (!trnDocumento.equals(other.trnDocumento))
+			return false;
+		
+		// Field: trnTipo
+		if (trnTipo == null) {
+			if (other.trnTipo != null) {
+				return false;
+			}
+		} else if (!trnTipo.equals(other.trnTipo))
+			return false;
+		
+		// Field: trnValor
+		if (trnValor == null) {
+			if (other.trnValor != null) {
+				return false;
+			}
+		} else if (!trnValor.equals(other.trnValor))
+			return false;
+		
+		// Field: conciliacaoBancaria
+		if (conciliacaoBancaria == null) {
+			if (other.conciliacaoBancaria != null) {
+				return false;
+			}
+		} else if (conciliacaoBancaria.getId() == null) {
+			if (other.conciliacaoBancaria.getId() != null)
+				return false;
+		} else if (!conciliacaoBancaria.getId().equals(other.conciliacaoBancaria.getId())) 
+			return false;
+		
+		// Field: situacaoConciliacaoTrn
+		if (situacaoConciliacaoTrn == null) {
+			if (other.situacaoConciliacaoTrn != null) {
+				return false;
+			}
+		} else if (!situacaoConciliacaoTrn.equals(other.situacaoConciliacaoTrn))
+			return false;
+		
+		// Field: tituloConciliadoId
+		if (tituloConciliadoId == null) {
+			if (other.tituloConciliadoId != null) {
+				return false;
+			}
+		} else if (!tituloConciliadoId.equals(other.tituloConciliadoId))
+			return false;
+		
+		// Field: tituloConciliadoDesc
+		if (tituloConciliadoDesc == null) {
+			if (other.tituloConciliadoDesc != null) {
+				return false;
+			}
+		} else if (!tituloConciliadoDesc.equals(other.tituloConciliadoDesc))
+			return false;
+		
+		// Field: tituloConciliadoValor
+		if (tituloConciliadoValor == null) {
+			if (other.tituloConciliadoValor != null) {
+				return false;
+			}
+		} else if (!tituloConciliadoValor.equals(other.tituloConciliadoValor))
+			return false;
+		
+		// Field: tituloConciliadoDataVen
+		if (tituloConciliadoDataVen == null) {
+			if (other.tituloConciliadoDataVen != null) {
+				return false;
+			}
+		} else if (!tituloConciliadoDataVen.equals(other.tituloConciliadoDataVen))
+			return false;
+		
+		// Field: tituloConciliadoDataPag
+		if (tituloConciliadoDataPag == null) {
+			if (other.tituloConciliadoDataPag != null) {
+				return false;
+			}
+		} else if (!tituloConciliadoDataPag.equals(other.tituloConciliadoDataPag))
+			return false;
+		
+		// Field: tituloPlanoContas
+		if (tituloPlanoContas == null) {
+			if (other.tituloPlanoContas != null) {
+				return false;
+			}
+		} else if (tituloPlanoContas.getId() == null) {
+			if (other.tituloPlanoContas.getId() != null)
+				return false;
+		} else if (!tituloPlanoContas.getId().equals(other.tituloPlanoContas.getId())) 
+			return false;
+		
+		// Field: tituloConciliadoMultiple
+		if (tituloConciliadoMultiple == null) {
+			if (other.tituloConciliadoMultiple != null) {
+				return false;
+			}
+		} else if (!tituloConciliadoMultiple.equals(other.tituloConciliadoMultiple))
+			return false;
+		
+		// Field: dataConciliacao
+		if (dataConciliacao == null) {
+			if (other.dataConciliacao != null) {
+				return false;
+			}
+		} else if (!dataConciliacao.equals(other.dataConciliacao))
+			return false;
+		
+		// Field: conciliacaoTransacaoTitulos
+		if (conciliacaoTransacaoTitulos == null) {
+			if (other.conciliacaoTransacaoTitulos != null) {
+				return false;
+			}
+		} else if (conciliacaoTransacaoTitulos.size() != other.conciliacaoTransacaoTitulos.size()) {
+			return false;
+		} else if (!conciliacaoTransacaoTitulos.stream().allMatch(it1 -> other.conciliacaoTransacaoTitulos.stream().anyMatch(it2 -> it1.getId().equals(it2.getId())))) {
+			return false;
+		}
+		
+		// Field: conciliadoComErro
+		if (conciliadoComErro == null) {
+			if (other.conciliadoComErro != null) {
+				return false;
+			}
+		} else if (!conciliadoComErro.equals(other.conciliadoComErro))
+			return false;
+		
+		// Field: conciliadoMsg
+		if (conciliadoMsg == null) {
+			if (other.conciliadoMsg != null) {
+				return false;
+			}
+		} else if (!conciliadoMsg.equals(other.conciliadoMsg))
+			return false;
+		
+		// Field: createdBy
+		if (createdBy == null) {
+			if (other.createdBy != null) {
+				return false;
+			}
+		} else if (!createdBy.equals(other.createdBy))
+			return false;
+		
+		// Field: createdDate
+		if (createdDate == null) {
+			if (other.createdDate != null) {
+				return false;
+			}
+		} else if (!createdDate.equals(other.createdDate))
+			return false;
+		
+		// Field: lastModifiedBy
+		if (lastModifiedBy == null) {
+			if (other.lastModifiedBy != null) {
+				return false;
+			}
+		} else if (!lastModifiedBy.equals(other.lastModifiedBy))
+			return false;
+		
+		// Field: lastModifiedDate
+		if (lastModifiedDate == null) {
+			if (other.lastModifiedDate != null) {
+				return false;
+			}
+		} else if (!lastModifiedDate.equals(other.lastModifiedDate))
 			return false;
 		
 		return true;

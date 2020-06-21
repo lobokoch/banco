@@ -7,8 +7,6 @@ WARNING: DO NOT CHANGE THIS CODE BECAUSE THE CHANGES WILL BE LOST IN THE NEXT CO
 
 package br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacao;
 
-import org.springframework.web.bind.annotation.RequestParam;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -35,8 +33,10 @@ import br.com.kerubin.api.cadastros.banco.entity.planoconta.PlanoContaAutoComple
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacaotitulo.ConciliacaoTransacaoTituloAutoComplete;
 
 import java.util.Collection;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("cadastros/banco/entities/conciliacaoTransacao")
@@ -149,14 +149,24 @@ public class ConciliacaoTransacaoController {
 	// End relationships autoComplete
 	
 				
-	// findBy methods
+	// Begin findBy methods
+	
+	@Transactional(readOnly = true)
+	@GetMapping("/findByIdIn")
+	public List<ConciliacaoTransacao> findByIdIn(@RequestParam List<java.util.UUID> ids) {
+		List<ConciliacaoTransacaoEntity> content = conciliacaoTransacaoService.findByIdIn(ids);
+		List<ConciliacaoTransacao> result = content.stream().map(it -> conciliacaoTransacaoDTOConverter.convertEntityToDto(it)).collect(Collectors.toList());
+		return result;
+	}
+	
 	
 	@Transactional(readOnly = true)
 	@GetMapping("/findConciliacaoTransacaoByConciliacaoBancaria")
-	public Collection<ConciliacaoTransacao> findConciliacaoTransacaoByConciliacaoBancaria(java.util.UUID id) {
+	public Collection<ConciliacaoTransacao> findConciliacaoTransacaoByConciliacaoBancaria(@RequestParam java.util.UUID id) {
 		Collection<ConciliacaoTransacaoEntity> content = conciliacaoTransacaoService.findConciliacaoTransacaoByConciliacaoBancaria(id);
 		List<ConciliacaoTransacao> result = content.stream().map(it -> conciliacaoTransacaoDTOConverter.convertEntityToDto(it)).collect(Collectors.toList());
 		return result;
 	}
 	
+	// End findBy methods
 }

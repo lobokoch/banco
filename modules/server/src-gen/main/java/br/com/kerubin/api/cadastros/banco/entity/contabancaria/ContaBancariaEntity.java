@@ -128,8 +128,16 @@ public class ContaBancariaEntity extends AuditingEntity {
 		return maisOpcoes;
 	}
 	
+	public boolean isMaisOpcoes() {
+		return Boolean.TRUE.equals(maisOpcoes);
+	}
+	
 	public Boolean getAtivo() {
 		return ativo;
+	}
+	
+	public boolean isAtivo() {
+		return Boolean.TRUE.equals(ativo);
 	}
 	
 	public java.time.LocalDate getDataValidade() {
@@ -270,10 +278,156 @@ public class ContaBancariaEntity extends AuditingEntity {
 		if (getClass() != obj.getClass())
 			return false;
 		ContaBancariaEntity other = (ContaBancariaEntity) obj;
+			
+		
+		// Field: id
 		if (id == null) {
-			if (other.id != null)
+			if (other.id != null) {
 				return false;
+			}
 		} else if (!id.equals(other.id))
+			return false;
+		
+		// Field: nomeTitular
+		if (nomeTitular == null) {
+			if (other.nomeTitular != null) {
+				return false;
+			}
+		} else if (!nomeTitular.equals(other.nomeTitular))
+			return false;
+		
+		// Field: cpfCnpjTitular
+		if (cpfCnpjTitular == null) {
+			if (other.cpfCnpjTitular != null) {
+				return false;
+			}
+		} else if (!cpfCnpjTitular.equals(other.cpfCnpjTitular))
+			return false;
+		
+		// Field: tipoContaBancaria
+		if (tipoContaBancaria == null) {
+			if (other.tipoContaBancaria != null) {
+				return false;
+			}
+		} else if (!tipoContaBancaria.equals(other.tipoContaBancaria))
+			return false;
+		
+		// Field: agencia
+		if (agencia == null) {
+			if (other.agencia != null) {
+				return false;
+			}
+		} else if (agencia.getId() == null) {
+			if (other.agencia.getId() != null)
+				return false;
+		} else if (!agencia.getId().equals(other.agencia.getId())) 
+			return false;
+		
+		// Field: numeroConta
+		if (numeroConta == null) {
+			if (other.numeroConta != null) {
+				return false;
+			}
+		} else if (!numeroConta.equals(other.numeroConta))
+			return false;
+		
+		// Field: digito
+		if (digito == null) {
+			if (other.digito != null) {
+				return false;
+			}
+		} else if (!digito.equals(other.digito))
+			return false;
+		
+		// Field: saldo
+		if (saldo == null) {
+			if (other.saldo != null) {
+				return false;
+			}
+		} else if (!saldo.equals(other.saldo))
+			return false;
+		
+		// Field: maisOpcoes
+		if (maisOpcoes == null) {
+			if (other.maisOpcoes != null) {
+				return false;
+			}
+		} else if (!maisOpcoes.equals(other.maisOpcoes))
+			return false;
+		
+		// Field: ativo
+		if (ativo == null) {
+			if (other.ativo != null) {
+				return false;
+			}
+		} else if (!ativo.equals(other.ativo))
+			return false;
+		
+		// Field: dataValidade
+		if (dataValidade == null) {
+			if (other.dataValidade != null) {
+				return false;
+			}
+		} else if (!dataValidade.equals(other.dataValidade))
+			return false;
+		
+		// Field: numeroCartao
+		if (numeroCartao == null) {
+			if (other.numeroCartao != null) {
+				return false;
+			}
+		} else if (!numeroCartao.equals(other.numeroCartao))
+			return false;
+		
+		// Field: codigoSeguranca
+		if (codigoSeguranca == null) {
+			if (other.codigoSeguranca != null) {
+				return false;
+			}
+		} else if (!codigoSeguranca.equals(other.codigoSeguranca))
+			return false;
+		
+		// Field: bandeiraCartao
+		if (bandeiraCartao == null) {
+			if (other.bandeiraCartao != null) {
+				return false;
+			}
+		} else if (bandeiraCartao.getId() == null) {
+			if (other.bandeiraCartao.getId() != null)
+				return false;
+		} else if (!bandeiraCartao.getId().equals(other.bandeiraCartao.getId())) 
+			return false;
+		
+		// Field: createdBy
+		if (createdBy == null) {
+			if (other.createdBy != null) {
+				return false;
+			}
+		} else if (!createdBy.equals(other.createdBy))
+			return false;
+		
+		// Field: createdDate
+		if (createdDate == null) {
+			if (other.createdDate != null) {
+				return false;
+			}
+		} else if (!createdDate.equals(other.createdDate))
+			return false;
+		
+		// Field: lastModifiedBy
+		if (lastModifiedBy == null) {
+			if (other.lastModifiedBy != null) {
+				return false;
+			}
+		} else if (!lastModifiedBy.equals(other.lastModifiedBy))
+			return false;
+		
+		// Field: lastModifiedDate
+		if (lastModifiedDate == null) {
+			if (other.lastModifiedDate != null) {
+				return false;
+			}
+		} else if (!lastModifiedDate.equals(other.lastModifiedDate))
 			return false;
 		
 		return true;

@@ -1,5 +1,6 @@
 package br.com.kerubin.api.cadastros.banco.conciliacao.service;
 
+import static br.com.kerubin.api.servicecore.util.CoreUtils.textFormat;
 import static br.com.kerubin.api.servicecore.util.CoreUtils.toLocalDate;
 import static br.com.kerubin.api.servicecore.util.CoreUtils.toPositive;
 
@@ -30,6 +31,7 @@ import br.com.kerubin.api.cadastros.banco.SituacaoConciliacao;
 import br.com.kerubin.api.cadastros.banco.SituacaoConciliacaoTrn;
 import br.com.kerubin.api.cadastros.banco.TipoTransacao;
 import br.com.kerubin.api.cadastros.banco.conciliacao.ConciliacaoOFXReader;
+import br.com.kerubin.api.cadastros.banco.conciliacao.exception.ConciliacaoBancariaException;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaobancaria.ConciliacaoBancariaEntity;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaobancaria.ConciliacaoBancariaRepository;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacao.ConciliacaoTransacaoEntity;
@@ -50,6 +52,17 @@ public class ConciliacaoServiceHelperImpl implements ConciliacaoServiceHelper {
 	
 	@PersistenceContext	
 	private EntityManager em;
+	
+	@Transactional(readOnly = true)	
+	@Override
+	public ConciliacaoBancariaEntity getConciliacaoBancaria(ConciliacaoTransacaoEntity conciliacaoTransacaoEntity) {
+		UUID id = conciliacaoTransacaoEntity.getConciliacaoBancaria().getId();
+		ConciliacaoBancariaEntity result = conciliacaoBancariaRepository
+				.findById(id)
+				.orElseThrow(() -> new ConciliacaoBancariaException(textFormat("Conciliação bancária id: {} não encontrada.", id)) );
+		
+		return result;
+	}
 	
 	@Transactional(readOnly = true)
 	@Override
@@ -98,6 +111,39 @@ public class ConciliacaoServiceHelperImpl implements ConciliacaoServiceHelper {
 		long count = resut.size();
 		
 		return count;
+	}
+	
+	@Transactional
+	@Override
+	public List<ConciliacaoTransacaoEntity> iniciarReprocessarTransacoes(List<UUID> ids) {
+		// transactions = transactions.stream().filter(it -> Math.abs(it.getAmount()) == 28.21).collect(Collectors.toList());
+		
+		List<ConciliacaoTransacaoEntity> transacoesToSave = conciliacaoTransacaoRepository.findAllById(ids);
+		List<ConciliacaoTransacaoEntity> transacoes = new ArrayList<>(transacoesToSave.size());
+		transacoesToSave.forEach(transacao -> {
+			transacao.setSituacaoConciliacaoTrn(SituacaoConciliacaoTrn.NAO_CONCILIADO);
+			transacao.setTituloConciliadoId(null);
+			transacao.setTituloConciliadoDesc(null);
+			transacao.setTituloConciliadoValor(null);
+			transacao.setTituloConciliadoDataVen(null);
+			transacao.setTituloConciliadoDataPag(null);
+			transacao.setTituloPlanoContas(null);
+			transacao.setTituloConciliadoMultiple(null);
+			transacao.setDataConciliacao(null);
+			transacao.setConciliacaoTransacaoTitulos(null);
+			transacao.setConciliadoComErro(null);
+			transacao.setConciliadoMsg(null);
+			try {
+				transacoes.add(conciliacaoTransacaoRepository.saveAndFlush(transacao));				
+			} catch (Exception e) {
+				log.error(textFormat("Error at iniciarReprocessarTransacoes for id: {}. Error: {}", 
+						transacao.getId(), e.getMessage()), e);
+				
+				throw new ConciliacaoBancariaException(e);
+			}
+		});
+		
+		return transacoes;
 	}
 	
 	@Transactional

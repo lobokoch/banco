@@ -1,7 +1,7 @@
 package br.com.kerubin.api.cadastros.banco.conciliacaotransacao.service;
 
-import static br.com.kerubin.api.servicecore.util.CoreUtils.isNotEmpty;
 import static br.com.kerubin.api.servicecore.util.CoreUtils.isEmpty;
+import static br.com.kerubin.api.servicecore.util.CoreUtils.isNotEmpty;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,9 +12,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -48,7 +48,7 @@ public class CustomConciliacaoTransacaoServiceImpl extends ConciliacaoTransacaoS
 	
 	private static final String EMPTY_PLANO_CONTA_PAI_DESC =  " -  / ";
 	
-	@Autowired
+	@Inject
 	private EntityManager em;
 	
 	@Override

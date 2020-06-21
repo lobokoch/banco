@@ -108,7 +108,7 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 		
 		contaBancaria.setNumeroConta(generateRandomString(30));
 		contaBancaria.setDigito(generateRandomString(10));
-		contaBancaria.setSaldo(new java.math.BigDecimal("5087.16427"));
+		contaBancaria.setSaldo(new java.math.BigDecimal("2485.16644"));
 		contaBancaria.setMaisOpcoes(false);
 		contaBancaria.setAtivo(true);
 		contaBancaria.setDataValidade(getNextDate());
@@ -180,10 +180,8 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 		assertThat(actual.getAgencia().getId()).isNotNull();
 		assertThat(actual.getAgencia()).isEqualToIgnoringGivenFields(contaBancaria.getAgencia(), IGNORED_FIELDS);
 		
-		
 		assertThat(actual.getBandeiraCartao().getId()).isNotNull();
 		assertThat(actual.getBandeiraCartao()).isEqualToIgnoringGivenFields(contaBancaria.getBandeiraCartao(), IGNORED_FIELDS);
-		
 		
 	}
 	
@@ -261,9 +259,7 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 		
 		assertThat(actual.getAgencia().getId()).isNotNull();
 		assertThat(actual.getAgencia()).isEqualToIgnoringGivenFields(contaBancaria.getAgencia(), IGNORED_FIELDS);
-		
 		assertThat(actual.getBandeiraCartao()).isNull();
-		
 	}
 	// END CREATE TESTS
 	
@@ -302,7 +298,7 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 		
 		contaBancaria.setNumeroConta(generateRandomString(30));
 		contaBancaria.setDigito(generateRandomString(10));
-		contaBancaria.setSaldo(new java.math.BigDecimal("8329.15745"));
+		contaBancaria.setSaldo(new java.math.BigDecimal("21741.27326"));
 		contaBancaria.setMaisOpcoes(false);
 		contaBancaria.setAtivo(true);
 		contaBancaria.setDataValidade(getNextDate());
@@ -374,10 +370,8 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 		assertThat(actual.getAgencia().getId()).isNotNull();
 		assertThat(actual.getAgencia()).isEqualToIgnoringGivenFields(contaBancaria.getAgencia(), IGNORED_FIELDS);
 		
-		
 		assertThat(actual.getBandeiraCartao().getId()).isNotNull();
 		assertThat(actual.getBandeiraCartao()).isEqualToIgnoringGivenFields(contaBancaria.getBandeiraCartao(), IGNORED_FIELDS);
-		
 		
 	}
 	
@@ -458,9 +452,7 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 		
 		assertThat(actual.getAgencia().getId()).isNotNull();
 		assertThat(actual.getAgencia()).isEqualToIgnoringGivenFields(contaBancaria.getAgencia(), IGNORED_FIELDS);
-		
 		assertThat(actual.getBandeiraCartao()).isNull();
-		
 	}
 	// END UPDATE TESTS
 	
@@ -669,15 +661,15 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 		// Reset lastDate field to start LocalDate fields with today in this test. 
 		resetNextDate();
 					
-		// Generate 33 records of data for ContaBancariaEntity for this test.
+		// Generate 3 records of data for ContaBancariaEntity for this test.
 		List<ContaBancariaEntity> testData = new ArrayList<>();
-		final int lastRecord = 33;
+		final int lastRecord = 3;
 		final int firstRecord = 1;
 		for (int i = firstRecord; i <= lastRecord; i++) {
 			testData.add(newContaBancariaEntity());
 		}
 		
-		// Check if 33 records of ContaBancariaEntity was generated.
+		// Check if 3 records of ContaBancariaEntity was generated.
 		long count = contaBancariaRepository.count();
 		assertThat(count).isEqualTo(lastRecord);
 		
@@ -705,15 +697,15 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 		// Reset lastDate field to start LocalDate fields with today in this test. 
 		resetNextDate();
 					
-		// Generate 33 records of data for AgenciaBancariaEntity for this test.
+		// Generate 3 records of data for AgenciaBancariaEntity for this test.
 		List<AgenciaBancariaEntity> testData = new ArrayList<>();
-		final int lastRecord = 33;
+		final int lastRecord = 3;
 		final int firstRecord = 1;
 		for (int i = firstRecord; i <= lastRecord; i++) {
 			testData.add(newAgenciaBancariaEntity());
 		}
 		
-		// Check if 33 records of AgenciaBancariaEntity was generated.
+		// Check if 3 records of AgenciaBancariaEntity was generated.
 		long count = agenciaBancariaRepository.count();
 		assertThat(count).isEqualTo(lastRecord);
 		
@@ -738,15 +730,15 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 		// Reset lastDate field to start LocalDate fields with today in this test. 
 		resetNextDate();
 					
-		// Generate 33 records of data for BandeiraCartaoEntity for this test.
+		// Generate 3 records of data for BandeiraCartaoEntity for this test.
 		List<BandeiraCartaoEntity> testData = new ArrayList<>();
-		final int lastRecord = 33;
+		final int lastRecord = 3;
 		final int firstRecord = 1;
 		for (int i = firstRecord; i <= lastRecord; i++) {
 			testData.add(newBandeiraCartaoEntity());
 		}
 		
-		// Check if 33 records of BandeiraCartaoEntity was generated.
+		// Check if 3 records of BandeiraCartaoEntity was generated.
 		long count = bandeiraCartaoRepository.count();
 		assertThat(count).isEqualTo(lastRecord);
 		
@@ -785,7 +777,7 @@ public class ContaBancariaServiceTest extends CadastrosBancoBaseEntityTest {
 		contaBancariaEntity.setAgencia(newAgenciaBancariaEntity());
 		contaBancariaEntity.setNumeroConta(generateRandomString(30));
 		contaBancariaEntity.setDigito(generateRandomString(10));
-		contaBancariaEntity.setSaldo(new java.math.BigDecimal("13654.2347"));
+		contaBancariaEntity.setSaldo(new java.math.BigDecimal("1219.24940"));
 		contaBancariaEntity.setMaisOpcoes(false);
 		contaBancariaEntity.setAtivo(true);
 		contaBancariaEntity.setDataValidade(getNextDate());

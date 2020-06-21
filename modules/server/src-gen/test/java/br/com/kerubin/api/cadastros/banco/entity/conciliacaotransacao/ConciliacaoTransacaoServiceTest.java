@@ -10,6 +10,8 @@ package br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacao;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaobancaria.ConciliacaoBancariaEntity;
 import br.com.kerubin.api.cadastros.banco.entity.planoconta.PlanoContaEntity;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacaotitulo.ConciliacaoTransacaoTituloEntity;
+import java.util.Set;
+import java.util.HashSet;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaobancaria.ConciliacaoBancariaLookupResult;
 import br.com.kerubin.api.cadastros.banco.entity.planoconta.PlanoContaLookupResult;
 import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacaotitulo.ConciliacaoTransacaoTituloLookupResult;
@@ -109,7 +111,7 @@ public class ConciliacaoTransacaoServiceTest extends CadastrosBancoBaseEntityTes
 		conciliacaoTransacao.setTrnHistorico(generateRandomString(255));
 		conciliacaoTransacao.setTrnDocumento(generateRandomString(255));
 		conciliacaoTransacao.setTrnTipo(TipoTransacao.CREDITO);
-		conciliacaoTransacao.setTrnValor(new java.math.BigDecimal("30020.6198"));
+		conciliacaoTransacao.setTrnValor(new java.math.BigDecimal("22274.12340"));
 		
 		ConciliacaoBancariaEntity conciliacaoBancariaEntityParam = newConciliacaoBancariaEntity();
 		conciliacaoTransacao.setConciliacaoBancaria(conciliacaoBancariaEntityParam);
@@ -117,7 +119,7 @@ public class ConciliacaoTransacaoServiceTest extends CadastrosBancoBaseEntityTes
 		conciliacaoTransacao.setSituacaoConciliacaoTrn(SituacaoConciliacaoTrn.NAO_CONCILIADO);
 		conciliacaoTransacao.setTituloConciliadoId(java.util.UUID.randomUUID());
 		conciliacaoTransacao.setTituloConciliadoDesc(generateRandomString(255));
-		conciliacaoTransacao.setTituloConciliadoValor(new java.math.BigDecimal("19337.13547"));
+		conciliacaoTransacao.setTituloConciliadoValor(new java.math.BigDecimal("16312.18205"));
 		conciliacaoTransacao.setTituloConciliadoDataVen(getNextDate());
 		conciliacaoTransacao.setTituloConciliadoDataPag(getNextDate());
 		
@@ -127,8 +129,7 @@ public class ConciliacaoTransacaoServiceTest extends CadastrosBancoBaseEntityTes
 		conciliacaoTransacao.setTituloConciliadoMultiple(false);
 		conciliacaoTransacao.setDataConciliacao(getNextDate());
 		
-		ConciliacaoTransacaoTituloEntity conciliacaoTransacaoTituloEntityParam = newConciliacaoTransacaoTituloEntity(conciliacaoTransacao);
-		conciliacaoTransacao.setConciliacaoTransacaoTitulos(Arrays.asList(conciliacaoTransacaoTituloEntityParam));
+		conciliacaoTransacao.setConciliacaoTransacaoTitulos(newConciliacaoTransacaoTituloEntityList(3, conciliacaoTransacao));
 		
 		conciliacaoTransacao.setConciliadoComErro(false);
 		conciliacaoTransacao.setConciliadoMsg(generateRandomString(255));
@@ -146,16 +147,12 @@ public class ConciliacaoTransacaoServiceTest extends CadastrosBancoBaseEntityTes
 		assertThat(actual.getConciliacaoBancaria().getId()).isNotNull();
 		assertThat(actual.getConciliacaoBancaria()).isEqualToIgnoringGivenFields(conciliacaoTransacao.getConciliacaoBancaria(), IGNORED_FIELDS);
 		
-		
 		assertThat(actual.getTituloPlanoContas().getId()).isNotNull();
 		assertThat(actual.getTituloPlanoContas()).isEqualToIgnoringGivenFields(conciliacaoTransacao.getTituloPlanoContas(), IGNORED_FIELDS);
 		
-		
 		assertThat(actual.getConciliacaoTransacaoTitulos()).isNotNull();
-		assertThat(actual.getConciliacaoTransacaoTitulos()).hasSize(1);
-		assertThat(actual.getConciliacaoTransacaoTitulos().get(0).getId()).isNotNull();
-		assertThat(actual.getConciliacaoTransacaoTitulos().get(0)).isEqualToIgnoringGivenFields(conciliacaoTransacao.getConciliacaoTransacaoTitulos().get(0), IGNORED_FIELDS);
-		
+		assertThat(actual.getConciliacaoTransacaoTitulos()).hasSize(3);
+		assertThat(actual.getConciliacaoTransacaoTitulos()).isEqualTo(conciliacaoTransacao.getConciliacaoTransacaoTitulos());
 		
 	}
 	
@@ -168,7 +165,7 @@ public class ConciliacaoTransacaoServiceTest extends CadastrosBancoBaseEntityTes
 		conciliacaoTransacao.setTrnHistorico(generateRandomString(255));
 		conciliacaoTransacao.setTrnDocumento(generateRandomString(255));
 		conciliacaoTransacao.setTrnTipo(TipoTransacao.CREDITO);
-		conciliacaoTransacao.setTrnValor(new java.math.BigDecimal("32460.1926"));
+		conciliacaoTransacao.setTrnValor(new java.math.BigDecimal("3387.25953"));
 		
 		ConciliacaoBancariaEntity conciliacaoBancariaEntityParam = newConciliacaoBancariaEntity();
 		conciliacaoTransacao.setConciliacaoBancaria(conciliacaoBancariaEntityParam);
@@ -187,10 +184,8 @@ public class ConciliacaoTransacaoServiceTest extends CadastrosBancoBaseEntityTes
 		
 		assertThat(actual.getConciliacaoBancaria().getId()).isNotNull();
 		assertThat(actual.getConciliacaoBancaria()).isEqualToIgnoringGivenFields(conciliacaoTransacao.getConciliacaoBancaria(), IGNORED_FIELDS);
-		
 		assertThat(actual.getTituloPlanoContas()).isNull();
 		assertThat(actual.getConciliacaoTransacaoTitulos()).isEmpty();
-		
 	}
 	// END CREATE TESTS
 	
@@ -224,7 +219,7 @@ public class ConciliacaoTransacaoServiceTest extends CadastrosBancoBaseEntityTes
 		conciliacaoTransacao.setTrnHistorico(generateRandomString(255));
 		conciliacaoTransacao.setTrnDocumento(generateRandomString(255));
 		conciliacaoTransacao.setTrnTipo(TipoTransacao.CREDITO);
-		conciliacaoTransacao.setTrnValor(new java.math.BigDecimal("22382.12010"));
+		conciliacaoTransacao.setTrnValor(new java.math.BigDecimal("13894.27766"));
 		
 		ConciliacaoBancariaEntity conciliacaoBancariaEntityParam = newConciliacaoBancariaEntity();
 		conciliacaoTransacao.setConciliacaoBancaria(conciliacaoBancariaEntityParam);
@@ -232,7 +227,7 @@ public class ConciliacaoTransacaoServiceTest extends CadastrosBancoBaseEntityTes
 		conciliacaoTransacao.setSituacaoConciliacaoTrn(SituacaoConciliacaoTrn.NAO_CONCILIADO);
 		conciliacaoTransacao.setTituloConciliadoId(java.util.UUID.randomUUID());
 		conciliacaoTransacao.setTituloConciliadoDesc(generateRandomString(255));
-		conciliacaoTransacao.setTituloConciliadoValor(new java.math.BigDecimal("8682.31940"));
+		conciliacaoTransacao.setTituloConciliadoValor(new java.math.BigDecimal("234.2799"));
 		conciliacaoTransacao.setTituloConciliadoDataVen(getNextDate());
 		conciliacaoTransacao.setTituloConciliadoDataPag(getNextDate());
 		
@@ -242,8 +237,7 @@ public class ConciliacaoTransacaoServiceTest extends CadastrosBancoBaseEntityTes
 		conciliacaoTransacao.setTituloConciliadoMultiple(false);
 		conciliacaoTransacao.setDataConciliacao(getNextDate());
 		
-		ConciliacaoTransacaoTituloEntity conciliacaoTransacaoTituloEntityParam = newConciliacaoTransacaoTituloEntity(conciliacaoTransacao);
-		conciliacaoTransacao.setConciliacaoTransacaoTitulos(Arrays.asList(conciliacaoTransacaoTituloEntityParam));
+		conciliacaoTransacao.setConciliacaoTransacaoTitulos(newConciliacaoTransacaoTituloEntityList(3, conciliacaoTransacao));
 		
 		conciliacaoTransacao.setConciliadoComErro(false);
 		conciliacaoTransacao.setConciliadoMsg(generateRandomString(255));
@@ -261,16 +255,12 @@ public class ConciliacaoTransacaoServiceTest extends CadastrosBancoBaseEntityTes
 		assertThat(actual.getConciliacaoBancaria().getId()).isNotNull();
 		assertThat(actual.getConciliacaoBancaria()).isEqualToIgnoringGivenFields(conciliacaoTransacao.getConciliacaoBancaria(), IGNORED_FIELDS);
 		
-		
 		assertThat(actual.getTituloPlanoContas().getId()).isNotNull();
 		assertThat(actual.getTituloPlanoContas()).isEqualToIgnoringGivenFields(conciliacaoTransacao.getTituloPlanoContas(), IGNORED_FIELDS);
 		
-		
 		assertThat(actual.getConciliacaoTransacaoTitulos()).isNotNull();
-		assertThat(actual.getConciliacaoTransacaoTitulos()).hasSize(1);
-		assertThat(actual.getConciliacaoTransacaoTitulos().get(0).getId()).isNotNull();
-		assertThat(actual.getConciliacaoTransacaoTitulos().get(0)).isEqualToIgnoringGivenFields(conciliacaoTransacao.getConciliacaoTransacaoTitulos().get(0), IGNORED_FIELDS);
-		
+		assertThat(actual.getConciliacaoTransacaoTitulos()).hasSize(3);
+		assertThat(actual.getConciliacaoTransacaoTitulos()).isEqualTo(conciliacaoTransacao.getConciliacaoTransacaoTitulos());
 		
 	}
 	
@@ -287,7 +277,7 @@ public class ConciliacaoTransacaoServiceTest extends CadastrosBancoBaseEntityTes
 		conciliacaoTransacao.setTrnHistorico(generateRandomString(255));
 		conciliacaoTransacao.setTrnDocumento(generateRandomString(255));
 		conciliacaoTransacao.setTrnTipo(TipoTransacao.CREDITO);
-		conciliacaoTransacao.setTrnValor(new java.math.BigDecimal("30697.2200"));
+		conciliacaoTransacao.setTrnValor(new java.math.BigDecimal("21433.16264"));
 		
 		ConciliacaoBancariaEntity conciliacaoBancariaEntityParam = newConciliacaoBancariaEntity();
 		conciliacaoTransacao.setConciliacaoBancaria(conciliacaoBancariaEntityParam);
@@ -306,10 +296,8 @@ public class ConciliacaoTransacaoServiceTest extends CadastrosBancoBaseEntityTes
 		
 		assertThat(actual.getConciliacaoBancaria().getId()).isNotNull();
 		assertThat(actual.getConciliacaoBancaria()).isEqualToIgnoringGivenFields(conciliacaoTransacao.getConciliacaoBancaria(), IGNORED_FIELDS);
-		
 		assertThat(actual.getTituloPlanoContas()).isNull();
 		assertThat(actual.getConciliacaoTransacaoTitulos()).isEmpty();
-		
 	}
 	// END UPDATE TESTS
 	
@@ -470,15 +458,15 @@ public class ConciliacaoTransacaoServiceTest extends CadastrosBancoBaseEntityTes
 		// Reset lastDate field to start LocalDate fields with today in this test. 
 		resetNextDate();
 					
-		// Generate 33 records of data for ConciliacaoTransacaoEntity for this test.
+		// Generate 3 records of data for ConciliacaoTransacaoEntity for this test.
 		List<ConciliacaoTransacaoEntity> testData = new ArrayList<>();
-		final int lastRecord = 33;
+		final int lastRecord = 3;
 		final int firstRecord = 1;
 		for (int i = firstRecord; i <= lastRecord; i++) {
 			testData.add(newConciliacaoTransacaoEntity());
 		}
 		
-		// Check if 33 records of ConciliacaoTransacaoEntity was generated.
+		// Check if 3 records of ConciliacaoTransacaoEntity was generated.
 		long count = conciliacaoTransacaoRepository.count();
 		assertThat(count).isEqualTo(lastRecord);
 		
@@ -503,15 +491,15 @@ public class ConciliacaoTransacaoServiceTest extends CadastrosBancoBaseEntityTes
 		// Reset lastDate field to start LocalDate fields with today in this test. 
 		resetNextDate();
 					
-		// Generate 33 records of data for ConciliacaoTransacaoEntity for this test.
+		// Generate 3 records of data for ConciliacaoTransacaoEntity for this test.
 		List<ConciliacaoTransacaoEntity> testData = new ArrayList<>();
-		final int lastRecord = 33;
+		final int lastRecord = 3;
 		final int firstRecord = 1;
 		for (int i = firstRecord; i <= lastRecord; i++) {
 			testData.add(newConciliacaoTransacaoEntity());
 		}
 		
-		// Check if 33 records of ConciliacaoTransacaoEntity was generated.
+		// Check if 3 records of ConciliacaoTransacaoEntity was generated.
 		long count = conciliacaoTransacaoRepository.count();
 		assertThat(count).isEqualTo(lastRecord);
 		
@@ -539,15 +527,15 @@ public class ConciliacaoTransacaoServiceTest extends CadastrosBancoBaseEntityTes
 		// Reset lastDate field to start LocalDate fields with today in this test. 
 		resetNextDate();
 					
-		// Generate 33 records of data for ConciliacaoBancariaEntity for this test.
+		// Generate 3 records of data for ConciliacaoBancariaEntity for this test.
 		List<ConciliacaoBancariaEntity> testData = new ArrayList<>();
-		final int lastRecord = 33;
+		final int lastRecord = 3;
 		final int firstRecord = 1;
 		for (int i = firstRecord; i <= lastRecord; i++) {
 			testData.add(newConciliacaoBancariaEntity());
 		}
 		
-		// Check if 33 records of ConciliacaoBancariaEntity was generated.
+		// Check if 3 records of ConciliacaoBancariaEntity was generated.
 		long count = conciliacaoBancariaRepository.count();
 		assertThat(count).isEqualTo(lastRecord);
 		
@@ -572,15 +560,15 @@ public class ConciliacaoTransacaoServiceTest extends CadastrosBancoBaseEntityTes
 		// Reset lastDate field to start LocalDate fields with today in this test. 
 		resetNextDate();
 					
-		// Generate 33 records of data for PlanoContaEntity for this test.
+		// Generate 3 records of data for PlanoContaEntity for this test.
 		List<PlanoContaEntity> testData = new ArrayList<>();
-		final int lastRecord = 33;
+		final int lastRecord = 3;
 		final int firstRecord = 1;
 		for (int i = firstRecord; i <= lastRecord; i++) {
 			testData.add(newPlanoContaEntity());
 		}
 		
-		// Check if 33 records of PlanoContaEntity was generated.
+		// Check if 3 records of PlanoContaEntity was generated.
 		long count = planoContaRepository.count();
 		assertThat(count).isEqualTo(lastRecord);
 		
@@ -608,13 +596,13 @@ public class ConciliacaoTransacaoServiceTest extends CadastrosBancoBaseEntityTes
 		// Reset lastDate field to start LocalDate fields with today in this test. 
 		resetNextDate();
 					
-		// Generate 33 records of data for ConciliacaoTransacaoTituloEntity for this test.
+		// Generate 3 records of data for ConciliacaoTransacaoTituloEntity for this test.
 		List<ConciliacaoTransacaoTituloEntity> testData = new ArrayList<>();
-		final int lastRecord = 33;
-		ConciliacaoTransacaoEntity conciliacaoTransacaoEntity = newConciliacaoTransacaoEntity(lastRecord);
+		final int lastRecord = 3;
+		ConciliacaoTransacaoEntity conciliacaoTransacaoEntity = newConciliacaoTransacaoEntity(/*lastRecord*/);
 		testData.addAll(conciliacaoTransacaoEntity.getConciliacaoTransacaoTitulos());
 		
-		// Check if 33 records of ConciliacaoTransacaoTituloEntity was generated.
+		// Check if 3 records of ConciliacaoTransacaoTituloEntity was generated.
 		long count = conciliacaoTransacaoTituloRepository.count();
 		assertThat(count).isEqualTo(lastRecord);
 		
@@ -642,13 +630,9 @@ public class ConciliacaoTransacaoServiceTest extends CadastrosBancoBaseEntityTes
 	// END tests for Sum Fields
 	
 	// BEGIN TESTS DEPENDENCIES
+	
+	
 	protected ConciliacaoTransacaoEntity newConciliacaoTransacaoEntity() {
-		return newConciliacaoTransacaoEntity(2);
-	}
-	
-	
-	
-	protected ConciliacaoTransacaoEntity newConciliacaoTransacaoEntity(int oneToManySize) {
 		ConciliacaoTransacaoEntity conciliacaoTransacaoEntity = new ConciliacaoTransacaoEntity();
 		
 		conciliacaoTransacaoEntity.setTrnId(generateRandomString(255));
@@ -656,12 +640,12 @@ public class ConciliacaoTransacaoServiceTest extends CadastrosBancoBaseEntityTes
 		conciliacaoTransacaoEntity.setTrnHistorico(generateRandomString(255));
 		conciliacaoTransacaoEntity.setTrnDocumento(generateRandomString(255));
 		conciliacaoTransacaoEntity.setTrnTipo(TipoTransacao.CREDITO);
-		conciliacaoTransacaoEntity.setTrnValor(new java.math.BigDecimal("13573.7191"));
+		conciliacaoTransacaoEntity.setTrnValor(new java.math.BigDecimal("3886.16627"));
 		conciliacaoTransacaoEntity.setConciliacaoBancaria(newConciliacaoBancariaEntity());
 		conciliacaoTransacaoEntity.setSituacaoConciliacaoTrn(SituacaoConciliacaoTrn.NAO_CONCILIADO);
 		conciliacaoTransacaoEntity.setTituloConciliadoId(java.util.UUID.randomUUID());
 		conciliacaoTransacaoEntity.setTituloConciliadoDesc(generateRandomString(255));
-		conciliacaoTransacaoEntity.setTituloConciliadoValor(new java.math.BigDecimal("23402.24080"));
+		conciliacaoTransacaoEntity.setTituloConciliadoValor(new java.math.BigDecimal("21014.12579"));
 		conciliacaoTransacaoEntity.setTituloConciliadoDataVen(getNextDate());
 		conciliacaoTransacaoEntity.setTituloConciliadoDataPag(getNextDate());
 		conciliacaoTransacaoEntity.setTituloPlanoContas(newPlanoContaEntity());
@@ -670,7 +654,7 @@ public class ConciliacaoTransacaoServiceTest extends CadastrosBancoBaseEntityTes
 		conciliacaoTransacaoEntity.setConciliadoComErro(false);
 		conciliacaoTransacaoEntity.setConciliadoMsg(generateRandomString(255));
 		
-		conciliacaoTransacaoEntity.setConciliacaoTransacaoTitulos(newConciliacaoTransacaoTituloEntity(conciliacaoTransacaoEntity, oneToManySize));
+		conciliacaoTransacaoEntity.setConciliacaoTransacaoTitulos(newConciliacaoTransacaoTituloEntityList(3, conciliacaoTransacaoEntity));
 		conciliacaoTransacaoEntity = em.persistAndFlush(conciliacaoTransacaoEntity);
 		return conciliacaoTransacaoEntity;
 	}
@@ -738,12 +722,12 @@ public class ConciliacaoTransacaoServiceTest extends CadastrosBancoBaseEntityTes
 		return planoConta;
 	}
 	
-	protected List<ConciliacaoTransacaoTituloEntity> newConciliacaoTransacaoTituloEntity(ConciliacaoTransacaoEntity conciliacaoTransacao, int oneToManySize) {
-		List<ConciliacaoTransacaoTituloEntity> items = new ArrayList<>(oneToManySize);
-		for(int i = 0; i < oneToManySize; i++) {
-			items.add(newConciliacaoTransacaoTituloEntity(conciliacaoTransacao));
+	protected Set<ConciliacaoTransacaoTituloEntity> newConciliacaoTransacaoTituloEntityList(int listSize, ConciliacaoTransacaoEntity conciliacaoTransacao) {
+		Set<ConciliacaoTransacaoTituloEntity> result = new HashSet<>(listSize);
+		while (result.size() < listSize) {
+			result.add(newConciliacaoTransacaoTituloEntity(conciliacaoTransacao));
 		}
-		return items;
+		return result;
 	}
 	
 	
@@ -753,7 +737,7 @@ public class ConciliacaoTransacaoServiceTest extends CadastrosBancoBaseEntityTes
 		conciliacaoTransacaoTituloEntity.setConciliacaoTransacao(conciliacaoTransacao);
 		conciliacaoTransacaoTituloEntity.setTituloConciliadoId(java.util.UUID.randomUUID());
 		conciliacaoTransacaoTituloEntity.setTituloConciliadoDesc(generateRandomString(255));
-		conciliacaoTransacaoTituloEntity.setTituloConciliadoValor(new java.math.BigDecimal("31657.25271"));
+		conciliacaoTransacaoTituloEntity.setTituloConciliadoValor(new java.math.BigDecimal("6659.21930"));
 		conciliacaoTransacaoTituloEntity.setTituloConciliadoDataVen(getNextDate());
 		conciliacaoTransacaoTituloEntity.setTituloConciliadoDataPag(getNextDate());
 		conciliacaoTransacaoTituloEntity.setTituloPlanoContas(newPlanoContaEntity());

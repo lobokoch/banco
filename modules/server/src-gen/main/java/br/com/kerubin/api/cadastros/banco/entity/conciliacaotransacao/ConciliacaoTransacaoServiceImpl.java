@@ -27,6 +27,7 @@ import java.util.Collection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.util.Optional;
+import java.util.List;
  
 @Service
 public class ConciliacaoTransacaoServiceImpl implements ConciliacaoTransacaoService {
@@ -161,13 +162,24 @@ public class ConciliacaoTransacaoServiceImpl implements ConciliacaoTransacaoServ
 	
 	
 	
-	// findBy methods
+	// Begin findBy methods
+	
+	@Transactional(readOnly = true)
+	@Override
+	public List<ConciliacaoTransacaoEntity> findByIdIn(List<java.util.UUID> ids) {
+		return conciliacaoTransacaoRepository.findByIdIn(ids);
+	}
 	
 	@Transactional(readOnly = true)
 	@Override
 	public Collection<ConciliacaoTransacaoEntity> findConciliacaoTransacaoByConciliacaoBancaria(java.util.UUID id) {
-		
 		return conciliacaoTransacaoRepository.findByConciliacaoBancariaId(id);
-		
 	}
+	
+	@Transactional(readOnly = true)
+	@Override
+	public List<ConciliacaoTransacaoEntity> findByIdIsNotAndTituloConciliadoIdIs(java.util.UUID id, java.util.UUID tituloConciliadoId) {
+		return conciliacaoTransacaoRepository.findByIdIsNotAndTituloConciliadoIdIs(id, tituloConciliadoId);
+	}
+	// End findBy methods
 }

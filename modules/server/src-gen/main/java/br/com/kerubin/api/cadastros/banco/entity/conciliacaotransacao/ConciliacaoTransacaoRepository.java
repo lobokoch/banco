@@ -9,8 +9,8 @@ package br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
-import java.util.Collection;
 import java.util.List;
+import java.util.Collection;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +38,8 @@ public interface ConciliacaoTransacaoRepository extends JpaRepository<Conciliaca
 	Collection<ConciliacaoTransacaoTrnDocumentoAutoComplete> conciliacaoTransacaoTrnDocumentoAutoComplete(@Param("query") String query);
 	
 	// Begin generated findBy
+	
+	List<ConciliacaoTransacaoEntity> findByIdIn(List<java.util.UUID> ids);
 	
 	Collection<ConciliacaoTransacaoEntity> findByConciliacaoBancariaId(java.util.UUID id);
 	

@@ -1,4 +1,4 @@
-@label("Cadastros") //xxx
+@label("Cadastros") //xx
 domain cadastros
 
 @webAnalitycs(tagId: "UA-157001792-1" onlyInProduction: true)
@@ -369,6 +369,9 @@ service banco {
 	@auditing
 	entity ConciliacaoTransacao {
 		
+		id: uuid?
+		findBy(resultType:List methodName: findByIdIn params:[param(name:ids type:"List<java.util.UUID>")])
+		
 		// Financial Institution Transaction ID <FITID>
 		trnId: string
 		label: "Identificador da transação"
@@ -415,7 +418,13 @@ service banco {
 		label: "Id. tít. conc."
 		grid(showDataWithIcon)
 		index
-		findBy(resultKind:List custom: "findByIdIsNotAndTituloConciliadoIdIs(java.util.UUID id, java.util.UUID tituloConciliadoId)")
+		findBy(resultType:List noController
+			methodName: findByIdIsNotAndTituloConciliadoIdIs 
+			 params:[
+			 	param(name: id type: "java.util.UUID"), 
+			 	param(name: tituloConciliadoId type: "java.util.UUID")
+			 ]
+		)
 		
 		tituloConciliadoDesc: string?
 		label: "Desc. tít. conc."
@@ -604,7 +613,7 @@ service banco {
 		label: "Cancelado"
 	}
 	
-	@label("Tipo da transação")
+	@label("Tipo da transação") //
 	enum TipoTransacao {
 		CREDITO
 		label: "Crédito"

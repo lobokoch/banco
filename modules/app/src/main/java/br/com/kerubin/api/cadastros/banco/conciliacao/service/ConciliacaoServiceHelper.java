@@ -13,10 +13,20 @@ public interface ConciliacaoServiceHelper {
 	ConciliacaoBancariaEntity salvarConciliacao(ConciliacaoBancariaEntity conciliacaoBancariaEntity);
 
 	List<ConciliacaoTransacaoEntity> criarTransacoes(ConciliacaoBancariaEntity conciliacaoBancariaEntity, ConciliacaoOFXReader reader);
+	
+	List<ConciliacaoTransacaoEntity> iniciarReprocessarTransacoes(List<UUID> ids);
+	
 	List<ConciliacaoTransacaoEntity> salvarTransacoes(List<ConciliacaoTransacaoEntity> transacoesAlteradas);
+	
 	ConciliacaoTransacaoEntity salvarTransacao(ConciliacaoTransacaoEntity transacao);
+	
 	List<ConciliacaoTransacaoEntity> buscarTransacoesAConciliar(ConciliacaoBancariaEntity conciliacaoBancariaEntity);
+	
 	long countConciliacaoTransacaoComMaisDeUmTituloCandidato(UUID conciliacaoBancariaId);
+	
 	long countConciliacaoTransacaoComTitulosRepetidos(UUID conciliacaoBancariaId);
+	
+	ConciliacaoBancariaEntity getConciliacaoBancaria(ConciliacaoTransacaoEntity conciliacaoTransacaoEntity);
+	
 
 }

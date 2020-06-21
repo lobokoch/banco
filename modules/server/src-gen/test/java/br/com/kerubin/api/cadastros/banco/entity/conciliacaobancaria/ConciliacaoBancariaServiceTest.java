@@ -113,7 +113,6 @@ public class ConciliacaoBancariaServiceTest extends CadastrosBancoBaseEntityTest
 		assertThat(actual.getId()).isNotNull();
 		assertThat(actual).isEqualToIgnoringGivenFields(conciliacaoBancaria, IGNORED_FIELDS);
 		
-		
 	}
 	// END CREATE TESTS
 	
@@ -184,7 +183,6 @@ public class ConciliacaoBancariaServiceTest extends CadastrosBancoBaseEntityTest
 		assertThat(actual).isNotNull();
 		assertThat(actual.getId()).isNotNull();
 		assertThat(actual).isEqualToIgnoringGivenFields(conciliacaoBancaria, IGNORED_FIELDS);
-		
 		
 	}
 	// END UPDATE TESTS
