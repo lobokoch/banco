@@ -82,7 +82,8 @@ public class ConciliacaoServiceImpl implements ConciliacaoService {
 		}
 	}
 	
-	private void reprocessarConciliacaoTransacaoAsync(List<ConciliacaoTransacaoEntity> transacoes) {
+	@Override
+	public void reprocessarConciliacaoTransacaoAsync(List<ConciliacaoTransacaoEntity> transacoes) {
 		
 		ConciliacaoContext contextoInicial = ConciliacaoContext.builder()
 				.serviceContextData(ServiceContext.getServiceContextData())

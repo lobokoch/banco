@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import br.com.kerubin.api.cadastros.banco.conciliacao.model.ConciliacaoBancariaAsyncExecution;
+import br.com.kerubin.api.cadastros.banco.entity.conciliacaotransacao.ConciliacaoTransacaoEntity;
 
 public interface ConciliacaoService {
 
@@ -13,5 +14,7 @@ public interface ConciliacaoService {
 	long countConciliacaoTransacaoComMaisDeUmTitulo(UUID id);
 
 	void reprocessar(List<UUID> id);
+	
+	void reprocessarConciliacaoTransacaoAsync(List<ConciliacaoTransacaoEntity> transacoes);
 
 }

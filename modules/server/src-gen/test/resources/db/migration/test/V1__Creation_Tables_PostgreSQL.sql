@@ -1,3 +1,11 @@
+
+------------ Begin tests utilities ----------------
+
+-- Simulates PostgreSQL UNACCENT function in H2 database for test only.
+CREATE ALIAS unaccent FOR "br.com.kerubin.api.servicecore.util.CoreUtils.unaccent";
+
+------------ End tests utilities ------------------
+
 /**************** WARNING WILL DELETE ALL TABLES *********
 DROP TABLE IF EXISTS banco CASCADE;
 DROP TABLE IF EXISTS agencia_bancaria CASCADE;
@@ -94,7 +102,7 @@ CREATE TABLE conciliacao_bancaria /* ConciliacaoBancaria */  (
 );
 
 CREATE TABLE conciliacao_transacao /* ConciliacaoTransacao */  (
-	id UUID,
+	id UUID NOT NULL,
 	trn_id VARCHAR(255) NOT NULL /* trnId */,
 	trn_data DATE NOT NULL /* trnData */,
 	trn_historico VARCHAR(255) NOT NULL /* trnHistorico */,

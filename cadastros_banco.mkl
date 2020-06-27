@@ -365,14 +365,19 @@ service banco {
 	//
 	
 	@label(title: "Transações")
-	//@labelMenu(")
+	//@labelMenu(")////
 	@auditing
 	entity ConciliacaoTransacao {
 		
 		id: uuid?
-		findBy(resultType:List methodName: findByIdIn params:[param(name:ids type:"List<java.util.UUID>")])
+		findBy(resultType:List enableController
+			methodName: findByIdIn 
+			params:[
+				param(name:ids type:"List<java.util.UUID>")
+			]
+		)
 		
-		// Financial Institution Transaction ID <FITID>
+		// Financial Institution Transaction ID <FITID> ///
 		trnId: string
 		label: "Identificador da transação"
 		grid(hidden)
@@ -407,7 +412,7 @@ service banco {
 		
 		conciliacaoBancaria: /*container*/refers ConciliacaoBancaria manyToOne /*findBy(paged)*/
 		listFilter(isEqualTo: "Conciliação bancária" styleClass: "ui-md-4" hidden)
-		findBy
+		findBy(enableController)
 		grid(hidden)
 		
 		situacaoConciliacaoTrn: SituacaoConciliacaoTrn
@@ -418,7 +423,7 @@ service banco {
 		label: "Id. tít. conc."
 		grid(showDataWithIcon)
 		index
-		findBy(resultType:List noController
+		findBy(resultType:List 
 			methodName: findByIdIsNotAndTituloConciliadoIdIs 
 			 params:[
 			 	param(name: id type: "java.util.UUID"), 
