@@ -35,7 +35,7 @@ public class ConciliacaoTransacaoListFilter {
 	
 	private java.util.UUID conciliacaoBancariaId;
 	
-	private SituacaoConciliacaoTrn situacaoConciliacaoTrn;
+	private java.util.List<SituacaoConciliacaoTrn> situacaoConciliacaoTrn;
 	
 	private Boolean conciliadoComErroIsNotNull;
 	
@@ -106,11 +106,11 @@ public class ConciliacaoTransacaoListFilter {
 		this.conciliacaoBancariaId = conciliacaoBancariaId;
 	}
 	
-	public SituacaoConciliacaoTrn getSituacaoConciliacaoTrn() {
+	public java.util.List<SituacaoConciliacaoTrn> getSituacaoConciliacaoTrn() {
 		return situacaoConciliacaoTrn;
 	}
-			
-	public void setSituacaoConciliacaoTrn(SituacaoConciliacaoTrn situacaoConciliacaoTrn) {
+	
+	public void setSituacaoConciliacaoTrn(java.util.List<SituacaoConciliacaoTrn> situacaoConciliacaoTrn) {
 		this.situacaoConciliacaoTrn = situacaoConciliacaoTrn;
 	}
 	

@@ -98,9 +98,9 @@ public class ConciliacaoTransacaoListFilterPredicateImpl implements ConciliacaoT
 		// End field: conciliacaoBancariaId
 		
 		// Begin field: situacaoConciliacaoTrn
-		if (conciliacaoTransacaoListFilter.getSituacaoConciliacaoTrn() != null) {
-			BooleanExpression situacaoConciliacaoTrnIsEqualTo = qEntity.situacaoConciliacaoTrn.eq(conciliacaoTransacaoListFilter.getSituacaoConciliacaoTrn());
-			where.and(situacaoConciliacaoTrnIsEqualTo);
+		if (!CollectionUtils.isEmpty(conciliacaoTransacaoListFilter.getSituacaoConciliacaoTrn())) {
+			BooleanExpression inExpression = qEntity.situacaoConciliacaoTrn.in(conciliacaoTransacaoListFilter.getSituacaoConciliacaoTrn());
+			where.and(inExpression);
 		}
 		// End field: situacaoConciliacaoTrn
 		

@@ -388,7 +388,7 @@ service banco {
 		listFilter(between: "Movimento de;Até;Intervalo de tempo" default: "Personalizado")
 		////  
 		
-		////
+		/////
 		trnHistorico: string
 		label: "Histórico"
 		listFilter(many: "Histórico" styleClass: "ui-md-6")
@@ -408,7 +408,7 @@ service banco {
 		label: "Valor"
 		web(styleClass: "ui-md-9")
 		listFilter(between: "Valores de;até;")
-		////
+		//////
 		
 		conciliacaoBancaria: /*container*/refers ConciliacaoBancaria manyToOne /*findBy(paged)*/
 		listFilter(isEqualTo: "Conciliação bancária" styleClass: "ui-md-4" hidden)
@@ -416,7 +416,7 @@ service banco {
 		grid(hidden)
 		
 		situacaoConciliacaoTrn: SituacaoConciliacaoTrn
-		listFilter(isEqualTo: "Situação" styleClass: "ui-md-9")
+		listFilter(many: "Situação" styleClass: "ui-md-9")
 		
 		////
 		tituloConciliadoId: uuid?
